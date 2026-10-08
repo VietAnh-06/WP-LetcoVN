@@ -1,0 +1,19 @@
+# Keep text files consistent across Windows and Linux checkouts.
+* text=auto eol=lf
+
+# Windows command files require CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Never alter binary assets.
+*.gif binary
+*.ico binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.zip binary
