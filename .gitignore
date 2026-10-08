@@ -1,0 +1,19 @@
+# Local WordPress configuration and secrets
+/wp-config.php
+
+# User-generated and runtime content
+/wp-content/uploads/
+/wp-content/cache/
+/wp-content/upgrade/
+/wp-content/backups/
+/wp-content/ai1wm-backups/
+/wp-content/debug.log
+*.log
+
+# Local development and editor files
+/.env
+/.env.*
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
