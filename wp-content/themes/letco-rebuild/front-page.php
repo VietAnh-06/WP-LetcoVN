@@ -1,343 +1,169 @@
 <?php
+/**
+ * Homepage: entry point to the three study-abroad landing pages.
+ * Links only to those pages; the rest of the site stays reachable by URL.
+ */
+
 get_header();
 
-$services = array(
+$programs = array(
 	array(
-		'number' => '01',
-		'title'  => 'Cung ứng nhân lực',
-		'text'   => 'Kết nối người lao động Việt Nam với cơ hội nghề nghiệp bền vững tại Nhật Bản, Hàn Quốc, Đài Loan và châu Âu.',
-		'link'   => home_url( '/cung-ung-nhan-luc/' ),
+		'url'   => '/du-hoc/du-hoc-han-quoc/',
+		'image' => 'home-korea-gate.jpg',
+		'name'  => 'Du học Hàn Quốc',
+		'text'  => 'Hệ tiếng D-4, hệ nghề D-4-6 và chuyên ngành D-2 tại hơn 20 trường đại học đối tác ở Seoul, Busan, Daegu, Incheon, Daejeon.',
+		'value' => '180 – 400 triệu VNĐ',
+		'label' => 'Tổng chi phí dự trù năm đầu',
 	),
 	array(
-		'number' => '02',
-		'title'  => 'Tư vấn du học',
-		'text'   => 'Đồng hành từ chọn trường, chuẩn bị hồ sơ, đào tạo ngoại ngữ đến khi học viên ổn định cuộc sống tại nước ngoài.',
-		'link'   => home_url( '/du-hoc/' ),
+		'url'   => '/du-hoc/du-hoc-nhat-ban/',
+		'image' => 'home-japan-city.jpg',
+		'name'  => 'Du học Nhật Bản',
+		'text'  => 'Trường Nhật ngữ, trường chuyên môn, đại học và lộ trình Visa Kỹ sư, Kỹ năng đặc định.',
+		'value' => '6 lộ trình',
+		'label' => 'Từ học tiếng đến làm việc',
 	),
 	array(
-		'number' => '03',
-		'title'  => 'Đào tạo ngắn hạn',
-		'text'   => 'Các chương trình ngoại ngữ và kỹ năng nghề thực tiễn, giúp học viên sẵn sàng cho môi trường học tập và làm việc quốc tế.',
-		'link'   => home_url( '/dao-tao/' ),
-	),
-);
-
-$news = array(
-	array(
-		'image' => 'news-germany.png',
-		'tag'   => 'Du học châu Âu',
-		'title' => 'Du học nghề Đức: 3 sai lầm phổ biến và sự thật bạn cần biết',
-		'date'  => '02/10/2026',
-		'text'  => 'Một lộ trình thực tế để hiểu đúng về điều kiện, chi phí và cơ hội nghề nghiệp khi lựa chọn du học nghề Đức.',
-	),
-	array(
-		'image' => 'news-korea.jpg',
-		'tag'   => 'Hợp tác quốc tế',
-		'title' => 'HaUI ký kết hợp tác với Đại học Daeduk, mở rộng cơ hội du học – thực tập tại Hàn Quốc',
-		'date'  => '29/09/2026',
-	),
-	array(
-		'image' => 'news-sports.jpg',
-		'tag'   => 'LETCO News',
-		'title' => 'LETCO tham gia Hội thao HaUI 2026: Sôi nổi, đoàn kết và fair play',
-		'date'  => '26/09/2026',
+		'url'   => '/du-hoc/du-hoc-han-quoc/dai-hoc-daeduk/',
+		'image' => 'home-daeduk-class.jpg',
+		'name'  => 'Du học song hành Đại học Daeduk',
+		'text'  => '80% thời gian học tập và thực tế tại doanh nghiệp Hàn Quốc, lộ trình chuyển đổi Visa E-7-1.',
+		'value' => '~40 triệu VNĐ/tháng',
+		'label' => 'Thu nhập thực tập',
 	),
 );
 
-$jobs = array(
-	array( 'image' => 'job-kagoshima.jpg', 'market' => 'Nhật Bản', 'title' => 'Nữ làm điện tử tại Kagoshima', 'salary' => '175.560 Yên/tháng', 'quantity' => '03 nữ', 'location' => 'Kagoshima', 'deadline' => 'Tuyển sớm' ),
-	array( 'image' => 'job-germany.jpg', 'market' => 'CHLB Đức', 'title' => 'Du học nghề và làm việc tại Đức', 'salary' => 'Từ 2.500 Euro/tháng', 'quantity' => '50 học viên', 'location' => 'CHLB Đức', 'deadline' => 'Liên tục' ),
-	array( 'image' => 'job-electronics.jpg', 'market' => 'Nhật Bản', 'title' => 'Lắp ráp linh kiện điện tử', 'salary' => '161.280 Yên/tháng', 'quantity' => '11 nữ', 'location' => 'Kagoshima', 'deadline' => 'Tuyển sớm' ),
-	array( 'image' => 'job-warehouse.jpg', 'market' => 'Nhật Bản', 'title' => 'Quản lý kho, phân loại hàng hóa', 'salary' => '179.316 Yên/tháng', 'quantity' => '07 lao động', 'location' => 'Ishikawa', 'deadline' => 'Tuyển gấp' ),
-	array( 'image' => 'job-kagoshima.jpg', 'market' => 'Nhật Bản', 'title' => 'Nam làm san lấp, đào xới tại Kyushu', 'salary' => '1.125 Yên/giờ', 'quantity' => '06 nam', 'location' => 'Kyushu', 'deadline' => 'Tuyển sớm' ),
-	array( 'image' => 'news-europe.png', 'market' => 'Châu Âu', 'title' => 'Chương trình du học và làm việc tại châu Âu', 'salary' => 'Từ 1.000 Euro/tháng', 'quantity' => 'Liên tục', 'location' => 'Châu Âu', 'deadline' => 'Liên tục' ),
+$reasons = array(
+	array( 'Trực thuộc Đại học Công nghiệp Hà Nội', 'Doanh nghiệp nhà nước với 25 năm kinh nghiệm tư vấn du học và hợp tác quốc tế, không phải trung tâm môi giới tự phát.' ),
+	array( 'Minh bạch tài chính', 'Bảng dự trù chi phí lập theo từng trường và thành phố; mọi khoản thu ghi rõ trong hợp đồng và xuất hóa đơn đỏ.' ),
+	array( 'Học tiếng ngay tại HaUI', 'Trung tâm đào tạo tiếng đặt trong khuôn viên trường, giúp học viên có nền tảng ngôn ngữ vững chắc trước khi bay.' ),
+	array( 'Đồng hành tại nước ngoài', 'Hỗ trợ thẻ cư trú, bảo hiểm y tế, giấy phép làm thêm đúng luật và kết nối cộng đồng sinh viên Việt Nam.' ),
 );
 
-$testimonials = array(
-	array(
-		'quote' => 'Mình lựa chọn du học Nhật Bản vì yêu thích văn hóa và phong cách sống. Quá trình học tại LETCO giúp mình tự tin hơn trước khi lên đường.',
-		'name'  => 'Quốc Toàn',
-		'role'  => 'Thực tập sinh',
-		'image' => 'avatar-student.jpg',
-	),
-	array(
-		'quote' => 'Cảm ơn LETCO và các thầy cô đã giúp chúng em chuẩn bị hành trang vững chắc để bắt đầu công việc tại Nhật Bản.',
-		'name'  => 'Nguyễn Hữu Tấn',
-		'role'  => 'Kỹ thuật viên',
-		'image' => 'avatar-engineer.png',
-	),
-	array(
-		'quote'    => 'Gia đình tôi tin tưởng LETCO đã đồng hành, hỗ trợ để con trai hoàn thiện hồ sơ và thực hiện ước mơ làm kỹ sư tại Nhật Bản.',
-		'name'     => 'Ông Nguyễn Minh Hải',
-		'role'     => 'Phụ huynh học viên',
-		'initials' => 'MH',
-	),
-	array(
-		'quote'    => 'LETCO hỗ trợ học viên rất kịp thời về nơi ở và sinh hoạt trong giai đoạn khó khăn. Gia đình chúng tôi thực sự trân trọng sự đồng hành ấy.',
-		'name'     => 'Bà Đặng Thị Phương',
-		'role'     => 'Phụ huynh học viên',
-		'initials' => 'TP',
-	),
-	array(
-		'quote'    => 'Các thầy cô luôn tận tâm chỉ dẫn. Từ chỗ chưa hứng thú, tiếng Nhật với em giờ không chỉ là nhiệm vụ mà còn trở thành niềm đam mê.',
-		'name'     => 'Trần Nho Hoàng',
-		'role'     => 'Thực tập sinh',
-		'initials' => 'NH',
-	),
-	array(
-		'quote'    => 'Học viên LETCO được đào tạo tiếng Nhật bài bản, có thái độ học tập nghiêm túc và khả năng thích nghi tốt khi sang Nhật Bản.',
-		'name'     => 'Ông Kikawa',
-		'role'     => 'Trường Nhật ngữ Tochinoki',
-		'initials' => 'K',
-	),
+$quotes = array(
+	array( 'avatar-handa.jpg', 'Tôi đã đi thăm khoảng 80 công ty tại Hải Phòng, Hà Nội, Đà Nẵng, Hồ Chí Minh và nhận thấy chất lượng thực tập sinh của LETCO là tốt nhất, nên đã quyết định hợp tác với LETCO.', 'Ông Handa', 'Chủ tịch Nghiệp đoàn International' ),
+	array( 'avatar-dang-thi-phuong.jpg', 'Trong giai đoạn dịch Covid 19, LETCO đã hỗ trợ chi phí sinh hoạt và nơi ăn chốn ở, đảm bảo an toàn cho con trai tôi và các học viên khác.', 'Bà Đặng Thị Phương', 'Phụ huynh học viên' ),
+	array( 'avatar-kikawa.jpg', 'Học viên LETCO được đào tạo tiếng Nhật rất bài bản, nên khi sang đây các em không gặp nhiều khó khăn.', 'Ông Kikawa', 'Trường Nhật ngữ Tochinoki' ),
 );
 
-$partners = array(
-	array( 'image' => 'partner-1.jpg', 'name' => 'Waseda University' ),
-	array( 'image' => 'partner-2.jpg', 'name' => 'Honda' ),
-	array( 'image' => 'partner-3.jpg', 'name' => 'Dongguk University' ),
-	array( 'image' => 'partner-4.jpg', 'name' => 'Ajou University' ),
-	array( 'image' => 'partner-5.jpg', 'name' => 'Toyota' ),
-	array( 'image' => 'partner-6.jpg', 'name' => 'Hitachi' ),
-	array( 'image' => 'partner-7.jpg', 'name' => 'Mazda' ),
-	array( 'image' => 'partner-8.jpg', 'name' => 'Isuzu' ),
+get_template_part(
+	'template-parts/landing',
+	'header',
+	array(
+		'links'   => array(
+			'chuong-trinh' => 'Chương trình',
+			'vi-sao'       => 'Vì sao LETCO',
+			'cam-nhan'     => 'Cảm nhận',
+		),
+		'hotline' => '0989.086.386',
+	)
 );
 ?>
 
-<section class="hero" aria-label="LETCO - Tựu trường quốc tế">
-	<div class="hero-media" data-hero-slider data-interval="5000" role="region" aria-roledescription="carousel" aria-label="Chương trình nổi bật của LETCO">
-		<div class="hero-slides" aria-live="off">
-			<figure class="hero-slide is-active" data-hero-slide aria-hidden="false">
-				<img src="<?php echo letco_asset( 'hero-program.jpg' ); ?>" alt="LETCO - Tựu trường quốc tế, học bổng trao tay">
-			</figure>
-			<figure class="hero-slide" data-hero-slide aria-hidden="true">
-				<img src="<?php echo letco_asset( 'hero-study.jpg' ); ?>" alt="LETCO tuyển sinh du học Hàn Quốc">
-			</figure>
-			<figure class="hero-slide" data-hero-slide aria-hidden="true">
-				<img src="<?php echo letco_asset( 'hero-global.png' ); ?>" alt="LETCO - Kết nối tri thức, khởi nghiệp tại Đức">
-			</figure>
-			<figure class="hero-slide" data-hero-slide aria-hidden="true">
-				<img src="<?php echo letco_asset( 'hero-training.jpg' ); ?>" alt="LETCO tuyển sinh đào tạo nghề">
-			</figure>
-		</div>
-		<button class="hero-arrow hero-arrow-prev" type="button" data-hero-prev aria-label="Xem banner trước">‹</button>
-		<button class="hero-arrow hero-arrow-next" type="button" data-hero-next aria-label="Xem banner tiếp theo">›</button>
-		<div class="hero-dots" role="group" aria-label="Chọn banner">
-			<button class="is-active" type="button" data-hero-dot="0" aria-label="Banner 1" aria-current="true"></button>
-			<button type="button" data-hero-dot="1" aria-label="Banner 2" aria-current="false"></button>
-			<button type="button" data-hero-dot="2" aria-label="Banner 3" aria-current="false"></button>
-			<button type="button" data-hero-dot="3" aria-label="Banner 4" aria-current="false"></button>
-		</div>
-	</div>
-	<div class="container hero-actions">
-		<div class="hero-action-card">
-			<span>Chương trình 2026</span>
-			<strong>Học tập và làm việc toàn cầu</strong>
-		</div>
-		<a class="button" href="<?php echo esc_url( home_url( '/du-hoc/' ) ); ?>">Khám phá chương trình</a>
-	</div>
-</section>
-
-<section class="trust-strip" aria-label="Năng lực LETCO">
-	<div class="container trust-grid">
-		<div><strong>26</strong><span>Năm thành lập</span></div>
-		<div><strong>10.000+</strong><span>Học viên & lao động</span></div>
-		<div><strong>12+</strong><span>Thị trường quốc tế</span></div>
-		<div><strong>200+</strong><span>Đối tác tin cậy</span></div>
-	</div>
-</section>
-
-<section class="section services-section">
-	<div class="container">
-		<div class="section-heading section-heading-center">
-			<span class="eyebrow">Lĩnh vực hoạt động</span>
-			<h2>Mở lối cho hành trình <em>vươn ra thế giới</em></h2>
-			<p>LETCO xây dựng hệ sinh thái đào tạo, tư vấn và kết nối việc làm đồng bộ cho học sinh, sinh viên và người lao động Việt Nam.</p>
-		</div>
-		<div class="service-grid">
-			<?php foreach ( $services as $service ) : ?>
-				<a class="service-card" href="<?php echo esc_url( $service['link'] ); ?>">
-					<span class="service-number"><?php echo esc_html( $service['number'] ); ?></span>
-					<h3><?php echo esc_html( $service['title'] ); ?></h3>
-					<p><?php echo esc_html( $service['text'] ); ?></p>
-					<span class="text-link">Tìm hiểu thêm <span>→</span></span>
-				</a>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</section>
-
-<section class="section news-section">
-	<div class="container">
-		<div class="section-heading heading-row">
-			<div>
-				<span class="eyebrow">Cập nhật mới nhất</span>
-				<h2>Tin tức & hoạt động</h2>
-			</div>
-			<a class="text-link" href="<?php echo esc_url( home_url( '/tin-tuc/' ) ); ?>">Xem tất cả tin <span>→</span></a>
-		</div>
-		<div class="news-layout">
-			<article class="featured-news">
-				<a class="news-image" href="#">
-					<img src="<?php echo letco_asset( $news[0]['image'] ); ?>" alt="<?php echo esc_attr( $news[0]['title'] ); ?>">
-				</a>
-				<div class="news-copy">
-					<div class="meta"><span><?php echo esc_html( $news[0]['tag'] ); ?></span><time><?php echo esc_html( $news[0]['date'] ); ?></time></div>
-					<h3><a href="#"><?php echo esc_html( $news[0]['title'] ); ?></a></h3>
-					<p><?php echo esc_html( $news[0]['text'] ); ?></p>
-				</div>
-			</article>
-			<div class="news-stack">
-				<?php foreach ( array_slice( $news, 1 ) as $item ) : ?>
-					<article class="news-card">
-						<a class="news-thumb" href="#"><img src="<?php echo letco_asset( $item['image'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>"></a>
-						<div>
-							<div class="meta"><span><?php echo esc_html( $item['tag'] ); ?></span><time><?php echo esc_html( $item['date'] ); ?></time></div>
-							<h3><a href="#"><?php echo esc_html( $item['title'] ); ?></a></h3>
-						</div>
-					</article>
-				<?php endforeach; ?>
-				<article class="news-brief">
-					<span class="news-brief-icon">↗</span>
-					<div>
-						<span>LETCO News</span>
-						<h3><a href="#">Kết nối thị trường Bulgari – Mở thêm cơ hội việc làm cho sinh viên Việt Nam</a></h3>
-					</div>
-				</article>
-			</div>
-		</div>
-	</div>
-</section>
-
-<section class="section jobs-section">
-	<div class="container">
-		<div class="section-heading heading-row heading-light">
-			<div>
-				<span class="eyebrow eyebrow-light">Cơ hội đang tuyển</span>
-				<h2>Đơn hàng nổi bật</h2>
-			</div>
-			<a class="text-link text-link-light" href="<?php echo esc_url( home_url( '/don-hang/' ) ); ?>">Xem tất cả đơn hàng <span>→</span></a>
-		</div>
-		<div class="content-carousel content-carousel--three jobs-carousel" data-content-carousel data-interval="3000">
-			<div class="content-carousel-viewport" role="region" aria-label="Đơn hàng nổi bật">
-				<div class="jobs-grid content-carousel-track" data-carousel-track>
-					<?php foreach ( $jobs as $job ) : ?>
-						<article class="job-card">
-							<div class="job-image"><img src="<?php echo letco_asset( $job['image'] ); ?>" alt="<?php echo esc_attr( $job['title'] ); ?>"><span><?php echo esc_html( $job['market'] ); ?></span></div>
-							<div class="job-copy">
-								<h3><?php echo esc_html( $job['title'] ); ?></h3>
-								<dl>
-									<div><dt>Thu nhập</dt><dd><?php echo esc_html( $job['salary'] ); ?></dd></div>
-									<div><dt>Số lượng</dt><dd><?php echo esc_html( $job['quantity'] ); ?></dd></div>
-									<div><dt>Nơi làm việc</dt><dd><?php echo esc_html( $job['location'] ); ?></dd></div>
-									<div><dt>Thời hạn</dt><dd><?php echo esc_html( $job['deadline'] ); ?></dd></div>
-								</dl>
-								<a class="text-link" href="<?php echo esc_url( home_url( '/lien-he/' ) ); ?>">Đăng ký ứng tuyển <span>→</span></a>
-							</div>
-						</article>
-					<?php endforeach; ?>
+<div class="study-landing study-korea lp-home">
+	<section class="lp-hero">
+		<div class="container lp-hero-grid">
+			<div class="lp-hero-copy">
+				<p class="lp-kicker">LETCO – Đại học Công nghiệp Hà Nội</p>
+				<h1>Du học Hàn Quốc và Nhật Bản cùng đơn vị trực thuộc HaUI</h1>
+				<p class="lp-lede">25 năm đồng hành cùng học sinh và phụ huynh, từ định hướng, đào tạo tiếng tại HaUI, hồ sơ visa đến khi ổn định học tập và làm việc ở nước ngoài.</p>
+				<div class="lp-actions">
+					<a class="lp-button" href="#dang-ky">Đăng ký tư vấn</a>
+					<a class="lp-link" href="#chuong-trinh">Xem chương trình</a>
 				</div>
 			</div>
-			<div class="content-carousel-controls">
-				<button type="button" data-carousel-prev aria-label="Xem nhóm đơn hàng trước">‹</button>
-				<div class="content-carousel-dots" data-carousel-dots aria-label="Chọn nhóm đơn hàng"></div>
-				<button type="button" data-carousel-next aria-label="Xem nhóm đơn hàng tiếp theo">›</button>
-			</div>
+			<figure class="lp-hero-media">
+				<img src="<?php echo letco_asset( 'about.jpg' ); ?>" alt="Đội ngũ LETCO tại Đại học Công nghiệp Hà Nội" fetchpriority="high">
+			</figure>
 		</div>
-	</div>
-</section>
+	</section>
 
-<section class="section about-section">
-	<div class="container about-grid">
-		<div class="about-media">
-			<img src="<?php echo letco_asset( 'about.jpg' ); ?>" alt="Hoạt động của LETCO">
-			<div class="about-badge"><strong>26</strong><span>Năm thành lập</span></div>
-		</div>
-		<div class="about-copy">
-			<span class="eyebrow">Về LETCO</span>
-			<h2>Niềm tin tạo nên những hành trình bền vững</h2>
-			<p>Công ty TNHH Một thành viên Đào tạo và Cung ứng Nhân lực – HaUI được thành lập ngày 29/11/2000. LETCO là cầu nối giữa đào tạo, người học và các nhà tuyển dụng trong nước, quốc tế.</p>
-			<p>Chúng tôi lấy thành công của khách hàng làm thước đo chất lượng, xây dựng dịch vụ trên nền tảng chuyên nghiệp, minh bạch và đồng hành lâu dài.</p>
-			<ul class="check-list">
-				<li>Quy trình tư vấn và đào tạo khép kín</li>
-				<li>Mạng lưới đối tác quốc tế uy tín</li>
-				<li>Đội ngũ tận tâm, giàu kinh nghiệm</li>
+	<section class="lp-facts" aria-label="Điểm nổi bật">
+		<div class="container">
+			<ul class="lp-facts-list">
+				<li><strong>25 năm</strong><span>Kinh nghiệm tư vấn du học và hợp tác quốc tế</span></li>
+				<li><span>100% vốn Nhà nước</span></li>
+				<li><span>Đối tác của hơn 20 đại học Hàn Quốc</span></li>
+				<li><span>Hợp đồng rõ ràng, có hóa đơn</span></li>
 			</ul>
-			<a class="button button-outline" href="<?php echo esc_url( home_url( '/gioi-thieu/' ) ); ?>">Tìm hiểu về LETCO</a>
 		</div>
-	</div>
-</section>
+	</section>
 
-<section class="section testimonial-section">
-	<div class="container">
-		<div class="section-heading section-heading-center">
-			<span class="eyebrow">Câu chuyện thật</span>
-			<h2>Khách hàng nói về LETCO</h2>
-			<p>Những chia sẻ từ học viên, phụ huynh và đối tác đã đồng hành cùng LETCO trên hành trình học tập và làm việc quốc tế.</p>
-		</div>
-		<div class="content-carousel content-carousel--three testimonial-carousel" data-content-carousel data-interval="3000">
-			<div class="content-carousel-viewport" role="region" aria-label="Khách hàng nói về LETCO">
-				<div class="testimonial-grid content-carousel-track" data-carousel-track>
-					<?php foreach ( $testimonials as $testimonial ) : ?>
-						<blockquote>
-							<p>“<?php echo esc_html( $testimonial['quote'] ); ?>”</p>
-							<footer>
-								<?php if ( ! empty( $testimonial['image'] ) ) : ?>
-									<img src="<?php echo letco_asset( $testimonial['image'] ); ?>" alt="<?php echo esc_attr( $testimonial['name'] ); ?>">
-								<?php else : ?>
-									<span class="testimonial-avatar" aria-hidden="true"><?php echo esc_html( $testimonial['initials'] ); ?></span>
-								<?php endif; ?>
-								<div><strong><?php echo esc_html( $testimonial['name'] ); ?></strong><span><?php echo esc_html( $testimonial['role'] ); ?></span></div>
-							</footer>
-						</blockquote>
-					<?php endforeach; ?>
-				</div>
+	<section class="section lp-programs" id="chuong-trinh">
+		<div class="container">
+			<div class="section-heading">
+				<h2>Chọn chương trình phù hợp</h2>
+				<p>Mỗi chương trình có trang riêng với điều kiện, chi phí, học bổng và lộ trình chi tiết.</p>
 			</div>
-			<div class="content-carousel-controls">
-				<button type="button" data-carousel-prev aria-label="Xem nhóm chia sẻ trước">‹</button>
-				<div class="content-carousel-dots" data-carousel-dots aria-label="Chọn nhóm chia sẻ"></div>
-				<button type="button" data-carousel-next aria-label="Xem nhóm chia sẻ tiếp theo">›</button>
+			<div class="lp-program-grid">
+				<?php foreach ( $programs as $index => $program ) : ?>
+					<a class="lp-program<?php echo 0 === $index ? ' lp-program--lead' : ''; ?>" href="<?php echo esc_url( home_url( $program['url'] ) ); ?>">
+						<img src="<?php echo letco_asset( $program['image'] ); ?>" alt="" loading="lazy">
+						<div class="lp-program-copy">
+							<h3><?php echo esc_html( $program['name'] ); ?></h3>
+							<p><?php echo esc_html( $program['text'] ); ?></p>
+							<dl><dt><?php echo esc_html( $program['label'] ); ?></dt><dd><?php echo esc_html( $program['value'] ); ?></dd></dl>
+							<span class="lp-program-more">Xem chương trình</span>
+						</div>
+					</a>
+				<?php endforeach; ?>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
 
-<section class="section gallery-section">
-	<div class="container">
-		<div class="section-heading heading-row">
-			<div><span class="eyebrow">Khoảnh khắc LETCO</span><h2>Hoạt động & sự kiện</h2></div>
-			<a class="text-link" href="<?php echo esc_url( home_url( '/thu-vien/' ) ); ?>">Xem thư viện <span>→</span></a>
+	<section class="section study-benefits" id="vi-sao">
+		<div class="container">
+			<div class="section-heading">
+				<h2>Vì sao các gia đình chọn LETCO</h2>
+				<p>Lộ trình toàn diện, chi phí minh bạch, doanh nghiệp 100% vốn Nhà nước.</p>
+			</div>
+			<div class="study-benefit-grid">
+				<?php foreach ( $reasons as $reason ) : ?>
+					<article><h3><?php echo esc_html( $reason[0] ); ?></h3><p><?php echo esc_html( $reason[1] ); ?></p></article>
+				<?php endforeach; ?>
+			</div>
 		</div>
-		<div class="gallery-grid">
-			<figure class="gallery-main"><img src="<?php echo letco_asset( 'gallery-1.jpg' ); ?>" alt="Hoạt động tại LETCO"></figure>
-			<figure><img src="<?php echo letco_asset( 'gallery-2.jpg' ); ?>" alt="Học viên LETCO"></figure>
-			<figure><img src="<?php echo letco_asset( 'gallery-3.jpg' ); ?>" alt="Sự kiện LETCO"></figure>
-		</div>
-	</div>
-</section>
+	</section>
 
-<section class="partners-section">
-	<div class="container">
-		<div class="section-heading section-heading-center partner-heading">
-			<span class="eyebrow">Mạng lưới hợp tác</span>
-			<h2>Đối tác đồng hành cùng LETCO</h2>
-			<p>Kết nối cùng các trường đại học và doanh nghiệp uy tín để mở rộng cơ hội học tập, thực tập và việc làm quốc tế.</p>
-		</div>
-		<div class="content-carousel content-carousel--partners partner-carousel" data-content-carousel data-interval="3000">
-			<div class="content-carousel-viewport" role="region" aria-label="Đối tác của LETCO">
-				<div class="partner-row content-carousel-track" data-carousel-track>
-					<?php foreach ( $partners as $partner ) : ?>
-						<div><img src="<?php echo letco_asset( $partner['image'] ); ?>" alt="<?php echo esc_attr( $partner['name'] ); ?>"><span><?php echo esc_html( $partner['name'] ); ?></span></div>
-					<?php endforeach; ?>
-				</div>
+	<section class="section lp-quotes" id="cam-nhan">
+		<div class="container">
+			<div class="section-heading">
+				<h2>Phụ huynh và đối tác nói về LETCO</h2>
 			</div>
-			<div class="content-carousel-controls">
-				<button type="button" data-carousel-prev aria-label="Xem nhóm đối tác trước">‹</button>
-				<div class="content-carousel-dots" data-carousel-dots aria-label="Chọn nhóm đối tác"></div>
-				<button type="button" data-carousel-next aria-label="Xem nhóm đối tác tiếp theo">›</button>
+			<div class="lp-quote-grid">
+				<?php foreach ( $quotes as $index => $quote ) : ?>
+					<figure class="lp-quote<?php echo 0 === $index ? ' lp-quote--lead' : ''; ?>">
+						<blockquote><p><?php echo esc_html( $quote[1] ); ?></p></blockquote>
+						<figcaption>
+							<img src="<?php echo letco_asset( $quote[0] ); ?>" alt="" width="48" height="48" loading="lazy">
+							<span><strong><?php echo esc_html( $quote[2] ); ?></strong><?php echo esc_html( $quote[3] ); ?></span>
+						</figcaption>
+					</figure>
+				<?php endforeach; ?>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
+
+	<?php
+	get_template_part(
+		'template-parts/lead',
+		'form',
+		array(
+			'lead'            => array(
+				'title'   => 'Nhận tư vấn lộ trình du học miễn phí',
+				'intro'   => 'Để lại thông tin, chuyên viên LETCO sẽ đánh giá hồ sơ và gợi ý chương trình phù hợp với học lực và ngân sách của gia đình.',
+				'bullets' => array( 'Đánh giá hồ sơ dựa trên GPA, tuổi và học bạ THPT', 'Gợi ý 3–5 trường vừa sức, đúng định hướng ngành nghề', 'Bảng dự trù chi phí chi tiết cho năm đầu tiên' ),
+			),
+			'contact'         => array(
+				'label'     => 'Đơn vị tư vấn',
+				'partners'  => 'LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
+				'phones'    => array( '0989.086.386' ),
+				'addresses' => array( 'Tòa nhà A5, Số 298 Đường Cầu Diễn, Phường Tây Tựu, Hà Nội' ),
+			),
+			'program_choices' => array( 'Du học Hàn Quốc', 'Du học Nhật Bản', 'Du học song hành Đại học Daeduk', 'Chưa xác định' ),
+		)
+	);
+	?>
+</div>
 
 <?php get_footer(); ?>

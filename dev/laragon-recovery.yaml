@@ -1,0 +1,39 @@
+# One-time migration of this Laragon MySQL 8.0.30 data directory.
+# Work only on a copy; the Windows source is mounted read-only.
+name: letco-rebuild-laragon-recovery
+
+services:
+  mysql:
+    image: mysql:8.0.30
+    entrypoint:
+      - bash
+      - -ec
+      - |
+        if [ ! -d /var/lib/mysql/mysql ]; then
+          cp -a /laragon/. /var/lib/mysql/
+        fi
+        exec /usr/local/bin/docker-entrypoint.sh mysqld \
+          --lower-case-table-names=1 \
+          --skip-log-bin \
+          --skip-networking \
+          --skip-grant-tables \
+          --mysqlx=0 \
+          --socket=/tmp/mysql.sock
+    network_mode: none
+    volumes:
+      - type: bind
+        source: ${LARAGON_MYSQL_DATA:?Set the absolute path to Laragon data/mysql-8}
+        target: /laragon
+        read_only: true
+        bind:
+          create_host_path: false
+      - recovery:/var/lib/mysql
+    healthcheck:
+      test: [CMD, mysqladmin, --socket=/tmp/mysql.sock, ping, --silent]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+volumes:
+  recovery:

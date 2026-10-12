@@ -4,6 +4,145 @@ This repository is designed to run on both Windows and Linux. It contains
 WordPress core and the custom `letco-rebuild` theme. Runtime configuration,
 uploaded media, caches, logs, and backups are intentionally not committed.
 
+## Run locally on Linux with Docker
+
+Install Docker Engine with the Compose plugin, plus Python 3 (used once to
+generate local passwords). PHP, Apache, MariaDB, and WP-CLI run in containers.
+From this directory:
+
+```sh
+bash scripts/local.sh start
+```
+
+Open **http://localhost:8081**. The admin area is
+**http://localhost:8081/wp-admin/**. An existing imported database keeps its
+WordPress usernames and passwords. On a new database, complete the browser
+installer; the default theme is **LETCO Rebuild**.
+
+```sh
+bash scripts/local.sh stop     # Stop this project's services; keep the database
+bash scripts/local.sh start    # Start again
+bash scripts/local.sh status   # Show health and ports
+bash scripts/local.sh logs     # Follow logs; Ctrl+C exits
+bash scripts/local.sh wp theme list
+```
+
+The launcher generates an ignored `.env` with random secrets. `.env.example`
+documents its settings. Change `WP_PORT` in `.env` if port 8081 is occupied, then
+run `start` again. It also runs PHP and WP-CLI with your Linux user ID so files
+created through WordPress remain editable by you. Use the launcher as your
+normal user, with Docker access.
+
+The containers serve the files in this checkout, including the existing uploads,
+so theme edits appear immediately. `dev/wp-config.php` is mounted as the container's
+configuration; the host's Laragon `wp-config.php` is preserved. A Docker-managed
+volume stores the Linux database, including when this checkout is on NTFS.
+Only the website's port is published, on the local machine. Do not run
+`docker compose down -v` unless you intend to delete the Linux database.
+
+Docker installed through Snap needs access to external drives:
+
+```sh
+sudo snap connect docker:removable-media
+```
+
+See the [official WordPress image documentation](https://hub.docker.com/_/wordpress)
+and [Docker Snap documentation](https://github.com/canonical/docker-snap#usage).
+
+### Import an existing WordPress database
+
+Import a SQL export into an empty Linux database. An import can replace existing
+tables, so export any Linux changes first. SQL files in `dev/backups/` are ignored
+by Git and blocked from web access.
+
+```sh
+mkdir -p dev/backups
+# Place your SQL export at dev/backups/wordpress.sql.
+bash scripts/local.sh wp db import /var/www/html/dev/backups/wordpress.sql
+bash scripts/local.sh wp search-replace 'http://localhost/wordpress' \
+  'http://localhost:8081' --all-tables-with-prefix --skip-columns=guid --precise
+bash scripts/local.sh wp rewrite flush
+```
+
+Use the original site's URL and your chosen Linux port in the search/replace
+command. The operation handles serialized WordPress values. Copy uploads into
+`wp-content/uploads/` if they are not already present. Back up Linux content with:
+
+```sh
+mkdir -p dev/backups
+bash scripts/local.sh wp db export /var/www/html/dev/backups/linux-wordpress.sql
+```
+
+`dev/laragon-recovery.yaml` is a separate, one-time recovery tool specifically
+for Laragon **MySQL 8.0.30** raw data. It copies a read-only Windows data directory
+into its own Docker volume and runs the matching MySQL server without networking.
+Prefer a normal SQL export when one is available. Do not attach the Windows data
+directory directly to the MariaDB service. To start the recovery copy:
+
+```sh
+export LARAGON_MYSQL_DATA='/absolute/path/to/laragon/data/mysql-8'
+docker compose -f dev/laragon-recovery.yaml up -d --wait
+mkdir -p dev/backups
+docker compose -f dev/laragon-recovery.yaml exec -T mysql \
+  mysqldump --socket=/tmp/mysql.sock -uroot --single-transaction \
+  --no-tablespaces --set-gtid-purged=OFF wordpress > dev/backups/wordpress.sql
+docker compose -f dev/laragon-recovery.yaml down
+```
+
+The recovery volume is retained after `down`; reuse reads that same snapshot.
+Then use the import commands above. The normal `start` command does not run
+this recovery server.
+
+## Publish a preview on Cloudflare Pages
+
+Public preview: **https://letco-rebuild.pages.dev/**
+
+Cloudflare Pages serves a **static export** of this WordPress site. Continue
+editing content at `http://localhost:8081/wp-admin/`, then export and deploy again
+when you want to publish changes. The public preview works even when your
+computer is off.
+
+```sh
+bash scripts/local.sh start
+python3 scripts/export-pages.py
+```
+
+The exporter fetches anonymous, published pages/posts and their linked images,
+styles, scripts, and fonts. It writes `dist/cloudflare/` plus an uploadable archive
+at `dist/letco-cloudflare-pages.zip`. Local links become relative to the public
+site, and a `404.html` page provides proper missing-page behavior on Pages.
+No PHP source, WordPress login, database, local credentials, or backups are
+included. The local WordPress installation is not changed.
+
+The two consultation forms are displayed with disabled fields and a notice that
+the preview does not accept registrations. WordPress administration, comments,
+search, and server-side form handling require a separate backend. Phone, email,
+and Zalo links still work. See Cloudflare's
+[static WordPress guide](https://developers.cloudflare.com/pages/how-to/deploy-a-wordpress-site/).
+
+Sign in once with the official Wrangler CLI (Node.js and npm required):
+
+```sh
+npx --yes wrangler@4.148.0 login --device --scopes account:read user:read pages:write
+npx --yes wrangler@4.148.0 pages project create letco-rebuild --production-branch=main --force
+```
+
+The `--force` option keeps initial project creation on Pages when this Wrangler
+version would otherwise delegate to Workers. Use your actual Pages project name
+if it differs. After the first creation,
+publish/update with:
+
+```sh
+python3 scripts/export-pages.py
+npx --yes wrangler@4.148.0 pages deploy dist/cloudflare \
+  --project-name=letco-rebuild --branch=main --commit-dirty=true
+```
+
+Wrangler prints the public URL after deployment. Alternatively, upload
+`dist/letco-cloudflare-pages.zip` through **Cloudflare > Workers & Pages >
+Create application > Pages > Direct Upload**. Upload only the export folder or
+ZIP, never the WordPress checkout. Both outputs are ignored by Git.
+
 ## Requirements
 
 - PHP 7.4 or newer

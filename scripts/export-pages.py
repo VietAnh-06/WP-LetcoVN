@@ -1,0 +1,272 @@
+#!/usr/bin/env python3
+"""Export public WordPress pages and their assets for Cloudflare Pages.
+
+Only anonymous HTTP responses are exported. Never copy the WordPress directory,
+configuration, database, or PHP source into the deployment.
+"""
+
+import argparse
+import json
+import re
+import shutil
+import tempfile
+import zipfile
+from collections import deque
+from html import escape
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import unquote, urljoin, urlsplit, urlunsplit
+from urllib.request import Request, urlopen
+
+
+ROOT = Path(__file__).resolve().parent.parent
+ASSETS = {'.css', '.js', '.mjs', '.png', '.jpg', '.jpeg', '.gif', '.webp',
+          '.avif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.otf', '.eot',
+          '.mp4', '.webm', '.pdf'}
+PRIVATE = {'wp-admin', 'wp-json', 'dev', 'scripts', 'node_modules'}
+CSS_URL = re.compile(r'url\(\s*([\'"]?)(.*?)\1\s*\)', re.I)
+FORM_FALLBACK = (
+    '<div class="form-fallback" role="note">'
+    '<p><strong>Bản xem trước chưa nhận đăng ký trực tuyến.</strong> '
+    'Vui lòng liên hệ trực tiếp để được tư vấn:</p>'
+    '<p class="form-fallback-actions">'
+    '<a class="lp-button" href="tel:0989086386">Gọi 0989.086.386</a> '
+    '<a class="lp-button lp-button--light" href="https://zalo.me/0989086386" rel="noopener">Nhắn Zalo</a>'
+    '</p></div>')
+VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
+        'meta', 'param', 'source', 'track', 'wbr'}
+
+
+class Exporter:
+    def __init__(self, source, output):
+        self.source = source.rstrip('/')
+        self.origin = urlsplit(self.source).netloc
+        self.output = output
+        self.pending = deque()
+        self.seen = set()
+        self.pages = 0
+        self.assets = 0
+        self.forms = 0
+
+    def local(self, value, base):
+        url = urlsplit(urljoin(base, value))
+        if url.scheme not in ('http', 'https') or url.netloc != self.origin:
+            return None
+        path = unquote(url.path or '/')
+        parts = Path(path).parts[1:]
+        if (any(part.startswith('.') for part in parts)
+                or (parts and parts[0] in PRIVATE)
+                or path.rstrip('/').endswith('/feed')):
+            return None
+        suffix = Path(path).suffix.lower()
+        if suffix and suffix not in ASSETS and suffix != '.html':
+            return None
+        if not suffix and parts and parts[0] in {'wp-content', 'wp-includes'}:
+            return None
+        if url.query and suffix not in ASSETS:
+            return None
+        return urlunsplit((url.scheme, url.netloc, url.path or '/', '', ''))
+
+    def url(self, value, base):
+        if not value or value.startswith(('#', 'data:', 'mailto:', 'tel:', 'javascript:')):
+            return value
+        full = urlsplit(urljoin(base, value))
+        if full.netloc != self.origin:
+            return value
+        local = self.local(value, base)
+        if local is None:
+            return '#'
+        if local not in self.seen:
+            self.pending.append(local)
+        return urlsplit(local).path + (('#' + full.fragment) if full.fragment else '')
+
+    def text(self, value, base):
+        # JSON used by WordPress's emoji loader also contains asset URLs.
+        for match in re.finditer(re.escape(self.source) + r'[^\s"\'<>\\)]+', value):
+            self.url(match.group(), base)
+        return value.replace(self.source, '').replace(self.source.replace('/', '\\/'), '')
+
+    def css(self, value, base):
+        return CSS_URL.sub(lambda m: 'url("' + self.url(m.group(2), base) + '")', value)
+
+    def fetch(self, url):
+        request = Request(url, headers={'User-Agent': 'LETCO-Static-Export/1.0'})
+        with urlopen(request, timeout=30) as response:
+            if urlsplit(response.url).netloc != self.origin:
+                raise RuntimeError('Unexpected external redirect: ' + url)
+            return response.read(), response.headers.get_content_type(), response.url
+
+    def seed(self):
+        self.pending.append(self.source + '/')
+        # Include published pages/posts even if not linked from the main menu.
+        for kind in ('pages', 'posts'):
+            page = 1
+            while True:
+                url = f'{self.source}/wp-json/wp/v2/{kind}?per_page=100&page={page}&_fields=link'
+                data, _, _ = self.fetch(url)
+                entries = json.loads(data)
+                for entry in entries:
+                    self.url(entry['link'], self.source + '/')
+                if len(entries) < 100:
+                    break
+                page += 1
+
+    def run(self):
+        self.seed()
+        while self.pending:
+            url = self.pending.popleft()
+            if url in self.seen:
+                continue
+            if len(self.seen) >= 20000:
+                raise RuntimeError('Export exceeds Cloudflare Pages file limit.')
+            self.seen.add(url)
+            data, mime, final_url = self.fetch(url)
+            path = unquote(urlsplit(url).path).lstrip('/')
+            if mime == 'text/html':
+                parser = StaticHTML(self, final_url)
+                parser.feed(data.decode('utf-8'))
+                parser.close()
+                data = ''.join(parser.output).encode('utf-8')
+                if not path.endswith('.html'):
+                    path = path.rstrip('/') + '/index.html'
+                path = path.lstrip('/')
+                self.pages += 1
+            else:
+                if Path(path).suffix.lower() not in ASSETS:
+                    raise RuntimeError('Unsupported public asset: ' + url)
+                if mime == 'text/css' or path.endswith('.css'):
+                    data = self.css(data.decode('utf-8'), final_url).encode('utf-8')
+                self.assets += 1
+            if len(data) > 25 * 1024 * 1024:
+                raise RuntimeError('Asset exceeds Cloudflare Pages 25 MiB limit: ' + path)
+            target = self.output / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+            print('Exported', '/' + path)
+
+
+class StaticHTML(HTMLParser):
+    def __init__(self, exporter, base):
+        super().__init__(convert_charrefs=False)
+        self.exporter = exporter
+        self.base = base
+        self.output = []
+        self.form = False
+        self.style = False
+
+    def handle_starttag(self, tag, attributes):
+        attrs = dict(attributes)
+        opened_form = False
+        if tag == 'link':
+            if attrs.get('rel', '').lower() in {'canonical', 'shortlink', 'edituri', 'https://api.w.org/'}:
+                return
+            href = attrs.get('href', '')
+            if urlsplit(urljoin(self.base, href)).netloc == self.exporter.origin and not self.exporter.local(href, self.base):
+                return
+        if tag == 'form':
+            self.form = True
+            self.exporter.forms += 1
+            tag = 'div'
+            attrs = {key: value for key, value in attrs.items() if key in {'id', 'class'}}
+            attrs['class'] = (attrs.get('class', '') + ' is-static').strip()
+            opened_form = True
+        if self.form and tag == 'input' and attrs.get('type') == 'hidden':
+            return
+        if self.form and tag in {'input', 'textarea', 'select', 'button'}:
+            attrs['disabled'] = None
+        for key in ('href', 'src', 'poster'):
+            if key in attrs:
+                attrs[key] = self.exporter.url(attrs[key], self.base)
+        if 'srcset' in attrs and 'data:' not in attrs['srcset']:
+            candidates = []
+            for candidate in attrs['srcset'].split(','):
+                fields = candidate.strip().split()
+                if fields:
+                    fields[0] = self.exporter.url(fields[0], self.base)
+                    candidates.append(' '.join(fields))
+            attrs['srcset'] = ', '.join(candidates)
+        if 'style' in attrs:
+            attrs['style'] = self.exporter.css(attrs['style'], self.base)
+        encoded = ''.join(' ' + key + ('' if value is None else '="' + escape(value, quote=True) + '"')
+                          for key, value in attrs.items())
+        self.output.append('<' + tag + encoded + '>')
+        if opened_form:
+            # The static copy cannot store sign-ups, so offer contact routes that work.
+            self.output.append(FORM_FALLBACK)
+        if tag == 'style':
+            self.style = True
+
+    def handle_startendtag(self, tag, attrs):
+        self.handle_starttag(tag, attrs)
+        if tag not in VOID:
+            self.handle_endtag(tag)
+
+    def handle_endtag(self, tag):
+        if tag == 'form':
+            tag = 'div'
+            self.form = False
+        if tag == 'style':
+            self.style = False
+        self.output.append('</' + tag + '>')
+
+    def handle_data(self, data):
+        data = self.exporter.text(data, self.base)
+        self.output.append(self.exporter.css(data, self.base) if self.style else data)
+
+    def handle_entityref(self, name):
+        self.output.append('&' + name + ';')
+
+    def handle_charref(self, name):
+        self.output.append('&#' + name + ';')
+
+    def handle_decl(self, decl):
+        self.output.append('<!' + decl + '>')
+
+    def handle_comment(self, data):
+        self.output.append('<!--' + self.exporter.text(data, self.base) + '-->')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source', default='http://localhost:8081')
+    args = parser.parse_args()
+    source = urlsplit(args.source)
+    if source.scheme not in ('http', 'https') or source.path not in ('', '/') or source.query:
+        parser.error('--source must be a site origin, e.g. http://localhost:8081')
+    dist = ROOT / 'dist'
+    dist.mkdir(exist_ok=True)
+    destination = dist / 'cloudflare'
+    with tempfile.TemporaryDirectory(prefix='pages-export-', dir=dist) as temporary:
+        output = Path(temporary)
+        exporter = Exporter(args.source, output)
+        exporter.run()
+        (output / '404.html').write_text(
+            '<!doctype html><html lang="vi"><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width, initial-scale=1">'
+            '<title>Không tìm thấy trang</title><h1>Không tìm thấy trang</h1>'
+            '<p><a href="/">Về trang chủ LETCO</a></p></html>', encoding='utf-8')
+        (output / '_headers').write_text(
+            '/*\n  X-Content-Type-Options: nosniff\n'
+            '  Referrer-Policy: strict-origin-when-cross-origin\n', encoding='utf-8')
+        for file in output.rglob('*'):
+            if file.is_file() and file.suffix in {'.html', '.css', '.js'}:
+                contents = file.read_text(encoding='utf-8')
+                if re.search(r'https?:(?:/|\\/){2}(?:localhost|127\.0\.0\.1)', contents):
+                    raise RuntimeError('Local URL remains in export: ' + str(file))
+        # Replace only this script's generated output, after a successful export.
+        if destination.exists():
+            shutil.rmtree(destination)
+        shutil.copytree(output, destination)
+    archive = dist / 'letco-cloudflare-pages.zip'
+    with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as bundle:
+        for file in sorted(destination.rglob('*')):
+            if file.is_file():
+                bundle.write(file, file.relative_to(destination))
+    print(f'Complete: {exporter.pages} pages, {exporter.assets} assets, '
+          f'{exporter.forms} forms made read-only.')
+    print('Pages directory:', destination)
+    print('Upload archive:', archive)
+
+
+if __name__ == '__main__':
+    main()

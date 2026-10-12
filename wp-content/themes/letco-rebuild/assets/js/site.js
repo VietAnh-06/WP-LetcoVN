@@ -183,4 +183,51 @@ document.addEventListener('DOMContentLoaded', () => {
     measure();
     startAutoplay();
   });
+
+  // The fixed sign-up bar steps aside while a form is on screen.
+  const mobileCta = document.querySelector('.lp-mobile-cta');
+  if (mobileCta && 'IntersectionObserver' in window) {
+    const visibleForms = new Set();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visibleForms.add(entry.target);
+        else visibleForms.delete(entry.target);
+      });
+      mobileCta.classList.toggle('is-hidden', visibleForms.size > 0);
+    });
+    document.querySelectorAll('form, .lp-actions').forEach((target) => observer.observe(target));
+  }
+
+  // Landing pages: reveal content and count figures up as they scroll into view.
+  // Everything is visible without this script; motion is skipped when reduced.
+  const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window;
+  if (motionOk && document.body.classList.contains('is-landing')) {
+    const countUp = (node) => {
+      const text = node.textContent;
+      const match = text.match(/\d+/);
+      if (!match) return;
+      const target = Number.parseInt(match[0], 10);
+      const started = performance.now();
+      const tick = (now) => {
+        const progress = Math.min(1, (now - started) / 900);
+        const eased = 1 - (1 - progress) ** 4;
+        node.textContent = text.replace(match[0], String(Math.round(target * eased)));
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const revealTargets = document.querySelectorAll('.study-landing .section > .container > *, .lp-stats-list > div, .lp-bridge-figure');
+    const revealer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        entry.target.querySelectorAll('[data-countup]').forEach(countUp);
+        revealer.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    revealTargets.forEach((target) => {
+      target.classList.add('lp-reveal');
+      revealer.observe(target);
+    });
+  }
 });

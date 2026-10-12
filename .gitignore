@@ -13,6 +13,12 @@
 # Local development and editor files
 /.env
 /.env.*
+!/.env.example
+/dev/backups/
+/dist/
+/.wrangler/
+/node_modules/
+__pycache__/
 /.idea/
 /.vscode/
 .DS_Store

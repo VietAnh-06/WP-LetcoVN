@@ -11,6 +11,7 @@
 <?php wp_body_open(); ?>
 <a class="skip-link" href="#main-content">Chuyển đến nội dung</a>
 
+<?php if ( ! letco_is_landing() ) : ?>
 <header class="site-header" data-site-header>
 	<div class="topbar">
 		<div class="container topbar-inner">
@@ -60,5 +61,6 @@
 		</div>
 	</nav>
 </header>
+<?php endif; ?>
 
 <main id="main-content">

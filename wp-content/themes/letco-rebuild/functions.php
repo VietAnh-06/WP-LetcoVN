@@ -17,9 +17,28 @@ function letco_rebuild_setup() {
 }
 add_action( 'after_setup_theme', 'letco_rebuild_setup' );
 
+/**
+ * Study-abroad landing pages render without the site menu, footer banner or
+ * floating contact buttons, and get their own stylesheet.
+ */
+function letco_is_landing() {
+	return is_front_page() || is_page( array( 'du-hoc-han-quoc', 'du-hoc-nhat-ban' ) ) || is_page_template( 'template-study-school.php' );
+}
+
+function letco_landing_body_class( $classes ) {
+	if ( letco_is_landing() ) {
+		$classes[] = 'is-landing';
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'letco_landing_body_class' );
+
 function letco_rebuild_assets() {
 	$version = wp_get_theme()->get( 'Version' );
 	wp_enqueue_style( 'letco-rebuild', get_stylesheet_uri(), array(), $version );
+	if ( letco_is_landing() ) {
+		wp_enqueue_style( 'letco-landing', get_template_directory_uri() . '/assets/css/landing.css', array( 'letco-rebuild' ), $version );
+	}
 	wp_enqueue_script(
 		'letco-rebuild',
 		get_template_directory_uri() . '/assets/js/site.js',
@@ -92,6 +111,10 @@ function letco_handle_consultation_form() {
 	$program  = isset( $_POST['program'] ) ? sanitize_text_field( wp_unslash( $_POST['program'] ) ) : '';
 	$message  = isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '';
 	$company  = isset( $_POST['company'] ) ? sanitize_text_field( wp_unslash( $_POST['company'] ) ) : '';
+	$details  = array();
+	foreach ( array( 'birth_year', 'gpa', 'korean_level' ) as $field ) {
+		$details[ $field ] = isset( $_POST[ $field ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) : '';
+	}
 
 	if ( $company ) {
 		wp_safe_redirect( add_query_arg( 'lead', 'success', $redirect ) . '#dang-ky' );
@@ -121,6 +144,11 @@ function letco_handle_consultation_form() {
 	update_post_meta( $lead_id, 'letco_program', $program );
 	update_post_meta( $lead_id, 'letco_message', $message );
 	update_post_meta( $lead_id, 'letco_source_url', $redirect );
+	foreach ( $details as $field => $value ) {
+		if ( '' !== $value ) {
+			update_post_meta( $lead_id, 'letco_' . $field, $value );
+		}
+	}
 
 	wp_safe_redirect( add_query_arg( 'lead', 'success', $redirect ) . '#dang-ky' );
 	exit;
@@ -148,3 +176,11 @@ function letco_lead_column_content( $column, $post_id ) {
 	}
 }
 add_action( 'manage_letco_lead_posts_custom_column', 'letco_lead_column_content', 10, 2 );
+
+// Keep WordPress's default "Uncategorized" sample content out of the news listing.
+function letco_news_query( $query ) {
+	if ( ! is_admin() && $query->is_main_query() && $query->is_home() ) {
+		$query->set( 'category__not_in', array( (int) get_option( 'default_category' ) ) );
+	}
+}
+add_action( 'pre_get_posts', 'letco_news_query' );
