@@ -184,18 +184,167 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoplay();
   });
 
-  // The fixed sign-up bar steps aside while a form is on screen.
+  // Long disclosures retain native details semantics, with staggered content when motion is allowed.
+  const disclosureMotionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    && 'animate' in Element.prototype;
+  if (disclosureMotionOk) {
+    document.querySelectorAll('.lp-budget-group, .lp-details--wide').forEach((details) => {
+      const summary = details.querySelector('summary');
+      const content = details.querySelector('.lp-budget-group-panel');
+      const listItems = content
+        ? Array.from(content.querySelectorAll('li'))
+        : Array.from(details.querySelectorAll(':scope > p, :scope > ul > li'));
+      const tableRows = content ? [] : Array.from(details.querySelectorAll(':scope > div table tr'));
+      const items = listItems.length
+        ? listItems
+        : tableRows.length
+          ? tableRows
+          : Array.from(details.children).filter((child) => child !== summary);
+      let animation = null;
+      let itemAnimations = [];
+
+      if (!summary || !items.length) return;
+
+      const clearAnimation = () => {
+        itemAnimations.forEach((itemAnimation) => itemAnimation.cancel());
+        details.classList.remove('is-animating', 'is-closing');
+        animation = null;
+        itemAnimations = [];
+      };
+
+      summary.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (animation) return;
+
+        const startHeight = details.offsetHeight;
+        const closing = details.open;
+
+        if (!closing) details.open = true;
+
+        const borderHeight = Number.parseFloat(getComputedStyle(details).borderTopWidth)
+          + Number.parseFloat(getComputedStyle(details).borderBottomWidth);
+        const endHeight = closing
+          ? summary.offsetHeight + borderHeight
+          : details.offsetHeight;
+
+        details.classList.add('is-animating');
+        details.classList.toggle('is-closing', closing);
+
+        const orderedItems = closing ? [ ...items ].reverse() : items;
+        const itemDuration = 180;
+        const itemStagger = Math.max(
+          18,
+          Math.min(45, 360 / Math.max(1, orderedItems.length - 1))
+        );
+        const itemLead = closing ? 0 : 40;
+        const totalDuration = Math.max(
+          240,
+          itemLead + itemDuration + Math.max(0, orderedItems.length - 1) * itemStagger
+        );
+
+        itemAnimations = orderedItems.map((item, index) => item.animate(
+          closing
+            ? [ { opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-10px)' } ]
+            : [ { opacity: 0, transform: 'translateY(-10px)' }, { opacity: 1, transform: 'translateY(0)' } ],
+          {
+            duration: itemDuration,
+            delay: itemLead + index * itemStagger,
+            easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
+            fill: 'both',
+          }
+        ));
+
+        animation = details.animate(
+          { height: [ `${startHeight}px`, `${endHeight}px` ] },
+          { duration: totalDuration, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' }
+        );
+        animation.addEventListener('finish', () => {
+          if (closing) details.open = false;
+          clearAnimation();
+        }, { once: true });
+        animation.addEventListener('cancel', clearAnimation, { once: true });
+      });
+    });
+  }
+
+  // Daeduk opens a lightweight consultation form on entry and keeps focus inside it.
+  const consultModal = document.querySelector('[data-consult-modal]');
+  if (consultModal) {
+    const dialog = consultModal.querySelector('[role="dialog"]');
+    const closeButtons = consultModal.querySelectorAll('[data-consult-close]');
+    const focusSelector = 'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const openDelay = Number.parseInt(consultModal.dataset.modalDelay || '4500', 10);
+    const modalMotionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const modalTransitionDuration = modalMotionOk ? 380 : 0;
+    let previousFocus = null;
+    let closeTimer = null;
+
+      const openConsultModal = () => {
+        previousFocus = document.activeElement;
+        consultModal.hidden = false;
+        document.body.classList.add('consult-modal-open');
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            consultModal.classList.add('is-open');
+            window.setTimeout(() => {
+              const firstField = consultModal.querySelector('input:not([type="hidden"]):not([tabindex="-1"])');
+              (firstField || dialog)?.focus();
+            }, modalMotionOk ? 240 : 0);
+          });
+        });
+      };
+
+    const closeConsultModal = () => {
+      consultModal.classList.remove('is-open');
+      document.body.classList.remove('consult-modal-open');
+      window.clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(() => {
+        consultModal.hidden = true;
+        if (previousFocus instanceof HTMLElement) previousFocus.focus();
+      }, modalTransitionDuration);
+    };
+
+    closeButtons.forEach((button) => button.addEventListener('click', closeConsultModal));
+    consultModal.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeConsultModal();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const focusable = Array.from(consultModal.querySelectorAll(focusSelector))
+        .filter((element) => element.getClientRects().length > 0);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    window.setTimeout(openConsultModal, openDelay);
+  }
+
+  // The fixed sign-up bar steps aside near the hero action and while a form is on screen.
   const mobileCta = document.querySelector('.lp-mobile-cta');
   if (mobileCta && 'IntersectionObserver' in window) {
-    const visibleForms = new Set();
+    const visibleBlocks = new Set();
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) visibleForms.add(entry.target);
-        else visibleForms.delete(entry.target);
+        if (entry.isIntersecting) visibleBlocks.add(entry.target);
+        else visibleBlocks.delete(entry.target);
       });
-      mobileCta.classList.toggle('is-hidden', visibleForms.size > 0);
+      mobileCta.classList.toggle('is-hidden', visibleBlocks.size > 0);
+    }, {
+      rootMargin: '0px 0px -12px 0px',
+      threshold: 0.01,
     });
-    document.querySelectorAll('form, .lp-actions').forEach((target) => observer.observe(target));
+    document.querySelectorAll('form, .lp-hero .lp-actions').forEach((target) => observer.observe(target));
   }
 
   // Landing pages: reveal content and count figures up as they scroll into view.

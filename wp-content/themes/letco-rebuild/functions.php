@@ -112,7 +112,7 @@ function letco_handle_consultation_form() {
 	$message  = isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '';
 	$company  = isset( $_POST['company'] ) ? sanitize_text_field( wp_unslash( $_POST['company'] ) ) : '';
 	$details  = array();
-	foreach ( array( 'birth_year', 'gpa', 'korean_level' ) as $field ) {
+	foreach ( array( 'birth_year', 'major', 'gpa', 'korean_level' ) as $field ) {
 		$details[ $field ] = isset( $_POST[ $field ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) : '';
 	}
 
@@ -161,6 +161,7 @@ function letco_lead_columns( $columns ) {
 		'cb'      => $columns['cb'],
 		'title'   => 'Họ tên – Điện thoại',
 		'program' => 'Chương trình',
+		'major'   => 'Ngành quan tâm',
 		'email'   => 'Email',
 		'date'    => 'Thời gian',
 	);
@@ -173,6 +174,9 @@ function letco_lead_column_content( $column, $post_id ) {
 	}
 	if ( 'email' === $column ) {
 		echo esc_html( get_post_meta( $post_id, 'letco_email', true ) );
+	}
+	if ( 'major' === $column ) {
+		echo esc_html( get_post_meta( $post_id, 'letco_major', true ) );
 	}
 }
 add_action( 'manage_letco_lead_posts_custom_column', 'letco_lead_column_content', 10, 2 );

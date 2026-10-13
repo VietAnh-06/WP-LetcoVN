@@ -14,10 +14,12 @@ $lead            = $args['lead'];
 $contact         = isset( $args['contact'] ) ? $args['contact'] : array();
 $lead_extra      = ! empty( $args['lead_extra'] );
 $zalo            = isset( $args['zalo'] ) ? $args['zalo'] : '';
+$contact_in_footer = ! empty( $args['contact_in_footer'] );
 $compact         = ! empty( $args['compact'] );
 $button          = isset( $args['button'] ) ? $args['button'] : 'Gửi đăng ký';
 $program         = isset( $args['program'] ) ? $args['program'] : '';
 $program_choices = isset( $args['program_choices'] ) ? $args['program_choices'] : array();
+$major_choices   = isset( $args['major_choices'] ) ? $args['major_choices'] : array();
 $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lead'] ) ) : '';
 ?>
 <section class="section study-lead-section" id="dang-ky">
@@ -26,7 +28,7 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 			<h2><?php echo esc_html( $lead['title'] ); ?></h2>
 			<p><?php echo esc_html( $lead['intro'] ); ?></p>
 			<ul><?php foreach ( $lead['bullets'] as $bullet ) : ?><li><?php echo esc_html( $bullet ); ?></li><?php endforeach; ?></ul>
-			<?php if ( ! empty( $contact ) ) : ?>
+			<?php if ( ! empty( $contact ) && ! $contact_in_footer ) : ?>
 				<div class="study-contact">
 					<p><strong><?php echo esc_html( isset( $contact['label'] ) ? $contact['label'] : 'Đơn vị tuyển sinh chính thức' ); ?>:</strong> <?php echo esc_html( $contact['partners'] ); ?></p>
 					<p><strong><?php echo $zalo ? 'Hotline' : 'Hotline / Zalo'; ?>:</strong>
@@ -54,6 +56,17 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 				<label>Họ và tên <span>*</span><input type="text" name="full_name" required autocomplete="name" placeholder="Nguyễn Văn A"></label>
 				<?php if ( $compact ) : ?>
 					<label>Số điện thoại / Zalo <span>*</span><input type="tel" name="phone" required autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
+					<?php if ( ! empty( $major_choices ) ) : ?>
+						<div class="form-row">
+							<label>Ngành học <span class="field-optional">(không bắt buộc)</span>
+								<select name="major">
+									<option value="">Chưa xác định</option>
+									<?php foreach ( $major_choices as $choice ) : ?><option value="<?php echo esc_attr( $choice ); ?>"><?php echo esc_html( $choice ); ?></option><?php endforeach; ?>
+								</select>
+							</label>
+							<label>Năm sinh <span class="field-optional">(không bắt buộc)</span><input type="text" name="birth_year" inputmode="numeric" maxlength="4" placeholder="2007"></label>
+						</div>
+					<?php endif; ?>
 					<details class="study-lead-more">
 						<summary>Thêm thông tin để tư vấn sát hơn (không bắt buộc)</summary>
 						<label>Email<input type="email" name="email" autocomplete="email" placeholder="email@example.com"></label>
@@ -71,10 +84,14 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 					</label>
 				<?php endif; ?>
 				<?php if ( ! empty( $lead_extra ) ) : ?>
-					<div class="form-row">
-						<label>Năm sinh<input type="text" name="birth_year" inputmode="numeric" maxlength="4" placeholder="2007"></label>
+					<?php if ( empty( $major_choices ) ) : ?>
+						<div class="form-row">
+							<label>Năm sinh<input type="text" name="birth_year" inputmode="numeric" maxlength="4" placeholder="2007"></label>
+							<label>Điểm GPA THPT<input type="text" name="gpa" inputmode="decimal" maxlength="4" placeholder="7.5"></label>
+						</div>
+					<?php else : ?>
 						<label>Điểm GPA THPT<input type="text" name="gpa" inputmode="decimal" maxlength="4" placeholder="7.5"></label>
-					</div>
+					<?php endif; ?>
 					<fieldset class="study-choice-group">
 						<legend>Trình độ tiếng Hàn hiện tại</legend>
 						<?php foreach ( array( 'Chưa học', 'Đang học', 'Có TOPIK 1/2' ) as $level ) : ?>

@@ -980,6 +980,14 @@
 	gap: var(--lp-24);
 }
 
+.lp-footer-inner {
+	align-items: flex-start;
+}
+
+.lp-footer-brand {
+	flex: 0 1 360px;
+}
+
 .lp-footer-inner p {
 	max-width: 52ch;
 	margin: var(--lp-12) 0 0;
@@ -988,6 +996,31 @@
 .lp-footer-inner img {
 	height: 32px;
 	width: auto;
+}
+
+.lp-footer .lp-footer-contact {
+	flex: 1 1 560px;
+	gap: var(--lp-8);
+	margin: 0;
+	padding: 0;
+	border: 0;
+	color: var(--lp-muted);
+}
+
+.lp-footer .lp-footer-contact p {
+	max-width: none;
+	margin: 0;
+	line-height: 1.6;
+}
+
+.lp-footer .lp-footer-contact strong,
+.lp-footer .lp-footer-contact a {
+	color: var(--lp-ink);
+}
+
+.lp-footer .lp-footer-address {
+	padding-left: var(--lp-16);
+	border-left: 2px solid var(--lp-line-strong);
 }
 
 .lp-footer-bottom {
@@ -1517,8 +1550,22 @@
 	font-weight: 650;
 }
 
+.lp-quick-form-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1.35fr) minmax(110px, 0.65fr);
+	gap: var(--lp-12);
+}
+
+.field-optional,
+.study-lead-form label > span.field-optional {
+	color: var(--lp-muted);
+	font-size: 0.75rem;
+	font-weight: 500;
+}
+
 .lp-quick-form input[type="text"],
-.lp-quick-form input[type="tel"] {
+.lp-quick-form input[type="tel"],
+.lp-quick-form select {
 	display: block;
 	width: 100%;
 	min-height: 52px;
@@ -1539,7 +1586,8 @@
 	color: var(--lp-muted);
 }
 
-.lp-quick-form input:focus {
+.lp-quick-form input:focus,
+.lp-quick-form select:focus {
 	border-color: var(--study-accent);
 	box-shadow: 0 0 0 3px color-mix(in oklch, var(--study-accent), transparent 82%);
 }
@@ -2514,6 +2562,38 @@
 	color: var(--lp-on-navy-muted);
 }
 
+.lp-hero-signals {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1px;
+	max-width: 680px;
+	margin: 0 0 var(--lp-24);
+	background: color-mix(in oklch, var(--lp-on-navy), transparent 78%);
+	border: 1px solid color-mix(in oklch, var(--lp-on-navy), transparent 78%);
+	border-radius: var(--lp-radius);
+	overflow: hidden;
+}
+
+.lp-hero-signals > div {
+	padding: var(--lp-16);
+	background: color-mix(in oklch, var(--lp-navy), transparent 12%);
+}
+
+.lp-hero-signals dt {
+	margin-bottom: var(--lp-4);
+	color: var(--lp-sky);
+	font-size: 1rem;
+	font-weight: 800;
+	font-variant-numeric: tabular-nums;
+}
+
+.lp-hero-signals dd {
+	margin: 0;
+	color: var(--lp-on-navy-muted);
+	font-size: var(--lp-step--1);
+	line-height: 1.4;
+}
+
 /* Native disclosure, shared by reference blocks */
 .lp-details {
 	border-top: 1px solid var(--lp-line);
@@ -2555,6 +2635,21 @@
 
 .lp-details[open] summary::after {
 	content: "–";
+}
+
+.lp-details--wide.is-closing summary::after {
+	content: "+";
+}
+
+.lp-details--wide.is-animating {
+	overflow: hidden;
+	will-change: height;
+}
+
+.lp-details--wide.is-animating > p,
+.lp-details--wide.is-animating > ul > li,
+.lp-details--wide.is-animating table tr {
+	will-change: opacity, transform;
 }
 
 .lp-details summary:focus-visible {
@@ -2727,20 +2822,77 @@
 }
 
 .lp-budget-group + .lp-budget-group {
-	margin-top: var(--lp-32);
+	margin-top: 0;
 }
 
-.lp-budget-group h3 {
-	display: flex;
-	justify-content: space-between;
+.lp-budget-group {
+	border-top: 1px solid var(--lp-line-strong);
+}
+
+.lp-budget-group:last-child {
+	border-bottom: 1px solid var(--lp-line-strong);
+}
+
+.lp-budget-group summary {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto 32px;
+	align-items: center;
 	gap: var(--lp-24);
-	margin: 0;
-	padding-bottom: var(--lp-12);
-	border-bottom: 2px solid var(--lp-ink);
+	min-height: 72px;
+	padding: var(--lp-12) 0;
+	color: var(--lp-ink);
 	font-size: var(--lp-step-0);
+	font-weight: 700;
+	cursor: pointer;
+	list-style: none;
 }
 
-.lp-budget-group h3 strong {
+.lp-budget-group summary::-webkit-details-marker {
+	display: none;
+}
+
+.lp-budget-group summary::after {
+	content: "";
+	justify-self: center;
+	width: 10px;
+	height: 10px;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	transform: translateY(-3px) rotate(45deg);
+	transition: transform 180ms ease;
+}
+
+.lp-budget-group[open] summary {
+	border-bottom: 1px solid var(--lp-line);
+}
+
+.lp-budget-group[open] summary::after {
+	transform: translateY(3px) rotate(225deg);
+}
+
+.lp-budget-group.is-closing summary::after {
+	transform: translateY(-3px) rotate(45deg);
+}
+
+.lp-budget-group.is-animating {
+	overflow: hidden;
+	will-change: height;
+}
+
+.lp-budget-group.is-animating li {
+	will-change: opacity, transform;
+}
+
+.lp-budget-group summary:hover {
+	color: var(--study-accent);
+}
+
+.lp-budget-group summary:focus-visible {
+	outline: 3px solid color-mix(in oklch, var(--study-accent), transparent 35%);
+	outline-offset: 3px;
+}
+
+.lp-budget-group summary strong {
 	flex: 0 0 auto;
 	color: var(--study-accent);
 	font-variant-numeric: tabular-nums;
@@ -2748,12 +2900,177 @@
 
 .lp-budget-group ul {
 	margin: 0;
-	padding: 0;
+	padding: 0 0 var(--lp-12);
 	list-style: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lp-budget-group summary::after,
+	.lp-details summary::after {
+		transition: none;
+	}
 }
 
 .lp-budget-group li:first-child {
 	border-top: 0;
+}
+
+/* Daeduk entry consultation dialog */
+body.consult-modal-open {
+	overflow: hidden;
+}
+
+.lp-consult-modal[hidden] {
+	display: none;
+}
+
+.lp-consult-modal {
+	position: fixed;
+	z-index: 200;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding: var(--lp-24);
+}
+
+.lp-consult-modal-backdrop {
+	position: absolute;
+	inset: 0;
+	background: color-mix(in oklch, var(--lp-navy), transparent 20%);
+	opacity: 0;
+	transition: opacity 280ms ease;
+	will-change: opacity;
+}
+
+.lp-consult-modal.is-open .lp-consult-modal-backdrop {
+	opacity: 1;
+}
+
+.lp-consult-dialog {
+	position: relative;
+	z-index: 1;
+	width: min(100%, 520px);
+	max-height: calc(100dvh - 2 * var(--lp-24));
+	overflow-y: auto;
+	padding: clamp(28px, 5vw, 48px);
+	background: var(--lp-surface);
+	color: var(--lp-ink);
+	border: 1px solid var(--lp-line-strong);
+	border-radius: calc(var(--lp-radius) * 1.5);
+	box-shadow: 0 28px 80px color-mix(in oklch, var(--lp-navy), transparent 55%);
+	opacity: 0;
+	transform: translate3d(0, 18px, 0);
+	transition: opacity 280ms ease, transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+	will-change: opacity, transform;
+}
+
+.lp-consult-modal.is-open .lp-consult-dialog {
+	opacity: 1;
+	transform: translate3d(0, 0, 0);
+}
+
+.lp-consult-dialog:focus {
+	outline: none;
+}
+
+.lp-consult-close {
+	position: absolute;
+	top: var(--lp-12);
+	right: var(--lp-12);
+	display: grid;
+	width: 44px;
+	height: 44px;
+	place-items: center;
+	padding: 0;
+	background: transparent;
+	color: var(--lp-muted);
+	border: 0;
+	border-radius: 50%;
+	font: inherit;
+	font-size: 1.75rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.lp-consult-close:hover,
+.lp-consult-close:focus-visible {
+	background: color-mix(in oklch, var(--study-accent), transparent 90%);
+	color: var(--study-accent);
+}
+
+.lp-consult-kicker {
+	margin: 0 48px var(--lp-8) 0;
+	color: var(--study-accent);
+	font-size: var(--lp-step--1);
+	font-weight: 750;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.lp-consult-dialog h2 {
+	margin: 0 32px var(--lp-12) 0;
+	font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+	line-height: 1.2;
+}
+
+.lp-consult-intro {
+	margin: 0 0 var(--lp-24);
+	color: var(--lp-muted);
+	line-height: 1.6;
+}
+
+.lp-consult-modal .lp-quick-form {
+	gap: var(--lp-12);
+}
+
+.lp-consult-modal .lp-quick-form small {
+	font-size: 0.75rem;
+}
+
+.lp-consult-later {
+	display: block;
+	margin: var(--lp-16) auto 0;
+	padding: var(--lp-8);
+	background: transparent;
+	color: var(--lp-muted);
+	border: 0;
+	font: inherit;
+	font-size: var(--lp-step--1);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	cursor: pointer;
+}
+
+.lp-consult-later:hover,
+.lp-consult-later:focus-visible {
+	color: var(--study-accent);
+}
+
+@media (max-width: 560px) {
+	.lp-consult-modal {
+		align-items: end;
+		padding: var(--lp-12);
+	}
+
+	.lp-consult-dialog {
+		width: 100%;
+		max-height: calc(100dvh - var(--lp-24));
+		padding: var(--lp-32) var(--lp-24) var(--lp-24);
+		border-radius: var(--lp-radius) var(--lp-radius) 0 0;
+		transform: translate3d(0, 24px, 0);
+	}
+
+	.lp-quick-form-row {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lp-consult-modal,
+	.lp-consult-modal-backdrop,
+	.lp-consult-dialog {
+		transition: none;
+	}
 }
 
 .lp-budget-aside {
@@ -2908,11 +3225,36 @@ div.lp-mobile-cta .lp-button--light {
 }
 
 @media (max-width: 760px) {
+	.lp-hero-signals {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lp-hero-signals > div {
+		display: grid;
+		grid-template-columns: 112px minmax(0, 1fr);
+		gap: var(--lp-12);
+		align-items: baseline;
+	}
+
 	.lp-ref-list li,
-	.lp-budget-group li,
-	.lp-budget-group h3 {
+	.lp-budget-group li {
 		flex-direction: column;
 		gap: var(--lp-4);
+	}
+
+	.lp-budget-group summary {
+		grid-template-columns: minmax(0, 1fr) 28px;
+		gap: var(--lp-4) var(--lp-12);
+		padding-block: var(--lp-16);
+	}
+
+	.lp-budget-group summary strong {
+		grid-column: 1;
+	}
+
+	.lp-budget-group summary::after {
+		grid-column: 2;
+		grid-row: 1 / span 2;
 	}
 
 	.lp-ref-list li>span:last-child,
@@ -3175,6 +3517,37 @@ div.lp-mobile-cta .lp-button--light {
 	text-underline-offset: 3px;
 }
 
+/* Daeduk uses the summary as a decision dashboard, not a flat fact table. */
+.study-daeduk .lp-summary {
+	background:
+		linear-gradient(120deg, color-mix(in oklch, var(--study-accent), transparent 91%), transparent 54%),
+		var(--lp-bg);
+}
+
+.study-daeduk .lp-summary-list {
+	gap: var(--lp-16);
+	border-top: 0;
+}
+
+.study-daeduk .lp-summary-list > div,
+.study-daeduk .lp-summary-list > div + div {
+	position: relative;
+	padding: var(--lp-24);
+	background: var(--lp-surface);
+	border: 1px solid var(--lp-line);
+	border-top: 3px solid var(--study-accent);
+	border-radius: var(--lp-radius);
+}
+
+.study-daeduk .lp-summary-list dt {
+	color: var(--study-accent);
+	font-weight: 700;
+}
+
+.study-daeduk .lp-summary-list strong {
+	font-size: 1.0625rem;
+}
+
 /* Copy beside two photos, for evidence and city blocks that should stay short */
 .lp-photo-pair {
 	display: grid;
@@ -3405,5 +3778,214 @@ div.lp-mobile-cta .lp-button--light {
 	/* The total box is taller than the heading beside it, so both start at the top. */
 	.lp-budget-head {
 		align-items: start;
+	}
+}
+
+/* Daeduk decision checkpoint: student ambition and family readiness in one view. */
+.lp-fit {
+	background:
+		linear-gradient(135deg, color-mix(in oklch, var(--study-accent), transparent 95%), transparent 48%),
+		var(--lp-bg);
+}
+
+.lp-fit-layout {
+	display: grid;
+	gap: var(--lp-48);
+}
+
+.lp-fit-intro h2 {
+	max-width: 16ch;
+	margin: var(--lp-12) 0 var(--lp-16);
+}
+
+.lp-fit-intro > p {
+	max-width: 60ch;
+	margin: 0;
+	color: var(--lp-muted);
+}
+
+.lp-fit-intro figure {
+	margin: var(--lp-32) 0 0;
+}
+
+.lp-fit-intro img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-radius: var(--lp-radius);
+}
+
+.lp-fit-intro figcaption {
+	margin-top: var(--lp-8);
+	color: var(--lp-muted);
+	font-size: var(--lp-step--1);
+	line-height: 1.45;
+}
+
+.lp-fit-groups {
+	display: grid;
+	gap: var(--lp-16);
+	align-content: start;
+}
+
+.lp-fit-groups article {
+	position: relative;
+	padding: var(--lp-32);
+	background: var(--lp-surface);
+	border: 1px solid var(--lp-line);
+	border-radius: var(--lp-radius);
+}
+
+.lp-fit-groups article.is-primary {
+	border-top: 3px solid var(--study-accent);
+}
+
+.lp-fit-number {
+	position: absolute;
+	top: var(--lp-24);
+	right: var(--lp-24);
+	margin: 0;
+	color: color-mix(in oklch, var(--study-accent), transparent 55%);
+	font-size: var(--lp-step-2);
+	font-weight: 800;
+	line-height: 1;
+}
+
+.lp-fit-groups h3 {
+	max-width: calc(100% - 48px);
+	margin: 0 0 var(--lp-16);
+	font-size: var(--lp-step-1);
+}
+
+.lp-fit-groups ul,
+.lp-responsibility-grid ul {
+	display: grid;
+	gap: var(--lp-12);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lp-fit-groups li,
+.lp-responsibility-grid li {
+	position: relative;
+	padding-left: var(--lp-24);
+	line-height: 1.55;
+}
+
+.lp-fit-groups li::before,
+.lp-responsibility-grid li::before {
+	content: "";
+	position: absolute;
+	top: 0.55em;
+	left: 0;
+	width: 7px;
+	height: 7px;
+	background: var(--study-accent);
+	border-radius: 50%;
+}
+
+.lp-fit-note {
+	margin: var(--lp-8) 0 0;
+	padding: var(--lp-16) 0;
+	border-block: 1px solid var(--lp-line);
+	color: var(--lp-ink);
+	font-size: var(--lp-step--1);
+	line-height: 1.55;
+}
+
+.lp-fit-groups > .lp-button {
+	justify-self: start;
+}
+
+/* Shared-responsibility section makes the support promise inspectable. */
+.lp-responsibilities {
+	background: var(--lp-surface);
+}
+
+.lp-responsibility-grid {
+	display: grid;
+	gap: 0;
+	border-block: 2px solid var(--lp-ink);
+}
+
+.lp-responsibility-grid article {
+	padding: var(--lp-32) 0;
+	border-bottom: 1px solid var(--lp-line);
+}
+
+.lp-responsibility-grid article:last-child {
+	border-bottom: 0;
+}
+
+.lp-responsibility-grid h3 {
+	margin: 0 0 var(--lp-16);
+	font-size: var(--lp-step-1);
+}
+
+.lp-responsibility-grid li::before {
+	background: var(--lp-line-strong);
+}
+
+@media (min-width: 901px) {
+	.lp-fit-layout {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		gap: var(--lp-64);
+		align-items: start;
+	}
+
+	.lp-fit-intro {
+		position: sticky;
+		top: calc(var(--lp-header-h) + var(--lp-24));
+	}
+
+	.lp-responsibility-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.lp-responsibility-grid article {
+		padding: var(--lp-32);
+		border-right: 1px solid var(--lp-line);
+		border-bottom: 0;
+	}
+
+	.lp-responsibility-grid article:first-child {
+		padding-left: 0;
+	}
+
+	.lp-responsibility-grid article:last-child {
+		padding-right: 0;
+		border-right: 0;
+	}
+}
+
+@media (max-width: 560px) {
+	body.is-landing {
+		padding-bottom: calc(76px + env(safe-area-inset-bottom));
+	}
+
+	.lp-mobile-cta {
+		bottom: max(var(--lp-12), env(safe-area-inset-bottom));
+	}
+
+	.lp-mobile-cta .lp-button {
+		padding-inline: var(--lp-12);
+		font-size: 0.8125rem;
+		white-space: nowrap;
+	}
+
+	.lp-fit-groups article {
+		padding: var(--lp-24);
+	}
+
+	.study-daeduk .lp-summary-list > div,
+	.study-daeduk .lp-summary-list > div + div {
+		padding: 20px;
+	}
+
+	.lp-fit-number {
+		top: var(--lp-16);
+		right: var(--lp-16);
 	}
 }

@@ -1,7 +1,8 @@
 <?php
 /**
  * Header for the homepage and landing pages: logo, up to four in-page links,
- * hotline and the sign-up button. $args: links (anchor id => label), hotline.
+ * hotline and the sign-up button. $args: links (anchor id => label), hotline,
+ * button (optional CTA label).
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -9,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $hotline = $args['hotline'];
+$button  = isset( $args['button'] ) ? $args['button'] : 'Đăng ký tư vấn';
 ?>
 <header class="lp-header" id="top">
 	<div class="container lp-header-inner">
@@ -19,6 +21,6 @@ $hotline = $args['hotline'];
 			<?php endforeach; ?>
 		</nav>
 		<a class="lp-header-phone" href="tel:<?php echo esc_attr( preg_replace( '/\D+/', '', $hotline ) ); ?>"><?php echo esc_html( $hotline ); ?></a>
-		<a class="lp-button lp-button--small" href="#form-dang-ky">Đăng ký tư vấn</a>
+		<a class="lp-button lp-button--small" href="#form-dang-ky"><?php echo esc_html( $button ); ?></a>
 	</div>
 </header>

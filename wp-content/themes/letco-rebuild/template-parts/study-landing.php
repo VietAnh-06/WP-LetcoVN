@@ -270,6 +270,7 @@ $steps       = ! empty( $data['steps'] ) ? $data['steps'] : array(
 // Optional sections only get a nav link when the config provides their data.
 $anchors = array_filter(
 	array(
+		'phu-hop'      => empty( $data['fit'] ) ? '' : 'Phù hợp với ai',
 		'tong-quan'    => empty( $data['overview'] ) ? '' : 'Tổng quan',
 		'loi-ich'      => 'Lợi ích',
 		'chuong-trinh' => empty( $data['visas'] ) ? 'Chương trình' : 'Hệ du học',
@@ -280,6 +281,7 @@ $anchors = array_filter(
 		'dieu-kien'    => empty( $data['conditions'] ) ? '' : 'Điều kiện',
 		'doanh-nghiep' => empty( $data['companies'] ) ? '' : 'Doanh nghiệp',
 		'tuyen-sinh'   => empty( $data['schedule'] ) ? '' : 'Kỳ tuyển sinh',
+		'ho-tro'       => empty( $data['responsibilities'] ) ? '' : 'Trách nhiệm',
 		'lo-trinh'     => 'Lộ trình',
 		'lam-them'     => empty( $data['work'] ) ? '' : 'Làm thêm & visa',
 		'doi-tac'      => empty( $data['partners'] ) ? '' : ( empty( $data['regions'] ) ? 'Đối tác' : 'Chi tiết trường' ),
@@ -300,7 +302,17 @@ foreach ( $header_ids as $header_id ) {
 }
 $hotline      = ! empty( $data['hotline'] ) ? $data['hotline'] : ( ! empty( $data['contact']['phones'][0] ) ? $data['contact']['phones'][0] : '024 3763 8154' );
 ?>
-<?php get_template_part( 'template-parts/landing', 'header', array( 'links' => $header_links, 'hotline' => $hotline ) ); ?>
+<?php
+get_template_part(
+	'template-parts/landing',
+	'header',
+	array(
+		'links'   => $header_links,
+		'hotline' => $hotline,
+		'button'  => isset( $data['primary_cta'] ) ? $data['primary_cta'] : 'Đăng ký tư vấn',
+	)
+);
+?>
 
 <div class="study-landing <?php echo esc_attr( $data['class'] ); ?>">
 <?php ob_start(); ?>
@@ -341,6 +353,13 @@ $hotline      = ! empty( $data['hotline'] ) ? $data['hotline'] : ( ! empty( $dat
 				<p class="lp-kicker"><?php echo esc_html( $data['eyebrow'] ); ?></p>
 				<h1><?php echo $title_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above. ?></h1>
 				<p class="lp-lede"><?php echo esc_html( $data['description'] ); ?></p>
+				<?php if ( ! empty( $data['hero_signals'] ) ) : ?>
+					<dl class="lp-hero-signals" aria-label="Thông tin nhanh về chương trình">
+						<?php foreach ( $data['hero_signals'] as $signal ) : ?>
+							<div><dt><?php echo esc_html( $signal[0] ); ?></dt><dd><?php echo esc_html( $signal[1] ); ?></dd></div>
+						<?php endforeach; ?>
+					</dl>
+				<?php endif; ?>
 				<?php if ( ! empty( $data['hero_note'] ) ) : ?><p class="lp-hero-note"><?php echo esc_html( $data['hero_note'] ); ?></p><?php endif; ?>
 				<div class="lp-actions">
 					<a class="lp-button" href="#form-dang-ky"><?php echo esc_html( isset( $data['hero_button'] ) ? $data['hero_button'] : 'Đăng ký tư vấn' ); ?></a>
@@ -371,6 +390,35 @@ $hotline      = ! empty( $data['hotline'] ) ? $data['hotline'] : ( ! empty( $dat
 					</div>
 				<?php endforeach; ?>
 			</dl>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $data['fit'] ) ) : ?>
+	<section class="section lp-fit" id="phu-hop">
+		<div class="container lp-fit-layout">
+			<div class="lp-fit-intro">
+				<span class="eyebrow"><?php echo esc_html( $data['fit']['eyebrow'] ); ?></span>
+				<h2><?php echo esc_html( $data['fit']['title'] ); ?></h2>
+				<p><?php echo esc_html( $data['fit']['intro'] ); ?></p>
+				<?php if ( ! empty( $data['fit']['photo'] ) ) : ?>
+					<figure>
+						<img src="<?php echo letco_asset( $data['fit']['photo'][0] ); ?>" alt="<?php echo esc_attr( $data['fit']['photo'][1] ); ?>" loading="lazy">
+						<figcaption><?php echo esc_html( $data['fit']['photo'][1] ); ?></figcaption>
+					</figure>
+				<?php endif; ?>
+			</div>
+			<div class="lp-fit-groups">
+				<?php foreach ( $data['fit']['groups'] as $index => $group ) : ?>
+					<article<?php echo 0 === $index ? ' class="is-primary"' : ''; ?>>
+						<p class="lp-fit-number" aria-hidden="true">0<?php echo esc_html( $index + 1 ); ?></p>
+						<h3><?php echo esc_html( $group[0] ); ?></h3>
+						<ul><?php foreach ( $group[1] as $item ) : ?><li><?php echo esc_html( $item ); ?></li><?php endforeach; ?></ul>
+					</article>
+				<?php endforeach; ?>
+				<?php if ( ! empty( $data['fit']['note'] ) ) : ?><p class="lp-fit-note"><?php echo esc_html( $data['fit']['note'] ); ?></p><?php endif; ?>
+				<a class="lp-button" href="#form-dang-ky"><?php echo esc_html( isset( $data['primary_cta'] ) ? $data['primary_cta'] : 'Đăng ký tư vấn' ); ?></a>
+			</div>
 		</div>
 	</section>
 	<?php endif; ?>
@@ -641,9 +689,10 @@ $hotline      = ! empty( $data['hotline'] ) ? $data['hotline'] : ( ! empty( $dat
 	<?php if ( ! empty( $data['majors'] ) ) : ?>
 		<section class="section study-majors" id="nganh-hoc">
 			<div class="container">
-				<div class="section-heading section-heading-center">
-					<span class="eyebrow">Ngành đào tạo mũi nhọn</span>
-					<h2><?php echo esc_html( isset( $data['majors_title'] ) ? $data['majors_title'] : 'Chọn ngành theo định hướng việc làm' ); ?></h2>
+			<div class="section-heading section-heading-center">
+				<span class="eyebrow">Ngành đào tạo mũi nhọn</span>
+				<h2><?php echo esc_html( isset( $data['majors_title'] ) ? $data['majors_title'] : 'Chọn ngành theo định hướng việc làm' ); ?></h2>
+				<?php if ( ! empty( $data['majors_intro'] ) ) : ?><p><?php echo esc_html( $data['majors_intro'] ); ?></p><?php endif; ?>
 				</div>
 				<?php if ( empty( $data['majors'][0]['duration'] ) ) : ?>
 					<ul class="study-major-chips">
@@ -652,7 +701,7 @@ $hotline      = ! empty( $data['hotline'] ) ? $data['hotline'] : ( ! empty( $dat
 				<?php else : ?>
 				<div class="study-major-table<?php echo empty( $data['majors'][0]['career'] ) ? ' study-major-table--compact' : ''; ?>" role="table" aria-label="Danh mục ngành đào tạo">
 					<div class="study-major-row study-major-head" role="row">
-						<span role="columnheader">Khoa / khối ngành</span><span role="columnheader"><?php echo esc_html( isset( $data['majors_duration_label'] ) ? $data['majors_duration_label'] : 'Thời gian' ); ?></span><span role="columnheader">Chuyên ngành chi tiết</span><span role="columnheader">Định hướng việc làm</span>
+					<span role="columnheader">Khoa / khối ngành</span><span role="columnheader"><?php echo esc_html( isset( $data['majors_duration_label'] ) ? $data['majors_duration_label'] : 'Thời gian' ); ?></span><span role="columnheader"><?php echo esc_html( isset( $data['majors_detail_label'] ) ? $data['majors_detail_label'] : 'Chuyên ngành chi tiết' ); ?></span><span role="columnheader"><?php echo esc_html( isset( $data['majors_career_label'] ) ? $data['majors_career_label'] : 'Định hướng việc làm' ); ?></span>
 					</div>
 					<?php foreach ( $data['majors'] as $major ) : ?>
 						<div class="study-major-row" role="row">
@@ -682,14 +731,16 @@ $hotline      = ! empty( $data['hotline'] ) ? $data['hotline'] : ( ! empty( $dat
 				<div class="lp-budget-body">
 					<div class="lp-budget-groups">
 						<?php foreach ( $data['budget']['groups'] as $group ) : ?>
-							<div class="lp-budget-group">
-								<h3><span><?php echo esc_html( $group['title'] ); ?></span><strong><?php echo esc_html( $group['amount'] ); ?></strong></h3>
-								<ul>
-									<?php foreach ( $group['rows'] as $row ) : ?>
-										<li><span><?php echo esc_html( $row[0] ); ?><?php if ( ! empty( $row[2] ) ) : ?><small><?php echo esc_html( $row[2] ); ?></small><?php endif; ?></span><span><?php echo esc_html( $row[1] ); ?></span></li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
+							<details class="lp-budget-group">
+								<summary><span><?php echo esc_html( $group['title'] ); ?></span><strong><?php echo esc_html( $group['amount'] ); ?></strong></summary>
+								<div class="lp-budget-group-panel">
+									<ul>
+										<?php foreach ( $group['rows'] as $row ) : ?>
+											<li><span><?php echo esc_html( $row[0] ); ?><?php if ( ! empty( $row[2] ) ) : ?><small><?php echo esc_html( $row[2] ); ?></small><?php endif; ?></span><span><?php echo esc_html( $row[1] ); ?></span></li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							</details>
 						<?php endforeach; ?>
 					</div>
 					<aside class="lp-budget-aside">
@@ -801,9 +852,9 @@ $hotline      = ! empty( $data['hotline'] ) ? $data['hotline'] : ( ! empty( $dat
 	<section class="section study-conditions" id="dieu-kien">
 		<div class="container study-split">
 			<div class="study-split-copy">
-				<span class="eyebrow eyebrow-light">Điều kiện tham khảo</span>
-				<h2>Bạn đã sẵn sàng cho hành trình du học?</h2>
-				<p>Điều kiện chính thức thay đổi theo trường, chương trình và từng thời điểm. LETCO sẽ kiểm tra hồ sơ trước khi đưa ra lộ trình.</p>
+				<span class="eyebrow eyebrow-light"><?php echo esc_html( isset( $data['conditions_eyebrow'] ) ? $data['conditions_eyebrow'] : 'Điều kiện tham khảo' ); ?></span>
+				<h2><?php echo esc_html( isset( $data['conditions_title'] ) ? $data['conditions_title'] : 'Bạn đã sẵn sàng cho hành trình du học?' ); ?></h2>
+				<p><?php echo esc_html( isset( $data['conditions_intro'] ) ? $data['conditions_intro'] : 'Điều kiện chính thức thay đổi theo trường, chương trình và từng thời điểm. LETCO sẽ kiểm tra hồ sơ trước khi đưa ra lộ trình.' ); ?></p>
 				<?php if ( ! empty( $data['documents'] ) ) : ?>
 					<?php if ( ! empty( $data['documents_collapsed'] ) ) : ?>
 					<details class="study-documents study-documents--details">
@@ -828,6 +879,27 @@ $hotline      = ! empty( $data['hotline'] ) ? $data['hotline'] : ( ! empty( $dat
 					<div><span>0<?php echo esc_html( $index + 1 ); ?></span><p><?php echo esc_html( $condition ); ?></p></div>
 				<?php endforeach; ?>
 			</div>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $data['responsibilities'] ) ) : ?>
+	<section class="section lp-responsibilities" id="ho-tro">
+		<div class="container">
+			<div class="section-heading">
+				<span class="eyebrow"><?php echo esc_html( $data['responsibilities']['eyebrow'] ); ?></span>
+				<h2><?php echo esc_html( $data['responsibilities']['title'] ); ?></h2>
+				<p><?php echo esc_html( $data['responsibilities']['intro'] ); ?></p>
+			</div>
+			<div class="lp-responsibility-grid">
+				<?php foreach ( $data['responsibilities']['groups'] as $group ) : ?>
+					<article>
+						<h3><?php echo esc_html( $group[0] ); ?></h3>
+						<ul><?php foreach ( $group[1] as $item ) : ?><li><?php echo esc_html( $item ); ?></li><?php endforeach; ?></ul>
+					</article>
+				<?php endforeach; ?>
+			</div>
+			<?php if ( ! empty( $data['responsibilities']['note'] ) ) : ?><p class="lp-block-note"><?php echo esc_html( $data['responsibilities']['note'] ); ?></p><?php endif; ?>
 		</div>
 	</section>
 	<?php endif; ?>
@@ -1086,10 +1158,12 @@ $hotline      = ! empty( $data['hotline'] ) ? $data['hotline'] : ( ! empty( $dat
 			),
 			'contact'    => isset( $data['contact'] ) ? $data['contact'] : array(),
 			'zalo'       => isset( $data['zalo'] ) ? $data['zalo'] : '',
+			'contact_in_footer' => 'dai-hoc-daeduk' === $country,
 			'compact'    => ! empty( $data['lead_compact'] ),
 			'button'     => isset( $data['lead_button'] ) ? $data['lead_button'] : 'Gửi đăng ký',
 			'lead_extra' => ! empty( $data['lead_extra'] ),
 			'program'    => 'Du học ' . $data['name'],
+			'major_choices' => ! empty( $data['majors'] ) ? wp_list_pluck( $data['majors'], 'name' ) : array(),
 		)
 	);
 	?>
@@ -1106,6 +1180,9 @@ if ( ! empty( $data['order'] ) && preg_match_all( '/<section\b[^>]*>.*?<\/sectio
 		} else {
 			$section_key = 'section-' . count( $sections );
 		}
+		if ( ! empty( $data['omit_sections'] ) && in_array( $section_key, $data['omit_sections'], true ) ) {
+			continue;
+		}
 		$sections[ $section_key ] = $section_html;
 	}
 	$ordered = array();
@@ -1119,4 +1196,24 @@ if ( ! empty( $data['order'] ) && preg_match_all( '/<section\b[^>]*>.*?<\/sectio
 }
 echo $sections_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped where it was built.
 ?>
+
+<?php if ( 'dai-hoc-daeduk' === $country ) : ?>
+	<div class="lp-consult-modal" data-consult-modal data-modal-delay="<?php echo $lead_status ? '150' : esc_attr( isset( $data['popup_delay'] ) ? $data['popup_delay'] : 4500 ); ?>" hidden>
+		<div class="lp-consult-modal-backdrop" data-consult-close></div>
+		<section class="lp-consult-dialog" role="dialog" aria-modal="true" aria-labelledby="daeduk-consult-title" tabindex="-1">
+			<button class="lp-consult-close" type="button" data-consult-close aria-label="Đóng form tư vấn">×</button>
+			<p class="lp-consult-kicker">Tư vấn Daeduk · K-Tech Bridge</p>
+			<?php if ( 'success' === $lead_status ) : ?>
+				<h2 id="daeduk-consult-title">LETCO đã nhận được thông tin</h2>
+				<p class="lp-consult-intro">Cảm ơn bạn. Chuyên viên LETCO sẽ liên hệ để đối chiếu hồ sơ và tư vấn lộ trình phù hợp.</p>
+				<button class="lp-button lp-button--block" type="button" data-consult-close>Tiếp tục xem chương trình</button>
+			<?php else : ?>
+				<h2 id="daeduk-consult-title">Kiểm tra lộ trình phù hợp với bạn</h2>
+				<p class="lp-consult-intro">Để lại họ tên và số điện thoại/Zalo. LETCO sẽ liên hệ để đối chiếu điều kiện, kỳ nhập học và dự toán chi phí.</p>
+				<?php if ( 'error' === $lead_status ) : ?><div class="form-notice form-error">Vui lòng nhập đầy đủ họ tên và số điện thoại.</div><?php endif; ?>
+				<?php get_template_part( 'template-parts/quick', 'form', array( 'program' => 'Du học ' . $data['name'], 'button' => isset( $data['primary_cta'] ) ? $data['primary_cta'] : 'Nhận tư vấn', 'note' => 'Thông tin được dùng để LETCO liên hệ phục vụ nhu cầu tư vấn.', 'major_choices' => ! empty( $data['majors'] ) ? wp_list_pluck( $data['majors'], 'name' ) : array(), 'collect_birth_year' => true ) ); ?>	
+			<?php endif; ?>
+		</section>
+	</div>
+<?php endif; ?>
 </div>
