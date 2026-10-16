@@ -33,17 +33,28 @@ function letco_landing_body_class( $classes ) {
 }
 add_filter( 'body_class', 'letco_landing_body_class' );
 
+/**
+ * Version of a theme file: theme version plus the file's modification time, so an
+ * edited stylesheet or script gets a new URL and browsers stop serving a stale copy.
+ */
+function letco_asset_version( $relative_path ) {
+	$mtime = filemtime( get_template_directory() . '/' . $relative_path );
+	return wp_get_theme()->get( 'Version' ) . ( $mtime ? '.' . $mtime : '' );
+}
+
 function letco_rebuild_assets() {
-	$version = wp_get_theme()->get( 'Version' );
-	wp_enqueue_style( 'letco-rebuild', get_stylesheet_uri(), array(), $version );
+	wp_enqueue_style( 'letco-rebuild', get_stylesheet_uri(), array(), letco_asset_version( 'style.css' ) );
 	if ( letco_is_landing() ) {
-		wp_enqueue_style( 'letco-landing', get_template_directory_uri() . '/assets/css/landing.css', array( 'letco-rebuild' ), $version );
+		wp_enqueue_style( 'letco-landing', get_template_directory_uri() . '/assets/css/landing.css', array( 'letco-rebuild' ), letco_asset_version( 'assets/css/landing.css' ) );
+		if ( is_page( 'dai-hoc-daeduk' ) ) {
+			wp_enqueue_style( 'letco-daeduk', get_template_directory_uri() . '/assets/css/daeduk.css', array( 'letco-landing' ), letco_asset_version( 'assets/css/daeduk.css' ) );
+		}
 	}
 	wp_enqueue_script(
 		'letco-rebuild',
 		get_template_directory_uri() . '/assets/js/site.js',
 		array(),
-		$version,
+		letco_asset_version( 'assets/js/site.js' ),
 		true
 	);
 }
@@ -52,6 +63,71 @@ add_action( 'wp_enqueue_scripts', 'letco_rebuild_assets' );
 function letco_asset( $filename ) {
 	return esc_url( get_template_directory_uri() . '/assets/images/' . ltrim( $filename, '/' ) );
 }
+
+/**
+ * Opens a block that folds behind a toggle on phones and is always open on wider
+ * screens. The title stays a real heading; the toggle exists only where it works.
+ * Close with letco_fold_close().
+ *
+ * @param string $title Visible title.
+ * @param array  $args  tag (title element, default h3), class (block classes),
+ *                      title_class (extra title classes), id (anchor on the block).
+ */
+function letco_fold_open( $title, $args = array() ) {
+	static $count = 0;
+	++$count;
+	$tag         = isset( $args['tag'] ) && in_array( $args['tag'], array( 'h3', 'h4', 'p' ), true ) ? $args['tag'] : 'h3';
+	$class       = isset( $args['class'] ) ? $args['class'] : '';
+	$title_class = isset( $args['title_class'] ) ? $args['title_class'] : '';
+	$id          = 'fold-' . $count;
+	$anchor      = empty( $args['id'] ) ? '' : ' id="' . esc_attr( $args['id'] ) . '"';
+	printf(
+		'<div class="lp-fold %1$s"%6$s data-fold><div class="lp-fold-head"><%2$s class="lp-fold-title %3$s" id="%4$s-title">%5$s</%2$s><button type="button" class="lp-fold-toggle" aria-expanded="true" aria-controls="%4$s" aria-labelledby="%4$s-title"></button></div><div class="lp-fold-body" id="%4$s">',
+		esc_attr( $class ),
+		$tag, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- limited to the allowed list above.
+		esc_attr( $title_class ),
+		esc_attr( $id ),
+		esc_html( $title ),
+		$anchor // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above.
+	);
+}
+
+function letco_fold_close() {
+	echo '</div></div>';
+}
+
+/**
+ * Description and social-share tags for landing pages that define 'seo' in their config.
+ */
+function letco_landing_meta() {
+	if ( ! is_page() ) {
+		return;
+	}
+	$slug    = get_post_field( 'post_name', get_queried_object_id() );
+	$configs = require get_template_directory() . '/template-parts/study-school-configs.php';
+	if ( empty( $configs[ $slug ]['seo'] ) ) {
+		return;
+	}
+	$seo   = $configs[ $slug ]['seo'];
+	$title = wp_get_document_title();
+	$image = get_template_directory_uri() . '/assets/images/' . $seo['image'];
+	$size  = getimagesize( get_template_directory() . '/assets/images/' . $seo['image'] );
+	printf( '<meta name="description" content="%s">' . "\n", esc_attr( $seo['description'] ) );
+	printf( '<meta property="og:type" content="website">' . "\n" );
+	printf( '<meta property="og:locale" content="vi_VN">' . "\n" );
+	printf( '<meta property="og:site_name" content="LETCO – HaUI">' . "\n" );
+	printf( '<meta property="og:title" content="%s">' . "\n", esc_attr( $title ) );
+	printf( '<meta property="og:description" content="%s">' . "\n", esc_attr( $seo['description'] ) );
+	printf( '<meta property="og:url" content="%s">' . "\n", esc_url( get_permalink() ) );
+	printf( '<meta property="og:image" content="%s">' . "\n", esc_url( $image ) );
+	if ( $size ) {
+		printf( '<meta property="og:image:width" content="%d">' . "\n", (int) $size[0] );
+		printf( '<meta property="og:image:height" content="%d">' . "\n", (int) $size[1] );
+	}
+	printf( '<meta property="og:image:alt" content="%s">' . "\n", esc_attr( $seo['image_alt'] ) );
+	printf( '<meta name="twitter:card" content="summary_large_image">' . "\n" );
+}
+add_action( 'wp_head', 'letco_landing_meta', 5 );
 
 function letco_primary_menu_fallback() {
 	$links = array(
@@ -99,6 +175,18 @@ function letco_register_lead_post_type() {
 }
 add_action( 'init', 'letco_register_lead_post_type' );
 
+/**
+ * Normalises a Vietnamese phone/Zalo number to 0xxxxxxxxx, or returns '' when it is not one.
+ * Accepts spaces, dots, dashes and a +84 / 84 prefix.
+ */
+function letco_normalize_phone( $raw ) {
+	$digits = preg_replace( '/[\s.\-()]/', '', (string) $raw );
+	if ( ! preg_match( '/^(?:\+?84|0)([35789]\d{8})$/', $digits, $match ) ) {
+		return '';
+	}
+	return '0' . $match[1];
+}
+
 function letco_handle_consultation_form() {
 	if ( ! isset( $_POST['letco_lead_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['letco_lead_nonce'] ) ), 'letco_submit_lead' ) ) {
 		wp_die( 'Phiên gửi biểu mẫu không hợp lệ. Vui lòng thử lại.', 'Yêu cầu không hợp lệ', array( 'response' => 403 ) );
@@ -117,12 +205,18 @@ function letco_handle_consultation_form() {
 	}
 
 	if ( $company ) {
-		wp_safe_redirect( add_query_arg( 'lead', 'success', $redirect ) . '#dang-ky' );
+		wp_safe_redirect( add_query_arg( 'lead', 'success', $redirect ) . '#form-dang-ky' );
 		exit;
 	}
 
 	if ( '' === $name || '' === $phone ) {
-		wp_safe_redirect( add_query_arg( 'lead', 'error', $redirect ) . '#dang-ky' );
+		wp_safe_redirect( add_query_arg( 'lead', 'error', $redirect ) . '#form-dang-ky' );
+		exit;
+	}
+
+	$phone = letco_normalize_phone( $phone );
+	if ( '' === $phone ) {
+		wp_safe_redirect( add_query_arg( 'lead', 'phone', $redirect ) . '#form-dang-ky' );
 		exit;
 	}
 
@@ -135,7 +229,7 @@ function letco_handle_consultation_form() {
 	);
 
 	if ( is_wp_error( $lead_id ) ) {
-		wp_safe_redirect( add_query_arg( 'lead', 'error', $redirect ) . '#dang-ky' );
+		wp_safe_redirect( add_query_arg( 'lead', 'error', $redirect ) . '#form-dang-ky' );
 		exit;
 	}
 
@@ -150,7 +244,7 @@ function letco_handle_consultation_form() {
 		}
 	}
 
-	wp_safe_redirect( add_query_arg( 'lead', 'success', $redirect ) . '#dang-ky' );
+	wp_safe_redirect( add_query_arg( 'lead', 'success', $redirect ) . '#form-dang-ky' );
 	exit;
 }
 add_action( 'admin_post_nopriv_letco_submit_lead', 'letco_handle_consultation_form' );

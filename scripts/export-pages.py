@@ -27,8 +27,8 @@ PRIVATE = {'wp-admin', 'wp-json', 'dev', 'scripts', 'node_modules'}
 CSS_URL = re.compile(r'url\(\s*([\'"]?)(.*?)\1\s*\)', re.I)
 FORM_FALLBACK = (
     '<div class="form-fallback" role="note">'
-    '<p><strong>Bản xem trước chưa nhận đăng ký trực tuyến.</strong> '
-    'Vui lòng liên hệ trực tiếp để được tư vấn:</p>'
+    '<p><strong>Liên hệ tư vấn viên LETCO qua điện thoại hoặc Zalo</strong></p>'
+    '<p>Tư vấn viên đối chiếu hồ sơ của bạn với điều kiện chương trình và gửi dự toán theo trường hợp cụ thể.</p>'
     '<p class="form-fallback-actions">'
     '<a class="lp-button" href="tel:0989086386">Gọi 0989.086.386</a> '
     '<a class="lp-button lp-button--light" href="https://zalo.me/0989086386" rel="noopener">Nhắn Zalo</a>'
@@ -38,8 +38,9 @@ VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
 
 
 class Exporter:
-    def __init__(self, source, output):
+    def __init__(self, source, output, public=''):
         self.source = source.rstrip('/')
+        self.public = public.rstrip('/')
         self.origin = urlsplit(self.source).netloc
         self.output = output
         self.pending = deque()
@@ -187,6 +188,10 @@ class StaticHTML(HTMLParser):
             attrs['srcset'] = ', '.join(candidates)
         if 'style' in attrs:
             attrs['style'] = self.exporter.css(attrs['style'], self.base)
+        # Share tags need absolute URLs: export the asset, then point the tag at the public site.
+        if tag == 'meta' and attrs.get('content', '').startswith(self.exporter.source):
+            local = self.exporter.url(attrs['content'], self.base)
+            attrs['content'] = self.exporter.public + (local if local.startswith('/') else '/' + local)
         encoded = ''.join(' ' + key + ('' if value is None else '="' + escape(value, quote=True) + '"')
                           for key, value in attrs.items())
         self.output.append('<' + tag + encoded + '>')
@@ -229,6 +234,8 @@ class StaticHTML(HTMLParser):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', default='http://localhost:8081')
+    parser.add_argument('--public', default='https://letco-rebuild.pages.dev',
+                        help='public site origin used in social-share tags')
     args = parser.parse_args()
     source = urlsplit(args.source)
     if source.scheme not in ('http', 'https') or source.path not in ('', '/') or source.query:
@@ -238,7 +245,7 @@ def main():
     destination = dist / 'cloudflare'
     with tempfile.TemporaryDirectory(prefix='pages-export-', dir=dist) as temporary:
         output = Path(temporary)
-        exporter = Exporter(args.source, output)
+        exporter = Exporter(args.source, output, args.public)
         exporter.run()
         (output / '404.html').write_text(
             '<!doctype html><html lang="vi"><meta charset="utf-8">'

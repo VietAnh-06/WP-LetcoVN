@@ -116,6 +116,7 @@ get_template_part(
 			<div class="section-heading">
 				<h2>Vì sao các gia đình chọn LETCO</h2>
 				<p>Lộ trình toàn diện, chi phí minh bạch, doanh nghiệp 100% vốn Nhà nước.</p>
+				<p class="section-heading-action"><a class="lp-button" href="#dang-ky">Đăng ký tư vấn</a></p>
 			</div>
 			<div class="study-benefit-grid">
 				<?php foreach ( $reasons as $reason ) : ?>

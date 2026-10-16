@@ -236,6 +236,11 @@ $configs = array(
 $configs     += require __DIR__ . '/study-school-configs.php';
 $data        = isset( $configs[ $country ] ) ? $configs[ $country ] : $configs['korea'];
 $lead_status = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lead'] ) ) : '';
+// Pages with their own zoned layout render it in full and skip the generic sections.
+if ( isset( $data['layout'] ) && 'zones' === $data['layout'] ) {
+	get_template_part( 'template-parts/daeduk', 'landing', array( 'data' => $data, 'lead_status' => $lead_status ) );
+	return;
+}
 // Named step sets follow the visa routes in the Korea brief.
 $step_sets   = array(
 	'd2-1' => array(
@@ -317,7 +322,7 @@ get_template_part(
 <div class="study-landing <?php echo esc_attr( $data['class'] ); ?>">
 <?php ob_start(); ?>
 	<?php if ( ! empty( $data['hero_form'] ) ) : ?>
-	<section class="lp-hero lp-hero--lead" style="--lp-hero-image: url('<?php echo letco_asset( $data['image'] ); ?>');">
+	<section class="lp-hero lp-hero--lead">
 		<div class="container lp-hero-grid">
 			<div class="lp-hero-copy">
 				<p class="lp-kicker"><?php echo esc_html( $data['eyebrow'] ); ?></p>
@@ -347,7 +352,7 @@ get_template_part(
 		$title_html = str_replace( esc_html( $data['title_accent'] ), '<em>' . esc_html( $data['title_accent'] ) . '</em>', $title_html );
 	}
 	?>
-	<section class="lp-hero<?php echo empty( $data['hero_photo'] ) ? '' : ' lp-hero--photo'; ?><?php echo empty( $data['hero_backdrop'] ) ? '' : ' lp-hero--cinema'; ?>"<?php echo empty( $data['hero_backdrop'] ) ? '' : ' style="--lp-hero-image: url(\'' . letco_asset( $data['hero_backdrop'] ) . '\');"'; ?>>
+	<section class="lp-hero<?php echo empty( $data['hero_photo'] ) ? '' : ' lp-hero--photo'; ?><?php echo empty( $data['hero_backdrop'] ) ? '' : ' lp-hero--cinema'; ?>">
 		<div class="container lp-hero-grid">
 			<div class="lp-hero-copy">
 				<p class="lp-kicker"><?php echo esc_html( $data['eyebrow'] ); ?></p>
@@ -362,7 +367,7 @@ get_template_part(
 				<?php endif; ?>
 				<?php if ( ! empty( $data['hero_note'] ) ) : ?><p class="lp-hero-note"><?php echo esc_html( $data['hero_note'] ); ?></p><?php endif; ?>
 				<div class="lp-actions">
-					<a class="lp-button" href="#form-dang-ky"><?php echo esc_html( isset( $data['hero_button'] ) ? $data['hero_button'] : 'Đăng ký tư vấn' ); ?></a>
+					<a class="lp-button" href="#dang-ky"><?php echo esc_html( isset( $data['hero_button'] ) ? $data['hero_button'] : 'Đăng ký tư vấn' ); ?></a>
 					<a class="lp-link" href="<?php echo esc_attr( isset( $data['hero_link'][1] ) ? $data['hero_link'][1] : '#chuong-trinh' ); ?>"><?php echo esc_html( isset( $data['hero_link'][0] ) ? $data['hero_link'][0] : 'Xem chương trình' ); ?></a>
 				</div>
 			</div>
@@ -417,8 +422,58 @@ get_template_part(
 					</article>
 				<?php endforeach; ?>
 				<?php if ( ! empty( $data['fit']['note'] ) ) : ?><p class="lp-fit-note"><?php echo esc_html( $data['fit']['note'] ); ?></p><?php endif; ?>
-				<a class="lp-button" href="#form-dang-ky"><?php echo esc_html( isset( $data['primary_cta'] ) ? $data['primary_cta'] : 'Đăng ký tư vấn' ); ?></a>
+				<a class="lp-button" href="#dang-ky"><?php echo esc_html( isset( $data['primary_cta'] ) ? $data['primary_cta'] : 'Đăng ký tư vấn' ); ?></a>
 			</div>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $data['parents'] ) ) : ?>
+	<section class="section lp-parents" id="phu-huynh">
+		<div class="container">
+			<div class="section-heading">
+				<h2><?php echo esc_html( $data['parents']['title'] ); ?></h2>
+				<p><?php echo esc_html( $data['parents']['intro'] ); ?></p>
+			</div>
+			<ol class="lp-parents-list">
+				<?php foreach ( $data['parents']['items'] as $item ) : ?>
+					<li>
+						<?php letco_fold_open( $item[0] ); ?>
+							<p><?php echo esc_html( $item[1] ); ?></p>
+							<a href="<?php echo esc_attr( $item[3] ); ?>"><?php echo esc_html( $item[2] ); ?></a>
+						<?php letco_fold_close(); ?>
+					</li>
+				<?php endforeach; ?>
+			</ol>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $data['payments'] ) ) : ?>
+	<section class="section lp-payments" id="lich-dong-tien">
+		<div class="container">
+			<div class="section-heading">
+				<h2><?php echo esc_html( $data['payments']['title'] ); ?></h2>
+				<p><?php echo esc_html( $data['payments']['intro'] ); ?></p>
+			</div>
+			<ul class="lp-payee-legend" aria-label="Đơn vị nhận tiền">
+				<?php foreach ( $data['payments']['payees'] as $payee_key => $payee_label ) : ?><li class="is-<?php echo esc_attr( $payee_key ); ?>"><?php echo esc_html( $payee_label ); ?></li><?php endforeach; ?>
+			</ul>
+			<ol class="lp-paytrack">
+				<?php foreach ( $data['payments']['stages'] as $index => $stage ) : ?>
+					<li>
+						<span class="lp-paytrack-step"><?php echo esc_html( $index + 1 ); ?></span>
+						<p class="lp-paytrack-when"><?php echo esc_html( $stage['when'] ); ?></p>
+						<h3><?php echo esc_html( $stage['title'] ); ?></h3>
+						<ul>
+							<?php foreach ( $stage['items'] as $pay ) : ?>
+								<li class="is-<?php echo esc_attr( $pay[0] ); ?>"><span><?php echo esc_html( $pay[1] ); ?></span><strong><?php echo esc_html( $pay[2] ); ?></strong></li>
+							<?php endforeach; ?>
+						</ul>
+					</li>
+				<?php endforeach; ?>
+			</ol>
+			<p class="lp-block-note"><?php echo esc_html( $data['payments']['note'] ); ?></p>
 		</div>
 	</section>
 	<?php endif; ?>
@@ -499,6 +554,7 @@ get_template_part(
 				<span class="eyebrow"><?php echo esc_html( isset( $data['benefits_eyebrow'] ) ? $data['benefits_eyebrow'] : 'Vì sao chọn ' . $data['name'] ); ?></span>
 				<h2><?php echo esc_html( isset( $data['benefits_title'] ) ? $data['benefits_title'] : 'Một hành trình học tập, nhiều giá trị dài hạn' ); ?></h2>
 				<p><?php echo esc_html( isset( $data['benefits_intro'] ) ? $data['benefits_intro'] : 'Không chỉ là một tấm bằng, đây còn là cơ hội phát triển ngôn ngữ, kỹ năng và tư duy hội nhập.' ); ?></p>
+				<p class="section-heading-action"><a class="lp-button" href="#dang-ky"><?php echo esc_html( isset( $data['primary_cta'] ) ? $data['primary_cta'] : 'Đăng ký tư vấn' ); ?></a></p>
 			</div>
 			<div class="study-benefit-grid<?php echo 4 === count( $data['benefits'] ) ? ' study-benefit-grid--four' : ''; ?>">
 				<?php foreach ( $data['benefits'] as $benefit ) : ?>
@@ -748,7 +804,7 @@ get_template_part(
 							<h3><?php echo esc_html( $scope[0] ); ?></h3>
 							<ul><?php foreach ( $scope[1] as $line ) : ?><li><?php echo esc_html( $line ); ?></li><?php endforeach; ?></ul>
 						<?php endforeach; ?>
-						<a class="lp-button lp-button--block" href="#form-dang-ky"><?php echo esc_html( $data['budget']['button'] ); ?></a>
+						<a class="lp-button lp-button--block" href="#dang-ky"><?php echo esc_html( $data['budget']['button'] ); ?></a>
 					</aside>
 				</div>
 				<?php foreach ( $data['budget']['reference'] as $reference ) : ?>
@@ -872,7 +928,7 @@ get_template_part(
 					</div>
 					<?php endif; ?>
 				<?php endif; ?>
-				<a class="lp-button lp-button--light" href="#form-dang-ky"><?php echo esc_html( isset( $data['conditions_button'] ) ? $data['conditions_button'] : 'Đăng ký tư vấn' ); ?></a>
+				<a class="lp-button lp-button--light" href="#dang-ky"><?php echo esc_html( isset( $data['conditions_button'] ) ? $data['conditions_button'] : 'Đăng ký tư vấn' ); ?></a>
 			</div>
 			<div class="study-condition-list">
 				<?php foreach ( $data['conditions'] as $index => $condition ) : ?>
@@ -894,8 +950,9 @@ get_template_part(
 			<div class="lp-responsibility-grid">
 				<?php foreach ( $data['responsibilities']['groups'] as $group ) : ?>
 					<article>
-						<h3><?php echo esc_html( $group[0] ); ?></h3>
-						<ul><?php foreach ( $group[1] as $item ) : ?><li><?php echo esc_html( $item ); ?></li><?php endforeach; ?></ul>
+						<?php letco_fold_open( $group[0] ); ?>
+							<ul><?php foreach ( $group[1] as $item ) : ?><li><?php echo esc_html( $item ); ?></li><?php endforeach; ?></ul>
+						<?php letco_fold_close(); ?>
 					</article>
 				<?php endforeach; ?>
 			</div>
@@ -986,7 +1043,7 @@ get_template_part(
 					<?php endforeach; ?>
 				</div>
 				<?php if ( ! empty( $block['note'] ) ) : ?><p class="lp-block-note"><?php echo esc_html( $block['note'] ); ?></p><?php endif; ?>
-				<?php if ( ! empty( $block['button'] ) ) : ?><p class="lp-block-action"><a class="lp-button" href="#form-dang-ky"><?php echo esc_html( $block['button'] ); ?></a></p><?php endif; ?>
+				<?php if ( ! empty( $block['button'] ) ) : ?><p class="lp-block-action"><a class="lp-button" href="#dang-ky"><?php echo esc_html( $block['button'] ); ?></a></p><?php endif; ?>
 			</div>
 		</section>
 	<?php endforeach; ?>
@@ -1198,22 +1255,6 @@ echo $sections_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEs
 ?>
 
 <?php if ( 'dai-hoc-daeduk' === $country ) : ?>
-	<div class="lp-consult-modal" data-consult-modal data-modal-delay="<?php echo $lead_status ? '150' : esc_attr( isset( $data['popup_delay'] ) ? $data['popup_delay'] : 4500 ); ?>" hidden>
-		<div class="lp-consult-modal-backdrop" data-consult-close></div>
-		<section class="lp-consult-dialog" role="dialog" aria-modal="true" aria-labelledby="daeduk-consult-title" tabindex="-1">
-			<button class="lp-consult-close" type="button" data-consult-close aria-label="Đóng form tư vấn">×</button>
-			<p class="lp-consult-kicker">Tư vấn Daeduk · K-Tech Bridge</p>
-			<?php if ( 'success' === $lead_status ) : ?>
-				<h2 id="daeduk-consult-title">LETCO đã nhận được thông tin</h2>
-				<p class="lp-consult-intro">Cảm ơn bạn. Chuyên viên LETCO sẽ liên hệ để đối chiếu hồ sơ và tư vấn lộ trình phù hợp.</p>
-				<button class="lp-button lp-button--block" type="button" data-consult-close>Tiếp tục xem chương trình</button>
-			<?php else : ?>
-				<h2 id="daeduk-consult-title">Kiểm tra lộ trình phù hợp với bạn</h2>
-				<p class="lp-consult-intro">Để lại họ tên và số điện thoại/Zalo. LETCO sẽ liên hệ để đối chiếu điều kiện, kỳ nhập học và dự toán chi phí.</p>
-				<?php if ( 'error' === $lead_status ) : ?><div class="form-notice form-error">Vui lòng nhập đầy đủ họ tên và số điện thoại.</div><?php endif; ?>
-				<?php get_template_part( 'template-parts/quick', 'form', array( 'program' => 'Du học ' . $data['name'], 'button' => isset( $data['primary_cta'] ) ? $data['primary_cta'] : 'Nhận tư vấn', 'note' => 'Thông tin được dùng để LETCO liên hệ phục vụ nhu cầu tư vấn.', 'major_choices' => ! empty( $data['majors'] ) ? wp_list_pluck( $data['majors'], 'name' ) : array(), 'collect_birth_year' => true ) ); ?>	
-			<?php endif; ?>
-		</section>
-	</div>
+	<?php get_template_part( 'template-parts/consult', 'modal', array( 'data' => $data, 'lead_status' => $lead_status ) ); ?>
 <?php endif; ?>
 </div>

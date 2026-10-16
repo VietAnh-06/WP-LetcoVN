@@ -17,6 +17,8 @@
 	--lp-navy-line: oklch(36% 0.06 256);
 	--lp-on-navy: oklch(96% 0.01 250);
 	--lp-on-navy-muted: oklch(82% 0.025 250);
+	/* Hero backdrop: the LETCO brand blue of the header bar, deepened so hero text keeps its contrast. */
+	--lp-hero-bg: linear-gradient(115deg, var(--blue-950) 0%, var(--blue-900) 50%, var(--blue-800) 100%);
 
 	/* Type scale, ratio 1.25 on a 17px body. */
 	--lp-step--1: 0.875rem;
@@ -1461,13 +1463,11 @@
 	}
 }
 
-/* Lead-capture hero: copy beside a two-field form, over the campus photo */
+/* Lead-capture hero: copy beside a two-field form, on the brand-blue backdrop */
 .lp-hero--lead {
 	position: relative;
 	padding-block: var(--lp-64);
-	background:
-		linear-gradient(100deg, var(--lp-navy) 0%, var(--lp-navy) 38%, color-mix(in oklch, var(--lp-navy), transparent 28%) 100%),
-		var(--lp-hero-image) right center / cover no-repeat;
+	background: var(--lp-hero-bg);
 	color: var(--lp-on-navy-muted);
 }
 
@@ -1728,12 +1728,6 @@
 		grid-template-columns: minmax(0, 1fr);
 		gap: var(--lp-32);
 	}
-
-	.lp-hero--lead {
-		background:
-			linear-gradient(180deg, var(--lp-navy) 0%, color-mix(in oklch, var(--lp-navy), transparent 12%) 100%),
-			var(--lp-hero-image) right center / cover no-repeat;
-	}
 }
 
 @media (max-width: 900px) {
@@ -1899,6 +1893,12 @@
 		overflow-x: auto;
 		border-top: 1px solid var(--lp-line);
 		scrollbar-width: none;
+	}
+
+	/* Fade the right edge so the row reads as scrollable rather than cut off. */
+	.lp-header-nav {
+		padding-right: var(--lp-24);
+		mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
 	}
 
 	.lp-header-nav::-webkit-scrollbar {
@@ -2097,7 +2097,6 @@
 	}
 }
 
-
 /* Five roadmap steps sit in one even row. */
 @media (min-width: 981px) {
 	.is-landing .study-timeline--5 {
@@ -2120,16 +2119,14 @@
 }
 
 /*
- * Signature layer: night-bridge hero, oversized figures, the K-Tech "bridge"
+ * Signature layer: brand-blue hero, oversized figures, the K-Tech "bridge"
  * journey, and scroll reveals. Opt-in per page (hero_backdrop, stats, bridge).
  */
 .lp-hero--cinema {
 	--lp-sky: oklch(84% 0.11 225);
 	position: relative;
 	padding-block: var(--lp-96) var(--lp-64);
-	background:
-		linear-gradient(100deg, var(--lp-navy) 0%, color-mix(in oklch, var(--lp-navy), transparent 8%) 42%, color-mix(in oklch, var(--lp-navy), transparent 45%) 100%),
-		var(--lp-hero-image) center 62% / cover no-repeat;
+	background: var(--lp-hero-bg);
 	color: var(--lp-on-navy-muted);
 }
 
@@ -2391,10 +2388,12 @@
 	}
 }
 
-/* Scroll reveals: added by script only, so content never depends on them. */
+/* Scroll reveals: added by script only, to blocks that start below the fold. Content stays
+   readable throughout (never below 60% opacity), so fast scrolling or an anchor jump
+   never shows an empty section. */
 .lp-reveal {
-	opacity: 0;
-	transform: translateY(20px);
+	opacity: 0.6;
+	transform: translateY(16px);
 	transition: opacity 600ms var(--lp-ease), transform 600ms var(--lp-ease);
 }
 
@@ -2427,7 +2426,7 @@
 }
 
 .lp-bridge-figure.lp-reveal .lp-bridge-stops li {
-	opacity: 0;
+	opacity: 0.6;
 	transform: translateY(16px);
 	transition: opacity 500ms var(--lp-ease), transform 500ms var(--lp-ease);
 }
@@ -3011,6 +3010,17 @@ body.consult-modal-open {
 	margin: 0 32px var(--lp-12) 0;
 	font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
 	line-height: 1.2;
+}
+
+/* Without a working form (the static preview), the popup offers only the call and Zalo routes. */
+.lp-consult-intro--contact,
+.lp-consult-dialog:has(.is-static) .lp-consult-intro--form,
+.lp-consult-dialog .form-fallback>p:first-child {
+	display: none;
+}
+
+.lp-consult-dialog:has(.is-static) .lp-consult-intro--contact {
+	display: block;
 }
 
 .lp-consult-intro {
@@ -3988,4 +3998,5577 @@ div.lp-mobile-cta .lp-button--light {
 		top: var(--lp-16);
 		right: var(--lp-16);
 	}
+}
+
+/* Parents' questions: navy band, short answers that link to the detail */
+.lp-parents {
+	background: var(--lp-navy);
+	color: var(--lp-on-navy-muted);
+}
+
+.lp-parents .section-heading h2 {
+	color: var(--lp-on-navy);
+}
+
+.lp-parents .section-heading p {
+	color: var(--lp-on-navy-muted);
+}
+
+.lp-parents-list {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: parent-q;
+	border-top: 1px solid color-mix(in oklch, var(--lp-on-navy), transparent 75%);
+}
+
+.lp-parents-list li {
+	counter-increment: parent-q;
+	display: flex;
+	flex-direction: column;
+	padding: var(--lp-32) var(--lp-32) var(--lp-32) 0;
+	border-bottom: 1px solid color-mix(in oklch, var(--lp-on-navy), transparent 75%);
+}
+
+.lp-parents-list li:not(:nth-child(3n+1)) {
+	padding-left: var(--lp-32);
+	border-left: 1px solid color-mix(in oklch, var(--lp-on-navy), transparent 75%);
+}
+
+.lp-parents-list li::before {
+	content: counter(parent-q, decimal-leading-zero);
+	margin-bottom: var(--lp-12);
+	color: var(--lp-sky, #7cc4f5);
+	font-size: var(--lp-step--1);
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	font-variant-numeric: tabular-nums;
+}
+
+.lp-parents-list h3 {
+	margin: 0 0 var(--lp-12);
+	color: var(--lp-on-navy);
+	font-size: var(--lp-step-1);
+	line-height: 1.3;
+}
+
+.lp-parents-list p {
+	flex: 1;
+	margin: 0 0 var(--lp-16);
+	font-size: 1rem;
+	line-height: 1.6;
+}
+
+.lp-parents-list a {
+	align-self: flex-start;
+	padding-block: var(--lp-8);
+	color: var(--lp-on-navy);
+	font-size: var(--lp-step--1);
+	font-weight: 650;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+/* Payment schedule: one track, each stop shows who is paid and how much */
+.lp-payments {
+	--pay-letco: var(--study-accent);
+	--pay-school: var(--lp-navy);
+	--pay-other: var(--lp-muted);
+}
+
+.lp-payee-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--lp-8) var(--lp-24);
+	margin: 0 0 var(--lp-32);
+	padding: 0;
+	list-style: none;
+	font-size: var(--lp-step--1);
+	font-weight: 600;
+	color: var(--lp-ink);
+}
+
+.lp-payee-legend li,
+.lp-paytrack ul li {
+	--pay: var(--pay-other);
+}
+
+.lp-payee-legend .is-letco,
+.lp-paytrack ul .is-letco {
+	--pay: var(--pay-letco);
+}
+
+.lp-payee-legend .is-school,
+.lp-paytrack ul .is-school {
+	--pay: var(--pay-school);
+}
+
+.lp-payee-legend li::before {
+	content: "";
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	margin-right: var(--lp-8);
+	border-radius: 3px;
+	background: var(--pay);
+	vertical-align: -1px;
+}
+
+.lp-paytrack {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: var(--lp-16);
+	margin: 0 0 var(--lp-24);
+	padding: 0;
+	list-style: none;
+}
+
+.lp-paytrack>li {
+	position: relative;
+	padding-top: var(--lp-48);
+}
+
+.lp-paytrack>li::before {
+	content: "";
+	position: absolute;
+	top: 15px;
+	left: 0;
+	right: calc(-1 * var(--lp-16));
+	height: 2px;
+	background: var(--lp-line-strong);
+}
+
+.lp-paytrack>li:last-child::before {
+	right: 0;
+}
+
+.lp-paytrack-step {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: grid;
+	width: 32px;
+	height: 32px;
+	place-items: center;
+	border-radius: 50%;
+	background: var(--lp-surface, #fff);
+	border: 2px solid var(--study-accent);
+	color: var(--study-accent);
+	font-size: var(--lp-step--1);
+	font-weight: 700;
+}
+
+.lp-paytrack-when {
+	margin: 0 0 var(--lp-4);
+	color: var(--study-accent);
+	font-size: var(--lp-step--1);
+	font-weight: 650;
+	font-variant-numeric: tabular-nums;
+}
+
+.lp-paytrack h3 {
+	margin: 0 0 var(--lp-12);
+	color: var(--lp-ink);
+	font-size: 1rem;
+	line-height: 1.35;
+}
+
+.lp-paytrack ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lp-paytrack ul li {
+	display: grid;
+	gap: 2px;
+	margin-top: var(--lp-8);
+	padding: var(--lp-8) var(--lp-12);
+	border-left: 4px solid var(--pay);
+	background: color-mix(in oklch, var(--pay), transparent 92%);
+	border-radius: 0 var(--lp-radius) var(--lp-radius) 0;
+}
+
+.lp-paytrack ul span {
+	font-size: var(--lp-step--1);
+	line-height: 1.4;
+}
+
+.lp-paytrack ul strong {
+	color: var(--lp-ink);
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+@media (max-width: 1080px) {
+	.lp-parents-list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.lp-parents-list li,
+	.lp-parents-list li:not(:nth-child(3n+1)) {
+		padding: var(--lp-24) var(--lp-24) var(--lp-24) 0;
+		border-left: 0;
+	}
+
+	.lp-parents-list li:nth-child(even) {
+		padding-left: var(--lp-24);
+		border-left: 1px solid color-mix(in oklch, var(--lp-on-navy), transparent 75%);
+	}
+
+	/* Vertical track */
+	.lp-paytrack {
+		grid-template-columns: 1fr;
+		gap: 0;
+	}
+
+	.lp-paytrack>li {
+		padding: 0 0 var(--lp-24) var(--lp-48);
+	}
+
+	.lp-paytrack>li::before {
+		top: 0;
+		bottom: 0;
+		left: 15px;
+		right: auto;
+		width: 2px;
+		height: auto;
+	}
+
+	.lp-paytrack>li:last-child::before {
+		bottom: auto;
+		height: 32px;
+	}
+
+	.lp-paytrack ul {
+		max-width: 420px;
+	}
+}
+
+@media (max-width: 640px) {
+	.lp-parents-list {
+		grid-template-columns: 1fr;
+	}
+
+	.lp-parents-list li,
+	.lp-parents-list li:not(:nth-child(3n+1)),
+	.lp-parents-list li:nth-child(even) {
+		padding: var(--lp-24) 0;
+		border-left: 0;
+	}
+}
+
+/* Folding blocks: plain headings on wide screens, a heading row with a toggle on phones.
+   The toggle only appears once the script has taken over, so content never hides without it. */
+.lp-fold-title {
+	margin: 0;
+}
+
+.lp-fold-toggle {
+	display: none;
+}
+
+@media (min-width: 761px) {
+	.lp-fold-title {
+		margin-bottom: var(--lp-12);
+	}
+}
+
+@media (max-width: 760px) {
+	.has-folds .lp-fold-head {
+		position: relative;
+		display: flex;
+		min-height: 48px;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--lp-16);
+	}
+
+	/* The title sits centred on the toggle row whatever margin its context gives headings. */
+	.has-folds .lp-fold-head>.lp-fold-title {
+		margin: 0;
+	}
+
+	.has-folds .lp-fold-toggle {
+		display: block;
+		flex: 0 0 auto;
+		width: 28px;
+		height: 28px;
+		padding: 0;
+		border: 1px solid var(--lp-line-strong);
+		border-radius: var(--lp-radius);
+		background: none;
+		color: var(--lp-ink);
+		font: inherit;
+		font-weight: 400;
+		line-height: 26px;
+		text-align: center;
+		cursor: pointer;
+	}
+
+	.has-folds .lp-fold-toggle::before {
+		content: "+";
+	}
+
+	.has-folds .lp-fold-toggle[aria-expanded="true"]::before {
+		content: "–";
+	}
+
+	/* The whole heading row is the tap target. */
+	.has-folds .lp-fold-toggle::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+	}
+
+	.has-folds .lp-fold-toggle:focus-visible {
+		outline: 3px solid color-mix(in oklch, var(--study-accent), transparent 35%);
+		outline-offset: 3px;
+	}
+
+	.lp-fold.is-open>.lp-fold-head {
+		margin-bottom: var(--lp-8);
+	}
+
+	.lp-parents-list li,
+	.lp-parents-list li:not(:nth-child(3n+1)),
+	.lp-parents-list li:nth-child(even) {
+		flex-direction: row;
+		align-items: flex-start;
+		gap: var(--lp-12);
+		padding: var(--lp-12) 0;
+	}
+
+	.lp-parents-list li::before {
+		margin: 15px 0 0;
+	}
+
+	.lp-parents-list .lp-fold {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.lp-parents-list h3 {
+		font-size: 1.0625rem;
+	}
+
+	.lp-parents-list .lp-fold-toggle {
+		color: var(--lp-on-navy);
+	}
+
+	.lp-responsibility-grid article {
+		padding: var(--lp-12) 0;
+	}
+
+	.lp-responsibility-grid .lp-fold.is-open {
+		padding-bottom: var(--lp-12);
+	}
+
+	/* Header tucks away while reading down */
+	.lp-header {
+		transition: transform 0.25s ease;
+	}
+
+	.lp-header.is-tucked {
+		transform: translateY(-100%);
+	}
+
+	/* Readable small text and comfortable tap targets */
+	.is-landing .study-major-duration,
+	.is-landing .study-lead-form label,
+	.is-landing .study-lead-form label span,
+	.field-optional,
+	.study-lead-form label>span.field-optional {
+		font-size: 0.875rem;
+	}
+
+	.lp-summary-list a,
+	.lp-parents-list a {
+		padding-block: 12px;
+	}
+
+	.lp-fit figure img {
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+	}
+}
+
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+	.lp-header {
+		transition: none;
+	}
+}
+
+@media (max-width: 760px) {
+	.is-landing .study-choice-group legend,
+	.is-landing .study-lead-form small {
+		font-size: 0.875rem;
+	}
+}
+
+/* ===== Daeduk zoned landing ===== */
+.dk-page .dk-zone {
+	padding-block: clamp(56px, 4rem + 2vw, 104px);
+}
+
+/* Zone heading: label rule, question, one line of context */
+.dk-head {
+	display: grid;
+	gap: var(--lp-12) var(--lp-48);
+	margin-bottom: var(--lp-48);
+}
+
+.dk-label {
+	display: flex;
+	align-items: center;
+	gap: var(--lp-12);
+	margin: 0;
+	color: var(--study-accent);
+	font-size: var(--lp-step--1);
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.dk-head h2 {
+	max-width: 22ch;
+	margin: 0;
+	color: var(--lp-ink);
+	font-size: var(--lp-step-3);
+	line-height: 1.15;
+	text-wrap: balance;
+}
+
+.dk-intro {
+	max-width: 62ch;
+	margin: 0;
+	color: var(--lp-muted);
+	font-size: var(--lp-step-0);
+	line-height: 1.6;
+}
+
+.dk-sub {
+	margin-top: clamp(48px, 3rem + 1vw, 72px);
+	scroll-margin-top: calc(var(--lp-header-h) + var(--lp-16));
+}
+
+.dk-sub>h3,
+.dk-sub-fold .lp-fold-title,
+.dk-split h3,
+.dk-school h3,
+.dk-outside h3 {
+	margin: 0 0 var(--lp-12);
+	color: var(--lp-ink);
+	font-size: var(--lp-step-1);
+	line-height: 1.3;
+}
+
+.dk-sub-intro {
+	max-width: 66ch;
+	margin: 0 0 var(--lp-24);
+	color: var(--lp-muted);
+}
+
+.dk-footnote {
+	max-width: 72ch;
+	margin: var(--lp-16) 0 0;
+	color: var(--lp-muted);
+	font-size: var(--lp-step--1);
+	line-height: 1.55;
+}
+
+/* Starting points by Korean level */
+.dk-start {
+	display: grid;
+	gap: var(--lp-16);
+	margin: 0 0 var(--lp-24);
+	padding: 0;
+	list-style: none;
+}
+
+.dk-start li {
+	padding: var(--lp-24);
+	border: 1px solid var(--lp-line);
+	border-radius: var(--lp-radius);
+	background: var(--lp-surface);
+}
+
+.dk-start-tag {
+	display: inline-block;
+	margin: 0 0 var(--lp-12);
+	padding: 2px var(--lp-8);
+	border-radius: 4px;
+	background: color-mix(in oklch, var(--study-accent), transparent 90%);
+	color: var(--study-accent);
+	font-size: var(--lp-step--1);
+	font-weight: 650;
+}
+
+.dk-start h4 {
+	margin: 0 0 var(--lp-8);
+	color: var(--lp-ink);
+	font-size: 1.0625rem;
+	line-height: 1.35;
+}
+
+.dk-start li>p:last-child {
+	margin: 0;
+	font-size: var(--lp-step--1);
+	line-height: 1.55;
+}
+
+/* Key intake dates, readable without opening the full table */
+.dk-intake {
+	display: grid;
+	margin: 0 0 var(--lp-16);
+	border-top: 2px solid var(--lp-ink);
+}
+
+.dk-intake>div {
+	padding: var(--lp-16) 0;
+	border-bottom: 1px solid var(--lp-line);
+}
+
+.dk-intake dt {
+	color: var(--study-accent);
+	font-size: var(--lp-step--1);
+	font-weight: 650;
+}
+
+.dk-intake dd {
+	margin: var(--lp-4) 0 0;
+}
+
+.dk-intake strong,
+.dk-intake span {
+	display: block;
+}
+
+.dk-intake strong {
+	color: var(--lp-ink);
+	font-variant-numeric: tabular-nums;
+}
+
+.dk-intake span {
+	color: var(--lp-muted);
+	font-size: var(--lp-step--1);
+}
+
+@media (min-width: 761px) {
+	.dk-start,
+	.dk-intake {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.dk-start {
+		gap: var(--lp-24);
+	}
+
+	.dk-intake>div + div {
+		padding-left: var(--lp-24);
+		border-left: 1px solid var(--lp-line);
+	}
+}
+
+.dk-sub .lp-details--wide + .dk-callout {
+	margin-top: var(--lp-32);
+}
+
+.dk-callout p {
+	margin: 0;
+}
+
+.dk-callout .dk-mini-label {
+	margin-bottom: var(--lp-4);
+}
+
+#hoan-phi>.dk-mini-label {
+	margin-bottom: var(--lp-12);
+}
+
+/* The static preview has no form, so its call/Zalo card is the only action group. */
+.study-lead-section:has(.is-static) .study-lead-actions {
+	display: none;
+}
+
+.dk-callout {
+	max-width: 72ch;
+	margin: var(--lp-24) 0 0;
+	padding: var(--lp-16) var(--lp-24);
+	border-left: 4px solid var(--study-accent);
+	background: color-mix(in oklch, var(--study-accent), transparent 93%);
+	color: var(--lp-ink);
+	border-radius: 0 var(--lp-radius) var(--lp-radius) 0;
+	line-height: 1.6;
+}
+
+.dk-mini-label {
+	margin: 0 0 var(--lp-4);
+	color: var(--lp-muted);
+	font-size: var(--lp-step--1);
+	font-weight: 650;
+}
+
+.dk-dots {
+	display: grid;
+	gap: var(--lp-12);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dk-dots li {
+	position: relative;
+	padding-left: var(--lp-24);
+	line-height: 1.55;
+}
+
+.dk-dots li::before {
+	content: "";
+	position: absolute;
+	top: 0.6em;
+	left: 0;
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--study-accent);
+}
+
+.dk-dots--compact {
+	gap: var(--lp-8);
+	margin-top: var(--lp-16);
+	font-size: var(--lp-step--1);
+}
+
+/* Asymmetric split: main column with the key list, narrower side notes */
+.dk-split {
+	display: grid;
+	gap: var(--lp-48);
+}
+
+.dk-checklist {
+	display: grid;
+	gap: 0;
+	margin: 0 0 var(--lp-24);
+	padding: 0;
+	list-style: none;
+	counter-reset: dk-check;
+	border-top: 2px solid var(--lp-ink);
+}
+
+.dk-checklist li {
+	counter-increment: dk-check;
+	display: grid;
+	grid-template-columns: 40px 1fr;
+	padding: var(--lp-12) 0;
+	border-bottom: 1px solid var(--lp-line);
+	color: var(--lp-ink);
+	font-weight: 550;
+	line-height: 1.5;
+}
+
+.dk-checklist li::before {
+	content: counter(dk-check, decimal-leading-zero);
+	color: var(--study-accent);
+	font-size: var(--lp-step--1);
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	line-height: 1.7;
+}
+
+.dk-note-block {
+	padding: var(--lp-24);
+	border: 1px solid var(--lp-line);
+	border-radius: var(--lp-radius);
+	background: var(--lp-surface);
+}
+
+.dk-note-block + .dk-note-block {
+	margin-top: var(--lp-16);
+}
+
+.dk-note-block h3 {
+	font-size: 1.0625rem;
+}
+
+/* Hero: copy on 7 columns, the photo on 5 sitting level with the headline. */
+
+.dk-hero h1 {
+	margin: 0;
+	text-wrap: balance;
+}
+
+/* The school name moves as one unit; it fits the narrowest supported screen. */
+.dk-hero h1 em {
+	display: inline-block;
+	margin-top: 0;
+}
+
+.dk-hero-sub {
+	max-width: 34ch;
+	margin: var(--lp-16) 0 0;
+	color: var(--lp-on-navy);
+	font-size: var(--lp-step-1);
+	font-weight: 650;
+	line-height: 1.4;
+}
+
+.dk-hero .lp-lede {
+	margin: var(--lp-16) 0 var(--lp-32);
+}
+
+.dk-hero-media {
+	position: relative;
+	margin: 0;
+}
+
+.dk-hero-media img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	border-radius: var(--lp-radius);
+}
+
+.dk-hero-media figcaption {
+	margin-top: var(--lp-12);
+	color: var(--lp-on-navy-muted);
+	font-size: var(--lp-step--1);
+}
+
+/* Programme and place are separate clusters; each breaks only between its own parts. */
+.dk-kicker-programme>span,
+.dk-kicker-place {
+	display: inline-block;
+}
+
+.dk-kicker-place::before {
+	content: "·";
+	margin: 0 0.4em;
+}
+
+@media (max-width: 760px) {
+	.dk-kicker-place {
+		display: block;
+		margin-top: var(--lp-4);
+	}
+
+	.dk-kicker-place::before {
+		content: none;
+	}
+}
+
+/* Enrolment office card, overlapping the foot of the photo. */
+.dk-hero-org {
+	position: relative;
+	z-index: 1;
+	width: min(100% - var(--lp-24), 360px);
+	margin: -56px 0 0 calc(-1 * var(--lp-24));
+	padding: var(--lp-16) var(--lp-24);
+	border-left: 4px solid var(--lp-sky);
+	border-radius: var(--lp-radius);
+	background: var(--lp-surface);
+	box-shadow: 0 16px 40px color-mix(in oklch, var(--lp-navy), transparent 60%);
+	color: var(--lp-text);
+	font-size: var(--lp-step--1);
+	line-height: 1.5;
+}
+
+.dk-hero-org p {
+	margin: 0;
+}
+
+.dk-hero-org .dk-hero-org-name {
+	margin: var(--lp-4) 0 var(--lp-4);
+	color: var(--lp-ink);
+	font-size: 1rem;
+	font-weight: 750;
+}
+
+@media (max-width: 760px) {
+	
+
+	.dk-hero .lp-actions .lp-button {
+		width: 100%;
+	}
+}
+
+.dk-keyfacts {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	margin: var(--lp-48) 0 0;
+	border-top: 1px solid color-mix(in oklch, var(--lp-on-navy), transparent 70%);
+}
+
+.dk-keyfacts dt {
+	color: var(--lp-on-navy);
+	font-size: 1.25rem;
+	font-weight: 750;
+	line-height: 1.25;
+	font-variant-numeric: tabular-nums;
+}
+
+.dk-keyfacts dd {
+	margin: var(--lp-8) 0 0;
+	color: var(--lp-on-navy-muted);
+	font-size: var(--lp-step--1);
+	line-height: 1.5;
+}
+
+/* Majors: a 4/8 split, heading beside two columns of cards */
+.dk-study-grid {
+	display: grid;
+	gap: var(--lp-32);
+}
+
+.dk-study-aside .dk-head {
+	grid-template-columns: 1fr;
+	margin-bottom: var(--lp-16);
+}
+
+.dk-majors {
+	display: grid;
+	gap: var(--lp-16);
+}
+
+.dk-major p {
+	margin: 0;
+	line-height: 1.6;
+}
+
+.dk-major .dk-major-years {
+	margin: var(--lp-4) 0 var(--lp-12);
+}
+
+.dk-major-skills {
+	display: grid;
+	gap: var(--lp-4);
+	margin: var(--lp-12) 0 var(--lp-16);
+	padding: 0;
+	list-style: none;
+	font-size: var(--lp-step--1);
+}
+
+.dk-major-skills li {
+	position: relative;
+	padding-left: var(--lp-16);
+}
+
+.dk-major-skills li::before {
+	content: "";
+	position: absolute;
+	top: 0.6em;
+	left: 0;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--study-accent);
+}
+
+/* On phones the skills and modules fold behind one row; wider screens show the skills. */
+.dk-major-more .lp-fold-title {
+	color: var(--study-accent);
+	font-size: var(--lp-step--1);
+	font-weight: 650;
+}
+
+@media (min-width: 761px) {
+	.dk-major-more>.lp-fold-head {
+		display: none;
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-major-more {
+		margin-top: var(--lp-8);
+		border-top: 1px solid var(--lp-line);
+	}
+
+	.has-folds .dk-major-more>.lp-fold-head {
+		min-height: 44px;
+	}
+
+	.dk-major .dk-major-years {
+		margin-bottom: var(--lp-8);
+	}
+
+	/* Starting points read as a ruled list rather than three cards. */
+	.dk-start {
+		gap: 0;
+		border-top: 2px solid var(--lp-ink);
+	}
+
+	.dk-start li {
+		padding: var(--lp-16) 0;
+		border: 0;
+		border-bottom: 1px solid var(--lp-line);
+		border-radius: 0;
+		background: none;
+	}
+
+	.dk-start-tag {
+		margin-bottom: var(--lp-8);
+	}
+
+	/* Decorative second photos give way to the content on phones. */
+	.dk-school-photos figure:not(:first-child),
+	.dk-evidence-small {
+		display: none;
+	}
+
+	
+
+	
+
+	
+
+	
+}
+
+.dk-major .lp-details summary {
+	min-height: 44px;
+	padding: var(--lp-8) 0;
+	font-size: var(--lp-step--1);
+}
+
+.dk-major .lp-details:last-of-type {
+	border-bottom: 0;
+}
+
+.dk-major .lp-details p {
+	padding-bottom: var(--lp-8);
+	font-size: var(--lp-step--1);
+}
+
+@media (min-width: 761px) {
+	.dk-majors {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--lp-24);
+	}
+}
+
+@media (min-width: 961px) {
+	.dk-study-grid {
+		grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+		gap: var(--lp-64);
+		align-items: start;
+	}
+
+	.dk-study-aside {
+		position: sticky;
+		top: calc(var(--lp-header-h) + var(--lp-32));
+	}
+
+	/* The second column sits 24px lower; the grid keeps that room at its foot. */
+	.dk-majors {
+		padding-bottom: var(--lp-24);
+	}
+
+	.dk-majors>:nth-child(even) {
+		translate: 0 var(--lp-24);
+	}
+}
+
+.dk-school {
+	display: grid;
+	gap: var(--lp-48);
+	margin-top: clamp(48px, 3rem + 1vw, 72px);
+}
+
+.dk-facts {
+	margin: 0 0 var(--lp-24);
+}
+
+.dk-facts>div {
+	padding: var(--lp-16) 0;
+	border-bottom: 1px solid var(--lp-line);
+}
+
+.dk-facts dt {
+	color: var(--lp-ink);
+	font-weight: 650;
+}
+
+.dk-facts dd {
+	margin: var(--lp-4) 0 0;
+	line-height: 1.6;
+}
+
+.dk-school .dk-campus-title {
+	margin: var(--lp-48) 0 var(--lp-8);
+}
+
+.dk-school .dk-campus-title + .lp-details {
+	margin-top: 0;
+}
+
+.dk-fact-source {
+	display: inline-block;
+	font-size: var(--lp-step--1);
+}
+
+.dk-start + .dk-footnote,
+.dk-intake + .dk-footnote {
+	margin: 0 0 var(--lp-16);
+}
+
+.dk-facts-fold .dk-footnote {
+	margin-top: var(--lp-12);
+}
+
+.dk-school-photos {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--lp-16);
+	align-content: start;
+}
+
+.dk-school-photos figure:first-child,
+.dk-school-photos .dk-footnote {
+	grid-column: 1 / -1;
+}
+
+.dk-school-photos figure,
+.dk-evidence figure {
+	margin: 0;
+}
+
+.dk-school-photos img,
+.dk-evidence img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	border-radius: var(--lp-radius);
+}
+
+.dk-school-photos figure:first-child img,
+.dk-evidence-main img {
+	aspect-ratio: 3 / 2;
+}
+
+.dk-school-photos figcaption,
+.dk-evidence figcaption {
+	margin-top: var(--lp-8);
+	color: var(--lp-muted);
+	font-size: var(--lp-step--1);
+}
+
+.dk-school-photos .dk-footnote {
+	margin-top: 0;
+}
+
+/* Route: five stops on one line */
+.dk-route {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: var(--lp-24);
+	margin: 0 0 clamp(48px, 3rem + 1vw, 72px);
+	padding: 0;
+	list-style: none;
+}
+
+.dk-route li {
+	position: relative;
+	padding-top: var(--lp-48);
+}
+
+.dk-route li::before {
+	content: "";
+	position: absolute;
+	top: 17px;
+	left: 0;
+	right: calc(-1 * var(--lp-24));
+	height: 2px;
+	background: linear-gradient(90deg, var(--study-accent), color-mix(in oklch, var(--study-accent), transparent 60%));
+}
+
+.dk-route li:last-child::before {
+	right: 0;
+}
+
+.dk-route-step {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: grid;
+	width: 36px;
+	height: 36px;
+	place-items: center;
+	border-radius: 50%;
+	background: var(--study-accent);
+	color: #fff;
+	font-weight: 700;
+}
+
+.dk-route-when {
+	margin: 0 0 var(--lp-4);
+	color: var(--study-accent);
+	font-size: var(--lp-step--1);
+	font-weight: 650;
+}
+
+.dk-route h3 {
+	margin: 0 0 var(--lp-8);
+	color: var(--lp-ink);
+	font-size: 1.0625rem;
+}
+
+.dk-route p:last-child {
+	margin: 0;
+	font-size: var(--lp-step--1);
+	line-height: 1.55;
+}
+
+.dk-terms {
+	margin: 0;
+	border-top: 2px solid var(--lp-ink);
+}
+
+.dk-terms>div {
+	display: grid;
+	grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+	gap: var(--lp-24);
+	padding: var(--lp-16) 0;
+	border-bottom: 1px solid var(--lp-line);
+}
+
+.dk-terms dt {
+	color: var(--lp-ink);
+	font-weight: 650;
+}
+
+.dk-terms dd {
+	margin: 0;
+	line-height: 1.6;
+}
+
+.dk-terms .is-key dd {
+	color: var(--lp-ink);
+	font-weight: 600;
+}
+
+/* Money: total first, then the three payees side by side */
+.dk-total {
+	display: grid;
+	gap: var(--lp-24);
+	padding: clamp(24px, 1rem + 2vw, 40px);
+	background: var(--lp-navy);
+	border-radius: var(--lp-radius);
+	color: var(--lp-on-navy-muted);
+}
+
+.dk-total-label {
+	margin: 0;
+	font-size: var(--lp-step--1);
+	font-weight: 650;
+}
+
+.dk-total-value {
+	margin: var(--lp-8) 0;
+	color: var(--lp-on-navy);
+	font-size: clamp(2.25rem, 1.5rem + 3vw, 3.5rem);
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	line-height: 1.05;
+	font-variant-numeric: tabular-nums;
+}
+
+.dk-total-formula {
+	margin: 0;
+	color: var(--lp-on-navy);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.5;
+}
+
+.dk-total-note {
+	margin: 0;
+	font-size: var(--lp-step--1);
+	line-height: 1.6;
+}
+
+.dk-payees {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--lp-24);
+	margin-top: var(--lp-32);
+}
+
+.dk-payee {
+	--pay: var(--lp-muted);
+	padding: var(--lp-24);
+	border: 1px solid var(--lp-line);
+	border-top: 4px solid var(--pay);
+	border-radius: var(--lp-radius);
+	background: var(--lp-surface);
+}
+
+.dk-payee h3 {
+	display: grid;
+	gap: var(--lp-4);
+	margin: 0 0 var(--lp-16);
+	padding-bottom: var(--lp-16);
+	border-bottom: 1px solid var(--lp-line);
+}
+
+.dk-payee h3 span {
+	color: var(--lp-muted);
+	font-size: var(--lp-step--1);
+	font-weight: 650;
+}
+
+.dk-payee h3 strong {
+	color: var(--lp-ink);
+	font-size: var(--lp-step-2);
+	font-variant-numeric: tabular-nums;
+}
+
+.dk-payee ul {
+	display: grid;
+	gap: var(--lp-12);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dk-payee li {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--lp-12);
+	font-size: var(--lp-step--1);
+	line-height: 1.45;
+}
+
+.dk-payee li small {
+	display: block;
+	margin-top: 2px;
+	color: var(--lp-muted);
+	font-size: 0.8125rem;
+}
+
+.dk-payee li b {
+	color: var(--lp-ink);
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.dk-outside {
+	margin-top: var(--lp-32);
+	padding: var(--lp-24);
+	border: 1px dashed var(--lp-line-strong);
+	border-radius: var(--lp-radius);
+}
+
+.dk-outside-grid {
+	display: grid;
+	gap: var(--lp-24);
+	margin-top: var(--lp-16);
+}
+
+.dk-outside dl {
+	display: grid;
+	gap: var(--lp-16);
+	margin: var(--lp-8) 0 0;
+}
+
+.dk-proof {
+	align-self: start;
+	padding: var(--lp-16) var(--lp-24);
+	border-radius: var(--lp-radius);
+	background: color-mix(in oklch, var(--study-accent), transparent 93%);
+}
+
+.dk-proof p {
+	margin: 0;
+	font-size: var(--lp-step--1);
+	line-height: 1.55;
+}
+
+.dk-proof .dk-proof-name {
+	margin: var(--lp-4) 0;
+	color: var(--lp-ink);
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+@media (min-width: 761px) {
+	.dk-outside-grid {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		gap: var(--lp-32);
+	}
+}
+
+.dk-outside dt {
+	color: var(--lp-ink);
+	font-weight: 650;
+}
+
+.dk-outside dd {
+	margin: var(--lp-4) 0 0;
+	font-size: var(--lp-step--1);
+	line-height: 1.55;
+}
+
+.lp-paytrack h4 {
+	margin: 0 0 var(--lp-12);
+	color: var(--lp-ink);
+	font-size: 1rem;
+	line-height: 1.35;
+}
+
+.dk-scholar {
+	display: grid;
+	gap: var(--lp-32);
+}
+
+.dk-scholar-in {
+	padding: var(--lp-24);
+	border-radius: var(--lp-radius);
+	background: color-mix(in oklch, var(--study-accent), transparent 92%);
+	align-self: start;
+}
+
+.dk-scholar-name {
+	margin: 0 0 var(--lp-8);
+	color: var(--lp-ink);
+	font-size: var(--lp-step-1);
+	font-weight: 700;
+}
+
+.dk-scholar-in p:last-child {
+	margin: 0;
+	line-height: 1.6;
+}
+
+.dk-refund {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--lp-24);
+	border-top: 2px solid var(--lp-ink);
+	padding-top: var(--lp-24);
+}
+
+.dk-refund h4 {
+	margin: 0 0 var(--lp-8);
+	color: var(--lp-ink);
+	font-size: 1.0625rem;
+}
+
+.dk-refund p {
+	margin: 0;
+	line-height: 1.6;
+}
+
+/* Trust: a large signing photo; the source card overlaps its right edge */
+.dk-evidence {
+	display: grid;
+	gap: var(--lp-24);
+	align-items: start;
+}
+
+.dk-evidence-side {
+	display: grid;
+	gap: var(--lp-24);
+}
+
+.dk-evidence-card {
+	position: relative;
+	z-index: 1;
+	padding: var(--lp-24);
+	border-left: 4px solid var(--study-accent);
+	border-radius: var(--lp-radius);
+	background: var(--lp-surface);
+	box-shadow: 0 16px 40px color-mix(in oklch, var(--lp-navy), transparent 82%);
+}
+
+.dk-evidence-card h3 {
+	margin: 0 0 var(--lp-12);
+	color: var(--lp-ink);
+	font-size: var(--lp-step-1);
+	line-height: 1.3;
+}
+
+.dk-evidence-card p {
+	margin: 0 0 var(--lp-12);
+	line-height: 1.6;
+}
+
+.dk-evidence-card .lp-source {
+	margin: 0;
+}
+
+@media (min-width: 961px) {
+	.dk-evidence-card {
+		margin: var(--lp-32) 0 0 -96px;
+	}
+
+	.dk-evidence-small {
+		width: 82%;
+		margin-left: auto;
+	}
+}
+
+.dk-org {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--lp-32);
+	margin-top: var(--lp-48);
+	padding-top: var(--lp-32);
+	border-top: 1px solid var(--lp-line);
+}
+
+.dk-org h3 {
+	margin: 0 0 var(--lp-8);
+	color: var(--lp-ink);
+	font-size: 1.0625rem;
+}
+
+.dk-org p {
+	margin: 0;
+	line-height: 1.6;
+}
+
+.dk-org .lp-source {
+	grid-column: 1 / -1;
+}
+
+.dk-roles {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--lp-16);
+}
+
+.dk-role {
+	display: flex;
+	flex-direction: column;
+	padding: var(--lp-24);
+	border: 1px solid var(--lp-line);
+	border-radius: var(--lp-radius);
+	background: var(--lp-bg);
+}
+
+.dk-role h4 {
+	margin: 0 0 var(--lp-12);
+	color: var(--lp-ink);
+	font-size: 1.0625rem;
+}
+
+.dk-role .dk-dots {
+	flex: 1;
+	font-size: var(--lp-step--1);
+}
+
+.dk-role-contact {
+	margin: var(--lp-16) 0 0;
+	padding-top: var(--lp-12);
+	border-top: 1px solid var(--lp-line);
+	color: var(--lp-ink);
+	font-size: var(--lp-step--1);
+	font-weight: 600;
+	line-height: 1.5;
+}
+
+.dk-page .study-faq .dk-head {
+	margin-bottom: var(--lp-24);
+}
+
+@media (min-width: 961px) {
+	.dk-head {
+		grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+		align-items: end;
+	}
+
+	.dk-label {
+		grid-column: 1 / -1;
+	}
+
+	.dk-page .study-faq .dk-head {
+		grid-template-columns: 1fr;
+	}
+
+	.dk-split {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		gap: var(--lp-64);
+		align-items: start;
+	}
+
+	.dk-school {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		gap: var(--lp-64);
+	}
+
+	.dk-total {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		align-items: end;
+		gap: var(--lp-48);
+	}
+
+	.dk-scholar {
+		grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+	}
+
+	.dk-evidence {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+		gap: var(--lp-48);
+	}
+}
+
+@media (max-width: 1080px) {
+	.dk-keyfacts {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	
+
+	
+
+	.dk-route {
+		grid-template-columns: 1fr;
+		gap: 0;
+	}
+
+	.dk-route li {
+		padding: 0 0 var(--lp-24) 56px;
+	}
+
+	.dk-route li::before {
+		top: 0;
+		bottom: 0;
+		left: 17px;
+		right: auto;
+		width: 2px;
+		height: auto;
+		background: color-mix(in oklch, var(--study-accent), transparent 50%);
+	}
+
+	.dk-route li:last-child::before {
+		bottom: auto;
+		height: 36px;
+	}
+
+	.dk-payees,
+	.dk-roles {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.dk-payees .dk-payee:last-child {
+		grid-column: 1 / -1;
+	}
+
+	.dk-org {
+		grid-template-columns: 1fr;
+		gap: var(--lp-24);
+	}
+}
+
+@media (max-width: 760px) {
+	
+
+	
+
+	
+
+	.dk-terms>div {
+		grid-template-columns: 1fr;
+		gap: var(--lp-4);
+	}
+
+	.dk-payees,
+	.dk-roles,
+	.dk-outside dl,
+	.dk-refund {
+		grid-template-columns: 1fr;
+	}
+
+	.dk-payee {
+		padding: var(--lp-16);
+	}
+
+	
+
+	.dk-school-photos {
+		gap: var(--lp-8);
+	}
+}
+
+.dk-major-years {
+	color: var(--study-accent);
+	font-weight: 650;
+}
+
+.study-lead-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--lp-12);
+	margin: var(--lp-24) 0 0;
+}
+
+.lp-button--ghost {
+	background: transparent;
+	border: 1px solid color-mix(in oklch, var(--lp-on-navy), transparent 50%);
+	color: var(--lp-on-navy);
+}
+
+.lp-button--ghost:hover {
+	background: color-mix(in oklch, var(--lp-on-navy), transparent 88%);
+	color: var(--lp-on-navy);
+}
+
+@media (max-width: 760px) {
+	
+
+	
+
+	
+
+	.dk-facts-fold {
+		border-top: 2px solid var(--lp-ink);
+		border-bottom: 1px solid var(--lp-line);
+	}
+
+	
+
+	/* Schedules fold into one tappable row each on phones. */
+	.dk-sub-fold {
+		margin-top: var(--lp-32);
+		border-top: 2px solid var(--lp-ink);
+		border-bottom: 1px solid var(--lp-line);
+	}
+
+	
+
+	
+
+	
+
+	.dk-org {
+		gap: 0;
+		padding-top: 0;
+		border-top: 2px solid var(--lp-ink);
+	}
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	.study-lead-actions .lp-button {
+		flex: 1 1 140px;
+		justify-content: center;
+	}
+}
+
+.lp-top-anchor {
+	position: absolute;
+	top: 0;
+}
+
+.is-landing .study-lead-form small {
+	font-size: 0.8125rem;
+}
+
+.study-lead-actions .lp-button {
+	white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+	.study-lead-actions .lp-button {
+		flex: 1 1 auto;
+		padding-inline: var(--lp-16);
+	}
+}
+
+/* Every animated dropdown clips its content while the height changes. */
+details.is-animating,
+.lp-fold-body.is-animating {
+	overflow: hidden;
+	will-change: height;
+}
+
+.lp-details.is-closing summary::after {
+	content: "+";
+}
+
+.study-accordion details.is-closing summary span {
+	transform: none;
+}
+
+/* Daeduk on phones: a tighter rhythm and one ruled-row style for every folding block. */
+@media (max-width: 760px) {
+	.dk-page .section {
+		padding-block: var(--lp-48);
+	}
+
+	.dk-page .dk-head {
+		margin-bottom: var(--lp-24);
+	}
+
+	.dk-page .dk-sub {
+		margin-top: calc(var(--lp-32) + var(--lp-8));
+	}
+
+	.dk-hero .lp-lede {
+		margin-bottom: var(--lp-24);
+	}
+
+	.dk-hero .lp-actions {
+		gap: var(--lp-12);
+		justify-content: center;
+	}
+
+	.has-folds .lp-fold {
+		border-bottom: 1px solid var(--lp-line);
+	}
+
+	.has-folds .lp-fold-head {
+		min-height: 52px;
+		padding-block: var(--lp-8);
+	}
+
+	.has-folds .lp-fold:not(.dk-major-more)>.lp-fold-head>.lp-fold-title {
+		color: var(--lp-ink);
+		font-size: 1.0625rem;
+		font-weight: 650;
+		line-height: 1.35;
+	}
+
+	.lp-fold.is-open>.lp-fold-body {
+		padding-bottom: var(--lp-16);
+	}
+
+	/* Boxed notes and roles become rows of the same list. */
+	.dk-split-side,
+	.dk-roles {
+		gap: 0;
+		border-top: 2px solid var(--lp-ink);
+	}
+
+	.dk-split-side .dk-note-block,
+	.dk-note-block--ask,
+	.dk-role {
+		padding: 0;
+		border: 0;
+		border-bottom: 1px solid var(--lp-line);
+		border-radius: 0;
+		background: none;
+	}
+
+	.dk-split-side .dk-note-block + .dk-note-block {
+		margin-top: 0;
+	}
+
+	.dk-major .dk-major-more {
+		border-bottom: 0;
+	}
+
+	.dk-school {
+		gap: var(--lp-32);
+	}
+
+	/* The campus heading leads its own rows instead of floating between groups. */
+	.dk-school .dk-campus-title {
+		margin: var(--lp-32) 0 0;
+		padding-bottom: var(--lp-12);
+		border-bottom: 2px solid var(--lp-ink);
+		font-size: 1.125rem;
+	}
+
+	.dk-school .dk-campus-title + .lp-details {
+		margin-top: 0;
+		border-top: 0;
+	}
+
+	
+
+	.dk-outside {
+		padding: var(--lp-16);
+	}
+
+	.dk-outside h3 {
+		font-size: 1.125rem;
+	}
+
+	.dk-proof {
+		padding: var(--lp-12) var(--lp-16);
+	}
+
+	.dk-callout {
+		padding: var(--lp-12) var(--lp-16);
+		font-size: 0.9375rem;
+	}
+
+	/* FAQ: questions follow the heading closely and match the other row titles. */
+	.dk-page .study-faq-layout {
+		gap: var(--lp-8);
+	}
+
+	.dk-page .study-accordion summary {
+		padding-block: var(--lp-16);
+		font-size: 1.0625rem;
+		line-height: 1.4;
+	}
+}
+
+/*
+ * Daeduk personality layer: LETCO blue stays the base; gold (the CTA colour and
+ * the highlighter on the school name) and LETCO red add energy for school-leavers.
+ * Scoped to this page so the other landings keep their look.
+ */
+.dk-page,
+.is-landing:has(.dk-page) .lp-header,
+.is-landing:has(.dk-page) .lp-mobile-cta {
+	--dk-gold: oklch(81% 0.16 78);
+	--dk-gold-deep: oklch(64% 0.14 66);
+	--dk-gold-tint: oklch(96.5% 0.035 85);
+	--dk-red: oklch(57% 0.21 22);
+	--dk-red-tint: oklch(96% 0.025 20);
+	--dk-sky-tint: oklch(96.5% 0.02 235);
+	--dk-on-gold: oklch(25% 0.06 256);
+	--lp-radius: 12px;
+	--dk-press: 0 4px 0 var(--dk-gold-deep);
+}
+
+/* Primary action: a gold button that presses down. */
+.dk-page .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--block):not(.lp-button--glass),
+.is-landing:has(.dk-page) .lp-header .lp-button,
+.is-landing:has(.dk-page) .lp-mobile-cta .lp-button:not(.lp-button--light) {
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+	font-weight: 750;
+	box-shadow: var(--dk-press);
+	transition: transform 120ms var(--lp-ease), box-shadow 120ms var(--lp-ease), background-color 200ms var(--lp-ease);
+}
+
+.dk-page .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--block):not(.lp-button--glass):hover,
+.is-landing:has(.dk-page) .lp-header .lp-button:hover,
+.is-landing:has(.dk-page) .lp-mobile-cta .lp-button:not(.lp-button--light):hover {
+	background: oklch(85% 0.15 82);
+	color: var(--dk-on-gold);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 0 var(--dk-gold-deep);
+}
+
+.dk-page .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--block):not(.lp-button--glass):active,
+.is-landing:has(.dk-page) .lp-header .lp-button:active,
+.is-landing:has(.dk-page) .lp-mobile-cta .lp-button:not(.lp-button--light):active {
+	transform: translateY(2px);
+	box-shadow: 0 2px 0 var(--dk-gold-deep);
+}
+
+/* Display type: the same family at its heaviest cut. */
+.dk-page h1,
+.dk-page .dk-head h2,
+.dk-page .study-lead-copy h2,
+.dk-page .dk-total-value,
+.dk-page .dk-keyfacts dt {
+	font-weight: 800;
+	letter-spacing: -0.025em;
+}
+
+/* Hero: gold kicker, a highlighter under the school name, a gold ring behind the photo. */
+.dk-hero {
+	overflow: clip;
+}
+
+.dk-hero-media img {
+	position: relative;
+	z-index: 0;
+}
+
+/* Zone labels become coloured tags, one colour per part of the journey. */
+.dk-page .dk-label {
+	display: inline-flex;
+	justify-self: start;
+	padding: var(--lp-4) var(--lp-12);
+	border-radius: 999px;
+	background: color-mix(in oklch, var(--dk-zone, var(--study-accent)), transparent 88%);
+	color: var(--dk-zone-ink, var(--study-accent));
+	letter-spacing: 0.04em;
+}
+
+.dk-page .dk-label::before {
+	content: none;
+}
+
+#hoi-dap { --dk-zone: oklch(62% 0.13 230); --dk-zone-ink: oklch(45% 0.12 235); }
+
+/* Alternate light surfaces so sections read as separate chapters. */
+.dk-page .dk-study,
+.dk-page #hoi-dap {
+	background: var(--dk-sky-tint);
+}
+
+/* Starting points and majors: coloured tags and tops, a small lift on hover. */
+.dk-start li:nth-child(1) .dk-start-tag { background: color-mix(in oklch, var(--dk-gold), transparent 75%); color: oklch(45% 0.11 66); }
+.dk-start li:nth-child(3) .dk-start-tag { background: var(--dk-red-tint); color: oklch(50% 0.19 22); }
+
+.dk-major {
+	transition: transform 200ms var(--lp-ease), border-color 200ms var(--lp-ease);
+}
+
+@media (hover: hover) {
+	.dk-major:hover {
+		transform: translateY(-3px);
+		border-color: var(--lp-line-strong);
+	}
+}
+
+/* Route: gold stops; the paid-internship stop (third) carries the red. */
+
+/* Money: the headline figure sits on brand blue in gold. */
+
+/* Notes: tinted panels instead of side stripes; warnings read warm. */
+.dk-page .dk-callout {
+	border-left: 0;
+	border-radius: var(--lp-radius);
+	background: var(--dk-gold-tint);
+}
+
+/* Sign-up band: gold ticks echo the CTA. */
+
+@media (prefers-reduced-motion: reduce) {
+	.dk-page .lp-button,
+	.dk-major {
+		transition: none;
+	}
+
+	.dk-page .lp-button:hover,
+	.dk-page .lp-button:active,
+	.dk-major:hover {
+		transform: none;
+	}
+}
+
+/* Journey ribbon: a gold band that runs the five stops of the programme. */
+.dk-ribbon {
+	display: block;
+	overflow: hidden;
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+	text-decoration: none;
+	--dk-ribbon-gap: var(--lp-48);
+}
+
+.dk-ribbon:focus-visible {
+	outline: 3px solid var(--dk-on-gold);
+	outline-offset: -6px;
+}
+
+.dk-ribbon-track {
+	display: flex;
+	width: max-content;
+	animation: dk-ribbon 38s linear infinite;
+}
+
+.dk-ribbon:hover .dk-ribbon-track,
+.dk-ribbon:focus-visible .dk-ribbon-track {
+	animation-play-state: paused;
+}
+
+.dk-ribbon-run {
+	display: flex;
+	flex: 0 0 auto;
+	gap: var(--dk-ribbon-gap);
+	padding: var(--lp-16) calc(var(--dk-ribbon-gap) / 2);
+	font-size: 1.0625rem;
+	font-weight: 800;
+	letter-spacing: -0.01em;
+	white-space: nowrap;
+}
+
+.dk-ribbon-run span {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--dk-ribbon-gap);
+}
+
+.dk-ribbon-run span::after {
+	content: "→";
+	font-weight: 400;
+}
+
+@keyframes dk-ribbon {
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dk-ribbon-track {
+		width: auto;
+		animation: none;
+	}
+
+	.dk-ribbon-run {
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--lp-8) var(--lp-24);
+		white-space: normal;
+	}
+
+	.dk-ribbon-run span {
+		gap: var(--lp-24);
+	}
+
+	.dk-ribbon-run[aria-hidden="true"] {
+		display: none;
+	}
+}
+
+/* Majors: the study length as an oversized figure in the card's corner. */
+.dk-major {
+	position: relative;
+	overflow: hidden;
+}
+
+.dk-major-num {
+	position: absolute;
+	top: var(--lp-12);
+	right: var(--lp-16);
+	margin: 0;
+	color: color-mix(in oklch, var(--dk-major-hue, var(--study-accent)), transparent 78%);
+	font-size: 4.5rem;
+	font-weight: 900;
+	line-height: 0.9;
+	font-variant-numeric: tabular-nums;
+	pointer-events: none;
+}
+
+.dk-major-num span {
+	margin-left: 2px;
+	font-size: 1rem;
+	font-weight: 800;
+}
+
+.dk-major h3,
+.dk-major .dk-major-years,
+.dk-major .dk-major-summary {
+	position: relative;
+	padding-right: 72px;
+}
+
+/* Sign-up: the closing band drenched in gold, the form card stays white. */
+
+.dk-page .study-lead-actions .lp-button--ghost:hover {
+	background: color-mix(in oklch, var(--dk-on-gold), transparent 88%);
+	color: var(--dk-on-gold);
+}
+
+/* The form's submit sits on white, so it keeps brand blue for contrast with the gold band. */
+
+.dk-page .study-lead-form .lp-button:hover {
+	background: color-mix(in oklch, var(--study-accent), black 12%);
+	color: var(--lp-surface);
+	box-shadow: 0 6px 0 color-mix(in oklch, var(--study-accent), black 30%);
+}
+
+.dk-page .study-lead-form .lp-button:active {
+	box-shadow: 0 2px 0 color-mix(in oklch, var(--study-accent), black 30%);
+}
+
+@media (max-width: 760px) {
+	.dk-ribbon-run {
+		padding-block: var(--lp-12);
+		font-size: 1rem;
+	}
+
+	
+
+	
+}
+
+/* Intake notice at the top of the hero: the season and its deadline, linking to the dates. */
+.dk-hero-badge {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	margin-bottom: var(--lp-24);
+	border-radius: 999px;
+	background: color-mix(in oklch, var(--lp-on-navy), transparent 90%);
+	color: var(--lp-on-navy);
+	font-size: var(--lp-step--1);
+	text-decoration: none;
+	transition: background-color 200ms var(--lp-ease);
+}
+
+.dk-hero-badge strong {
+	padding: var(--lp-8) var(--lp-16);
+	border-radius: 999px;
+	background: var(--dk-red);
+	color: var(--lp-surface);
+	font-weight: 750;
+}
+
+.dk-hero-badge span {
+	padding: var(--lp-8) var(--lp-16) var(--lp-8) var(--lp-12);
+	font-weight: 650;
+}
+
+.dk-hero-badge:hover {
+	background: color-mix(in oklch, var(--lp-on-navy), transparent 80%);
+}
+
+.dk-hero-badge:focus-visible {
+	outline: 3px solid var(--dk-gold);
+	outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+	.dk-hero-badge {
+		flex-wrap: nowrap;
+		max-width: 100%;
+		font-size: 0.8125rem;
+	}
+
+	.dk-hero-badge strong {
+		padding: var(--lp-8) var(--lp-12);
+		white-space: nowrap;
+	}
+
+	.dk-hero-badge span {
+		padding: var(--lp-8) var(--lp-12) var(--lp-8) var(--lp-8);
+		white-space: nowrap;
+	}
+}
+
+/* Where each group of money is paid: Vietnam or Korea. */
+.dk-payee-where {
+	display: inline-block;
+	margin: 0 0 var(--lp-12);
+	padding: 2px var(--lp-8);
+	border-radius: 4px;
+	background: var(--dk-sky-tint);
+	color: oklch(42% 0.1 245);
+	font-size: 0.8125rem;
+	font-weight: 700;
+}
+
+.dk-payee.is-school .dk-payee-where {
+	background: var(--dk-red-tint);
+	color: oklch(50% 0.19 22);
+}
+
+/* Quick-contact dock on wide screens. */
+.dk-dock {
+	display: none;
+}
+
+@media (min-width: 761px) {
+	.dk-dock {
+		position: fixed;
+		z-index: 80;
+		right: var(--lp-24);
+		bottom: var(--lp-24);
+		display: grid;
+		gap: var(--lp-12);
+	}
+
+	.dk-dock a {
+		display: grid;
+		width: 52px;
+		height: 52px;
+		place-items: center;
+		border-radius: 50%;
+		box-shadow: 0 8px 20px color-mix(in oklch, var(--lp-navy), transparent 70%);
+		font-size: 0.8125rem;
+		font-weight: 800;
+		text-decoration: none;
+		transition: transform 200ms var(--lp-ease);
+	}
+
+	.dk-dock-zalo {
+		background: oklch(55% 0.19 255);
+		color: var(--lp-surface);
+	}
+
+	.dk-dock-call {
+		background: var(--dk-red);
+		color: var(--lp-surface);
+	}
+
+	.dk-dock a:hover {
+		transform: translateY(-2px);
+	}
+
+	.dk-dock a:focus-visible {
+		outline: 3px solid var(--dk-gold-deep);
+		outline-offset: 3px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dk-dock a,
+	.dk-hero-badge {
+		transition: none;
+	}
+
+	.dk-dock a:hover {
+		transform: none;
+	}
+}
+
+/* ================================================================
+ * Daeduk "energetic" layer, after Le Wagon / Headspace / Duolingo:
+ * a full-photo hero panel, saturated LETCO-blue and gold blocks,
+ * colour-topped programme cards, pill buttons, rounded panels on a
+ * neutral ground. Brand colours: LETCO blue, gold, red.
+ * ================================================================ */
+body.is-landing:has(.dk-page),
+.study-landing.dk-page {
+	--lp-bg: oklch(97.5% 0.004 260);
+	--lp-surface: oklch(100% 0 0);
+	--lp-ink: oklch(19% 0.03 265);
+	--lp-text: oklch(34% 0.025 265);
+	--lp-muted: oklch(47% 0.02 265);
+	--lp-line: oklch(91.5% 0.008 260);
+	--lp-line-strong: oklch(84% 0.012 260);
+	--study-accent: oklch(50% 0.2 258);
+	--dk-blue: oklch(50% 0.2 258);
+	--dk-blue-deep: oklch(36% 0.16 262);
+	--dk-blue-soft: oklch(95% 0.03 258);
+	--dk-gold-tint: oklch(96% 0.06 90);
+	--dk-red-tint: oklch(95.5% 0.03 20);
+	--dk-sky-tint: var(--dk-blue-soft);
+	--lp-radius: 16px;
+	--dk-panel-radius: 32px;
+	background: var(--lp-bg);
+}
+
+.dk-page h1,
+.dk-page h2 {
+	font-weight: 800;
+	letter-spacing: -0.035em;
+	line-height: 1.05;
+}
+
+.dk-page .dk-head h2 {
+	max-width: 18ch;
+	font-size: clamp(2rem, 1.3rem + 2.4vw, 3.25rem);
+}
+
+.dk-mark {
+	color: var(--dk-blue);
+}
+
+.dk-page .dk-label {
+	padding: var(--lp-4) var(--lp-12);
+	border-radius: 999px;
+	background: var(--dk-blue-soft);
+	color: var(--dk-blue);
+	font-size: 0.8125rem;
+	letter-spacing: 0.01em;
+	text-transform: none;
+}
+
+/* ---------- Pill buttons ---------- */
+.dk-page .lp-button,
+.is-landing:has(.dk-page) .lp-header .lp-button,
+.is-landing:has(.dk-page) .lp-mobile-cta .lp-button {
+	border-radius: 999px;
+}
+
+.dk-page .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--block):not(.lp-button--glass),
+.is-landing:has(.dk-page) .lp-header .lp-button,
+.is-landing:has(.dk-page) .lp-mobile-cta .lp-button:not(.lp-button--light) {
+	gap: var(--lp-8);
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+	box-shadow: none;
+}
+
+.dk-page .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--block):not(.lp-button--glass)::after,
+.is-landing:has(.dk-page) .lp-header .lp-button::after {
+	content: "→";
+	transition: transform 200ms var(--lp-ease);
+}
+
+.dk-page .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--block):not(.lp-button--glass):hover,
+.is-landing:has(.dk-page) .lp-header .lp-button:hover,
+.is-landing:has(.dk-page) .lp-mobile-cta .lp-button:not(.lp-button--light):hover {
+	background: oklch(86% 0.15 85);
+	color: var(--dk-on-gold);
+	transform: none;
+	box-shadow: none;
+}
+
+.dk-page .lp-button:hover::after,
+.is-landing:has(.dk-page) .lp-header .lp-button:hover::after {
+	transform: translateX(3px);
+}
+
+.dk-page .lp-button:active {
+	transform: scale(0.98);
+}
+
+.dk-page .lp-button.lp-button--glass {
+	border: 1px solid oklch(100% 0 0 / 0.55);
+	box-shadow: none;
+	background: oklch(100% 0 0 / 0.12);
+	color: oklch(100% 0 0);
+	backdrop-filter: blur(6px);
+}
+
+.dk-page .lp-button.lp-button--glass:hover {
+	background: oklch(100% 0 0 / 0.24);
+	color: oklch(100% 0 0);
+}
+
+.is-landing:has(.dk-page) .lp-header {
+	background: color-mix(in oklch, var(--lp-bg), transparent 12%);
+	border-bottom-color: transparent;
+}
+
+/* Key facts: four colour tiles. */
+.dk-hero .dk-keyfacts {
+	gap: var(--lp-12);
+	margin-top: var(--lp-16);
+	border-top: 0;
+}
+
+.dk-hero .dk-keyfacts>div,
+.dk-hero .dk-keyfacts>div + div {
+	padding: var(--lp-24);
+	border: 0;
+	border-radius: 24px;
+	background: var(--lp-surface);
+}
+
+.dk-hero .dk-keyfacts>div:nth-child(1) { background: var(--dk-blue-soft); }
+.dk-hero .dk-keyfacts>div:nth-child(2) { background: var(--dk-red-tint); }
+.dk-hero .dk-keyfacts>div:nth-child(3) { background: var(--lp-surface); }
+
+.dk-hero .dk-keyfacts dt,
+.dk-hero .dk-keyfacts .is-urgent dt {
+	color: var(--lp-ink);
+	font-size: 1.375rem;
+}
+
+.dk-hero .dk-keyfacts dd {
+	color: var(--lp-text);
+}
+
+/* Ribbon: a gold band like a sticker strip. */
+.dk-ribbon {
+	margin: var(--lp-24) 0 0;
+	transform: rotate(-1deg);
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+}
+
+.dk-ribbon-run {
+	font-size: 1rem;
+	font-weight: 800;
+}
+
+/* ---------- Moments: student-story cards ---------- */
+.dk-moments {
+	padding-block: var(--lp-64);
+}
+
+.dk-moments-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--lp-8) var(--lp-32);
+	margin-bottom: var(--lp-24);
+}
+
+.dk-moments-head h2 {
+	margin: 0;
+	color: var(--lp-ink);
+	font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem);
+}
+
+.dk-moments-head p {
+	margin: 0;
+	color: var(--lp-muted);
+}
+
+/* ---------- Chapters as rounded panels ---------- */
+.dk-page .dk-zone.dk-zone {
+	margin: var(--lp-16) var(--lp-16) 0;
+	border: 0;
+	border-radius: var(--dk-panel-radius);
+	background: var(--lp-surface);
+}
+
+/* The internship chapter is drenched in LETCO blue: the page's energy peak. */
+.dk-page .dk-zone.dk-work {
+	--lp-surface: oklch(43% 0.18 260);
+	--lp-bg: oklch(46% 0.18 260);
+	--lp-ink: oklch(100% 0 0);
+	--lp-text: oklch(93% 0.025 250);
+	--lp-muted: oklch(86% 0.04 250);
+	--lp-line: oklch(56% 0.14 260);
+	--lp-line-strong: oklch(72% 0.09 255);
+	--dk-blue: var(--dk-gold);
+	--study-accent: oklch(88% 0.1 220);
+	background: oklch(43% 0.18 260);
+	color: var(--lp-text);
+}
+
+.dk-page .dk-work .dk-label {
+	background: oklch(100% 0 0 / 0.14);
+	color: oklch(100% 0 0);
+}
+
+.dk-page .dk-work .dk-callout {
+	--lp-ink: oklch(19% 0.03 265);
+	background: var(--dk-gold-tint);
+	color: oklch(19% 0.03 265);
+}
+
+.dk-page .dk-work .dk-route-step {
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+	box-shadow: 0 0 0 6px oklch(43% 0.18 260);
+}
+
+.dk-page .dk-work .dk-route li:nth-child(3) .dk-route-step {
+	background: var(--dk-red);
+	color: oklch(100% 0 0);
+}
+
+.dk-page .dk-work .dk-route li:nth-child(3) h3 {
+	color: var(--dk-gold);
+}
+
+.dk-page .dk-work .lp-fold-toggle,
+.dk-page .dk-work .lp-ledger th,
+.dk-page .dk-work .lp-ledger td {
+	color: var(--lp-text);
+}
+
+/* Cards: flat tiles on the ground tone. */
+.dk-page .dk-start li,
+.dk-page .dk-payee,
+.dk-page .dk-note-block,
+.dk-page .dk-role,
+.dk-page .dk-outside {
+	border: 0;
+	border-radius: 24px;
+	background: var(--lp-bg);
+	box-shadow: none;
+}
+
+/* Starting points: three colour tiles. */
+.dk-page .dk-start li:nth-child(1) { background: var(--dk-gold-tint); }
+.dk-page .dk-start li:nth-child(2) { background: var(--dk-blue-soft); }
+.dk-page .dk-start li:nth-child(3) { background: var(--dk-red-tint); }
+
+.dk-page .dk-start-tag,
+.dk-page .dk-payee-where {
+	border-radius: 999px;
+	background: oklch(100% 0 0);
+}
+
+/* Programme cards: a colour header carrying the study length. */
+.dk-page .dk-major {
+	padding: 0 0 var(--lp-16);
+	overflow: hidden;
+	border: 0;
+	border-radius: 24px;
+	background: var(--lp-bg);
+}
+
+.dk-page .dk-major>*:not(.dk-major-num) {
+	margin-inline: var(--lp-24);
+}
+
+.dk-page .dk-major h3,
+.dk-page .dk-major .dk-major-years,
+.dk-page .dk-major .dk-major-summary {
+	padding-right: 0;
+}
+
+.dk-page .dk-major .dk-major-num {
+	position: static;
+	display: flex;
+	align-items: flex-end;
+	height: 120px;
+	margin: 0 0 var(--lp-16);
+	padding: var(--lp-16) var(--lp-24);
+	background: var(--dk-major-bg, var(--dk-blue));
+	color: oklch(100% 0 0);
+	font-size: 4rem;
+	line-height: 0.85;
+}
+
+.dk-page .dk-major .dk-major-num span {
+	margin: 0 0 0.35rem var(--lp-8);
+	font-size: 1.125rem;
+}
+
+.dk-page .dk-major:nth-child(4n+2) { --dk-major-bg: var(--dk-red); }
+.dk-page .dk-major:nth-child(4n+3) { --dk-major-bg: oklch(70% 0.15 75); }
+.dk-page .dk-major:nth-child(4n+4) { --dk-major-bg: oklch(60% 0.13 210); }
+
+.dk-page .dk-major .dk-major-years {
+	color: var(--lp-muted);
+}
+
+@media (hover: hover) {
+	.dk-page .dk-major:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 16px 32px oklch(30% 0.08 260 / 0.12);
+	}
+}
+
+/* Money: the headline figure on a big gold block. */
+.dk-page .dk-total {
+	border: 0;
+	border-radius: 28px;
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+}
+
+.dk-page .dk-total-label,
+.dk-page .dk-total-formula,
+.dk-page .dk-total-note {
+	color: var(--dk-on-gold);
+}
+
+.dk-page .dk-total-value {
+	color: var(--dk-on-gold);
+	text-shadow: none;
+	font-size: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+
+.dk-page .dk-evidence img,
+.dk-page .dk-school-photos img {
+	border-radius: 24px;
+}
+
+.dk-page .dk-evidence-card {
+	border: 0;
+	border-radius: 24px;
+	box-shadow: 0 16px 40px oklch(30% 0.08 260 / 0.14);
+}
+
+/* Closing panel: deep blue with the gold button, form card white. */
+.is-landing .dk-page .study-lead-section {
+	margin: var(--lp-16);
+	border-radius: var(--dk-panel-radius);
+	background: var(--dk-blue-deep);
+	color: oklch(92% 0.02 250);
+}
+
+.dk-page .study-lead-copy h2,
+.dk-page .study-lead-copy ul {
+	color: oklch(100% 0 0);
+}
+
+.dk-page .study-lead-copy p {
+	color: oklch(90% 0.03 250);
+}
+
+.dk-page .study-lead-copy li::before {
+	border-color: var(--dk-gold);
+}
+
+.dk-page .study-lead-actions .lp-button--light {
+	background: var(--dk-gold);
+	border-color: var(--dk-gold);
+	color: var(--dk-on-gold);
+}
+
+.dk-page .study-lead-actions .lp-button--ghost {
+	border-color: oklch(100% 0 0 / 0.6);
+	color: oklch(100% 0 0);
+}
+
+.dk-page .study-lead-actions .lp-button--ghost:hover {
+	background: oklch(100% 0 0 / 0.12);
+	color: oklch(100% 0 0);
+}
+
+.dk-page .study-lead-form-wrap {
+	border-radius: 24px;
+}
+
+.is-landing .dk-page .study-lead-form-wrap {
+	box-shadow: none;
+}
+
+.dk-page .study-lead-form .lp-button {
+	background: var(--dk-blue);
+	box-shadow: none;
+}
+
+.dk-page .study-lead-form .lp-button:hover,
+.dk-page .study-lead-form .lp-button:active {
+	background: var(--dk-blue-deep);
+	box-shadow: none;
+}
+
+.dk-dock-zalo {
+	background: var(--dk-blue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dk-page .dk-major:hover {
+		transform: none;
+	}
+}
+
+@media (max-width: 760px) {
+	
+
+	.dk-page .dk-zone.dk-zone,
+	.is-landing .dk-page .study-lead-section {
+		margin-inline: var(--lp-8);
+		border-radius: 24px;
+	}
+
+	.dk-hero .dk-keyfacts {
+		grid-template-columns: 1fr 1fr;
+		gap: var(--lp-8);
+	}
+
+	.dk-hero .dk-keyfacts>div,
+	.dk-hero .dk-keyfacts>div + div {
+		padding: var(--lp-16);
+		border-radius: 18px;
+	}
+
+	.dk-hero .dk-keyfacts dt,
+	.dk-hero .dk-keyfacts .is-urgent dt {
+		font-size: 1.0625rem;
+	}
+
+	.dk-moments {
+		padding-block: var(--lp-48);
+	}
+
+	.dk-page .dk-major .dk-major-num {
+		height: 88px;
+		font-size: 3rem;
+	}
+
+	.dk-page .dk-split-side .dk-note-block,
+	.dk-page .dk-note-block--ask,
+	.dk-page .dk-role {
+		border-radius: 0;
+		background: none;
+		border-bottom: 1px solid var(--lp-line);
+	}
+}
+
+@media (max-width: 420px) {
+	.dk-hero .dk-keyfacts {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ---------- Hero, asymmetric: a blue copy panel on 7 columns, the photo on 5,
+   set 32px lower; the enrolment card overlaps the photo's lower-left edge. ---------- */
+.dk-hero.lp-hero--cinema {
+	padding-block: var(--lp-16) 0;
+	background: none;
+}
+
+.dk-hero-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--lp-16);
+	align-items: start;
+}
+
+.dk-hero-copy {
+	padding: var(--lp-48);
+	border-radius: var(--dk-panel-radius);
+	background:
+		radial-gradient(70% 90% at 100% 0%, oklch(58% 0.2 250 / 0.55), transparent 70%),
+		var(--dk-blue-deep);
+	color: oklch(92% 0.02 250);
+}
+
+.dk-hero .lp-kicker {
+	color: oklch(88% 0.08 230);
+	text-transform: none;
+	letter-spacing: 0.01em;
+	font-weight: 600;
+}
+
+.dk-hero h1 {
+	color: oklch(100% 0 0);
+	font-size: clamp(2.5rem, 1.5rem + 3.2vw, 4rem);
+}
+
+.dk-hero h1 em {
+	display: inline-block;
+	padding: 0;
+	background: none;
+	color: var(--dk-gold);
+}
+
+.dk-hero-sub {
+	color: oklch(100% 0 0);
+	font-weight: 700;
+}
+
+.dk-hero-badge:hover {
+	background: oklch(100% 0 0 / 0.24);
+}
+
+.dk-hero-media::before {
+	content: none;
+}
+
+.dk-hero-media>img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 420px;
+	aspect-ratio: auto;
+	object-fit: cover;
+	object-position: 60% center;
+	border: 0;
+	border-radius: var(--dk-panel-radius);
+	box-shadow: none;
+}
+
+.dk-hero-org {
+	position: relative;
+	z-index: 1;
+	width: min(100% - var(--lp-24), 340px);
+	margin: -96px 0 0 -48px;
+	padding: var(--lp-24);
+	border: 0;
+	border-top: 0;
+	border-radius: 24px;
+	background: var(--dk-gold);
+	box-shadow: 0 16px 36px oklch(30% 0.08 260 / 0.2);
+	color: var(--dk-on-gold);
+}
+
+.dk-hero-org .dk-mini-label,
+.dk-hero-org .dk-hero-org-name {
+	color: var(--dk-on-gold);
+}
+
+@media (min-width: 961px) {
+	.dk-hero-grid {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+	}
+
+	.dk-hero-media {
+		display: flex;
+		flex-direction: column;
+		height: calc(100% - var(--lp-32));
+		margin-top: var(--lp-32);
+	}
+
+	.dk-hero-media>img {
+		flex: 1;
+	}
+}
+
+@media (max-width: 960px) {
+	.dk-hero-media>img {
+		min-height: 0;
+		aspect-ratio: 4 / 3;
+	}
+
+	.dk-hero-org {
+		width: auto;
+		margin: -64px var(--lp-16) 0;
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-hero-copy {
+		padding: var(--lp-32) var(--lp-24);
+		border-radius: 24px;
+	}
+
+	.dk-hero-media>img {
+		border-radius: 24px;
+	}
+}
+
+/* ---------- Moments: the row drifts by on its own; hover, focus or touch pauses it ---------- */
+.dk-moments-viewport {
+	overflow: hidden;
+	padding-block: var(--lp-8) var(--lp-16);
+}
+
+.dk-moments-track {
+	display: flex;
+	width: max-content;
+	gap: var(--lp-16);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	animation: dk-moments 60s linear infinite;
+}
+
+.dk-moments-viewport:hover .dk-moments-track,
+.dk-moments-viewport:focus-within .dk-moments-track,
+.dk-moments-viewport:active .dk-moments-track {
+	animation-play-state: paused;
+}
+
+/* Odd and even cards alternate height offset, keeping the row asymmetric. */
+.dk-moments-track li {
+	flex: 0 0 auto;
+	width: clamp(240px, 24vw, 320px);
+}
+
+.dk-moments-track li:nth-child(even) {
+	margin-top: var(--lp-32);
+}
+
+.dk-moments-track figure {
+	position: relative;
+	margin: 0;
+	overflow: hidden;
+	border-radius: 24px;
+}
+
+.dk-moments-track img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+}
+
+.dk-moments-track figcaption {
+	position: absolute;
+	inset: auto 0 0;
+	padding: var(--lp-48) var(--lp-16) var(--lp-16);
+	background: linear-gradient(transparent, oklch(15% 0.03 265 / 0.85));
+	color: oklch(100% 0 0);
+	font-size: 0.9375rem;
+	font-weight: 650;
+	line-height: 1.35;
+}
+
+@keyframes dk-moments {
+	to {
+		transform: translateX(calc(-50% - var(--lp-8)));
+	}
+}
+
+/* Without motion the row becomes a normal horizontal scroller. */
+@media (prefers-reduced-motion: reduce) {
+	.dk-moments-viewport {
+		overflow-x: auto;
+	}
+
+	.dk-moments-track {
+		padding-inline: var(--lp-16);
+		animation: none;
+	}
+
+	.dk-moments-track li[aria-hidden="true"] {
+		display: none;
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-moments-track li {
+		width: 62vw;
+	}
+
+	.dk-moments-track li:nth-child(even) {
+		margin-top: var(--lp-24);
+	}
+
+	.dk-moments-track {
+		animation-duration: 45s;
+	}
+}
+
+/* On narrow phones the intake badge wraps. */
+@media (max-width: 420px) {
+	.dk-hero-badge {
+		flex-wrap: wrap;
+		border-radius: 16px;
+	}
+}
+
+/* ---------- More photos in the text-heavy chapters ---------- */
+.dk-zone-photo {
+	margin: 0 0 var(--lp-16);
+}
+
+.dk-zone-photo img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 3 / 2;
+	object-fit: cover;
+	border-radius: 24px;
+}
+
+.dk-zone-photo figcaption,
+.dk-photo-trio figcaption {
+	margin-top: var(--lp-8);
+	color: var(--lp-muted);
+	font-size: var(--lp-step--1);
+}
+
+/* A slight tilt on single photos beside text, like a pinned snapshot. */
+@media (min-width: 961px) {
+	.dk-zone-photo--tilt img {
+		transform: rotate(-2deg);
+		box-shadow: 0 16px 32px oklch(30% 0.08 260 / 0.14);
+	}
+}
+
+/* Internship: three photos, the middle one larger and set lower. */
+.dk-photo-trio {
+	display: grid;
+	gap: var(--lp-16);
+	margin: 0 0 clamp(48px, 3rem + 1vw, 72px);
+}
+
+.dk-photo-trio figure {
+	margin: 0;
+}
+
+.dk-photo-trio img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	border-radius: 24px;
+}
+
+@media (min-width: 761px) {
+	.dk-photo-trio {
+		grid-template-columns: 4fr 5fr 3fr;
+		align-items: start;
+	}
+
+	.dk-photo-trio figure:nth-child(2) {
+		margin-top: var(--lp-32);
+	}
+
+	.dk-photo-trio figure:nth-child(2) img {
+		aspect-ratio: 5 / 4;
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-photo-trio {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.dk-photo-trio figure:first-child {
+		grid-column: 1 / -1;
+	}
+}
+
+/* Money: the office photo sits at the top right of the "not included" box. */
+@media (min-width: 961px) {
+	.dk-outside {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 280px;
+		column-gap: var(--lp-32);
+	}
+
+	.dk-outside>h3,
+	.dk-outside>.dk-outside-grid {
+		grid-column: 1;
+	}
+
+	.dk-outside-photo {
+		grid-column: 2;
+		grid-row: 1 / span 2;
+		margin: 0;
+	}
+}
+
+/* FAQ: the photo under the heading on wide screens only. */
+#hoi-dap .dk-zone-photo {
+	max-width: 360px;
+	margin-top: var(--lp-32);
+}
+
+@media (max-width: 960px) {
+	#hoi-dap .dk-zone-photo {
+		display: none;
+	}
+}
+
+/* Phones keep the condition list compact: the fit photo shows above it, not in the aside. */
+/* ---------- Hero with the campus: the main building on the right and three campus
+   thumbnails under it; the copy panel is glass over the page's campus backdrop ---------- */
+.dk-hero-copy {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+}
+
+.dk-hero-media>img {
+	object-position: center 70%;
+}
+
+.dk-hero-thumbs {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--lp-8);
+	margin: var(--lp-12) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dk-hero-thumbs li {
+	position: relative;
+	overflow: hidden;
+	border-radius: 16px;
+}
+
+.dk-hero-thumbs img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1;
+	object-fit: cover;
+}
+
+.dk-hero-thumbs span {
+	position: absolute;
+	inset: auto 0 0;
+	padding: var(--lp-24) var(--lp-8) var(--lp-8);
+	background: linear-gradient(transparent, oklch(15% 0.03 265 / 0.8));
+	color: oklch(100% 0 0);
+	font-size: 0.75rem;
+	font-weight: 650;
+	line-height: 1.3;
+}
+
+@media (min-width: 961px) {
+	.dk-hero-media>img {
+		min-height: 360px;
+	}
+}
+
+@media (min-width: 961px) {
+	/* The copy panel matches the photo column's height, copy centred inside it. */
+	.dk-hero-copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-self: stretch;
+	}
+
+	.dk-hero-copy .dk-hero-badge {
+		align-self: flex-start;
+	}
+
+	}
+
+/* ---------- Page backdrop: a Daeduk campus photo fixed behind the panels ---------- */
+.study-landing.dk-page {
+	position: relative;
+	isolation: isolate;
+	background: transparent;
+}
+
+/* A fixed layer (not background-attachment, which phones ignore); the light wash and slight blur
+   keep text between panels readable and hide the photo's modest resolution. */
+
+/* ---------- Hero over the campus backdrop: glass panels, framed photos ---------- */
+/* The wash is lighter at the top of the screen so the campus shows round the hero. */
+
+/* Copy panel: translucent LETCO blue so the campus reads through it. */
+
+/* Photos framed in white, like prints laid on the campus. */
+.dk-hero-media>img,
+.dk-hero-thumbs li {
+	border: 6px solid oklch(100% 0 0);
+	box-shadow: 0 16px 40px oklch(25% 0.08 262 / 0.22);
+}
+
+.dk-hero-thumbs li {
+	border-width: 4px;
+}
+
+.dk-hero-media figcaption {
+	color: var(--lp-ink);
+	font-weight: 600;
+}
+
+/* Key facts: frosted white tiles; the deadline keeps its gold. */
+.dk-hero .dk-keyfacts>div,
+.dk-hero .dk-keyfacts>div + div {
+	background: oklch(100% 0 0 / 0.78);
+	border: 1px solid oklch(100% 0 0 / 0.7);
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+}
+
+.dk-hero .dk-keyfacts>div:nth-child(1) { box-shadow: inset 0 4px 0 var(--dk-blue); }
+.dk-hero .dk-keyfacts>div:nth-child(2) { box-shadow: inset 0 4px 0 var(--dk-red); }
+.dk-hero .dk-keyfacts>div:nth-child(3) { box-shadow: inset 0 4px 0 oklch(60% 0.13 210); }
+
+.dk-hero .dk-keyfacts>div:nth-child(4) {
+	background: var(--dk-gold);
+	border-color: var(--dk-gold);
+}
+
+/* Without backdrop-filter support the panels fall back to solid colours. */
+/* ---------- Page backdrop: the illustrated Daeduk campus map (gate, main tower,
+   playing field, dormitories), with a light wash; the hero copy sits straight on it ---------- */
+
+.dk-hero-copy {
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+	color: var(--lp-ink);
+}
+
+/* Dark copy straight on the map; a soft white halo keeps it legible over the illustration. */
+
+.dk-page .dk-hero-copy .lp-button.lp-button--glass:hover {
+	background: oklch(100% 0 0);
+	color: var(--lp-ink);
+}
+
+/* ---------- Hero on a campus photo: the main tower fills the panel, a brand-blue
+   shade keeps the transparent copy readable; the backdrop stays inside the hero ---------- */
+.study-landing.dk-page::before {
+	content: none;
+}
+
+.study-landing.dk-page {
+	background: var(--lp-bg);
+}
+
+.dk-hero-grid {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	padding: var(--lp-48);
+	border-radius: var(--dk-panel-radius);
+	background: var(--dk-blue-deep);
+}
+
+.dk-hero-grid .dk-hero-bg {
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center 30%;
+}
+
+.dk-hero-grid::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: linear-gradient(100deg, oklch(24% 0.12 262 / 0.92) 0%, oklch(28% 0.13 262 / 0.78) 50%, oklch(30% 0.12 262 / 0.45) 100%);
+}
+
+.dk-hero-copy h1,
+.dk-hero-copy .dk-hero-sub,
+.dk-hero-copy .lp-lede,
+.dk-hero-copy .lp-kicker {
+	text-shadow: none;
+}
+
+.dk-hero-copy h1,
+.dk-hero-copy .dk-hero-sub {
+	color: oklch(100% 0 0);
+}
+
+.dk-hero-copy h1 em {
+	color: var(--dk-gold);
+}
+
+.dk-hero-copy .lp-lede {
+	color: oklch(92% 0.02 250);
+	font-weight: 400;
+}
+
+.dk-hero-copy .lp-kicker {
+	color: oklch(88% 0.08 230);
+}
+
+.dk-hero-copy .dk-hero-badge {
+	background: oklch(100% 0 0 / 0.16);
+	color: oklch(100% 0 0);
+}
+
+.dk-page .dk-hero-copy .lp-button.lp-button--glass {
+	border-color: oklch(100% 0 0 / 0.6);
+	background: oklch(100% 0 0 / 0.1);
+	color: oklch(100% 0 0);
+}
+
+.dk-page .dk-hero-copy .lp-button.lp-button--glass:hover {
+	background: oklch(100% 0 0 / 0.22);
+	color: oklch(100% 0 0);
+}
+
+.dk-hero-media figcaption {
+	color: oklch(92% 0.02 250);
+}
+
+@media (min-width: 961px) {
+	.dk-hero-copy {
+		padding: 0 var(--lp-24) 0 0;
+	}
+}
+
+@media (max-width: 960px) {
+	.dk-hero-grid {
+		padding: var(--lp-32);
+	}
+
+	.dk-hero-grid::before {
+		background: linear-gradient(180deg, oklch(24% 0.12 262 / 0.9) 0%, oklch(26% 0.12 262 / 0.82) 100%);
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-hero-grid {
+		padding: var(--lp-24) var(--lp-16);
+		border-radius: 24px;
+	}
+
+	.dk-hero-copy {
+		padding: 0;
+	}
+}
+
+/* ---------- Hero: transparent section, the campus panel widened close to the screen edge
+   (same 16px gutter as the chapter panels); content keeps the usual 1180px measure inside ---------- */
+.dk-hero.lp-hero--cinema {
+	background: transparent;
+}
+
+.dk-hero .dk-hero-grid {
+	width: auto;
+	max-width: none;
+	margin-inline: var(--lp-16);
+	padding-inline: max(var(--lp-48), calc((100% - 1180px) / 2));
+}
+
+/* A lighter shade lets more of the campus show while the copy stays readable. */
+.dk-hero-grid::before {
+	background: linear-gradient(100deg, oklch(24% 0.12 262 / 0.85) 0%, oklch(28% 0.13 262 / 0.6) 45%, oklch(30% 0.12 262 / 0.2) 100%);
+}
+
+@media (max-width: 960px) {
+	.dk-hero-grid::before {
+		background: linear-gradient(180deg, oklch(24% 0.12 262 / 0.82) 0%, oklch(26% 0.12 262 / 0.7) 100%);
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-hero .dk-hero-grid {
+		margin-inline: var(--lp-8);
+		padding-inline: var(--lp-16);
+	}
+}
+
+/* ================================================================
+ * Daeduk refinement: compact hero, calmer programme cards, a manual
+ * photo row, two-area finance notes and visible source links.
+ * ================================================================ */
+
+/* Hero: a brand-blue gradient panel (no photo behind the copy); one school photo on the right. */
+.dk-hero.lp-hero--cinema {
+	padding-block: var(--lp-12) 0;
+}
+
+.dk-hero .dk-hero-grid {
+	padding-block: var(--lp-48);
+	background:
+		radial-gradient(60% 90% at 100% 0%, oklch(52% 0.18 250 / 0.55), transparent 70%),
+		linear-gradient(120deg, oklch(30% 0.14 262) 0%, oklch(38% 0.17 258) 100%);
+	align-items: center;
+}
+
+.dk-hero-grid::before {
+	content: none;
+}
+
+.dk-hero-copy .dk-hero-badge {
+	margin-bottom: var(--lp-16);
+}
+
+.dk-hero-copy h1 {
+	margin: 0;
+	font-size: clamp(2.25rem, 1.4rem + 2.6vw, 3.5rem);
+}
+
+.dk-hero-copy .dk-hero-sub {
+	margin-top: var(--lp-12);
+}
+
+.dk-hero-copy .lp-lede {
+	margin: var(--lp-12) 0 var(--lp-24);
+	font-size: 1.0625rem;
+}
+
+.dk-hero .dk-hero-media {
+	height: auto;
+	margin-top: 0;
+}
+
+.dk-hero .dk-hero-media>img {
+	flex: none;
+	height: auto;
+	min-height: 0;
+	aspect-ratio: 4 / 3;
+	object-position: center 60%;
+}
+
+.dk-hero-org {
+	width: min(100% - var(--lp-24), 300px);
+	margin-top: -64px;
+	padding: var(--lp-16) var(--lp-24);
+}
+
+.dk-hero-org .dk-hero-org-name {
+	margin: 0 0 var(--lp-4);
+	font-size: 1rem;
+}
+
+/* Key facts: plain white tiles; the deadline tile stays gold. */
+.dk-hero .dk-keyfacts {
+	margin-top: var(--lp-12);
+}
+
+.dk-hero .dk-keyfacts>div,
+.dk-hero .dk-keyfacts>div + div {
+	padding: var(--lp-16) var(--lp-24);
+	border: 1px solid var(--lp-line);
+	background: var(--lp-surface);
+	box-shadow: none;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+}
+
+.dk-hero .dk-keyfacts>div:nth-child(n) {
+	border: 1px solid var(--lp-line);
+	background: var(--lp-surface);
+	box-shadow: none;
+}
+
+.dk-hero .dk-keyfacts>div:nth-child(4) {
+	border-color: var(--dk-gold);
+	background: var(--dk-gold);
+}
+
+.dk-hero .dk-keyfacts dt,
+.dk-hero .dk-keyfacts .is-urgent dt {
+	font-size: 1.125rem;
+}
+
+@media (max-width: 960px) {
+	.dk-hero .dk-hero-grid {
+		padding-block: var(--lp-32);
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-hero .dk-hero-grid {
+		padding-block: var(--lp-24);
+	}
+
+	.dk-hero-copy h1 {
+		font-size: 2.125rem;
+	}
+
+	.dk-hero-org {
+		margin: -40px var(--lp-12) 0;
+		width: auto;
+	}
+}
+
+/* Programme cards: the programme name leads; length and award as one small label. */
+.dk-page .dk-major {
+	padding: var(--lp-24);
+	border-top: 3px solid var(--dk-blue);
+	background: var(--lp-bg);
+}
+
+.dk-page .dk-major>*:not(.dk-major-num) {
+	margin-inline: 0;
+}
+
+.dk-page .dk-major .dk-major-years {
+	display: inline-block;
+	margin: 0 0 var(--lp-8);
+	padding: 2px var(--lp-8);
+	border-radius: 999px;
+	background: var(--dk-blue-soft);
+	color: var(--dk-blue);
+	font-size: 0.8125rem;
+	font-weight: 700;
+}
+
+.dk-page .dk-major h3 {
+	font-size: 1.375rem;
+}
+
+.dk-page .dk-major .dk-major-summary {
+	margin-top: var(--lp-8);
+}
+
+.dk-page .dk-major-skills li::before {
+	background: var(--dk-blue);
+}
+
+@media (min-width: 961px) {
+	.dk-majors>:nth-child(even) {
+		translate: 0 var(--lp-16);
+	}
+}
+
+/* Photo row: swipe or use the buttons; nothing moves on its own. */
+.dk-moments {
+	padding-block: var(--lp-48) var(--lp-32);
+}
+
+.dk-moments-viewport {
+	overflow: visible;
+	padding: 0;
+}
+
+.dk-moments-track {
+	width: auto;
+	gap: var(--lp-12);
+	padding: 0 max(var(--lp-16), calc((100% - 1180px) / 2)) var(--lp-8);
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	scroll-padding-inline: max(var(--lp-16), calc((100% - 1180px) / 2));
+	scrollbar-width: none;
+	animation: none;
+}
+
+.dk-moments-track::-webkit-scrollbar {
+	display: none;
+}
+
+.dk-moments-track:focus-visible {
+	outline: 3px solid var(--dk-blue);
+	outline-offset: -3px;
+}
+
+.dk-moments-track li {
+	width: clamp(240px, 26vw, 320px);
+	scroll-snap-align: start;
+}
+
+.dk-moments-track li:nth-child(even) {
+	margin-top: 0;
+}
+
+.dk-moments-track img {
+	aspect-ratio: 4 / 3;
+}
+
+.dk-moments-nav {
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--lp-8);
+	margin-top: var(--lp-8);
+}
+
+.dk-moments-btn {
+	display: grid;
+	width: 44px;
+	height: 44px;
+	place-items: center;
+	border: 1px solid var(--lp-line-strong);
+	border-radius: 50%;
+	background: var(--lp-surface);
+	color: var(--lp-ink);
+	font: inherit;
+	font-size: 1.125rem;
+	cursor: pointer;
+	transition: background-color 200ms var(--lp-ease), border-color 200ms var(--lp-ease);
+}
+
+.dk-moments-btn:hover {
+	border-color: var(--dk-blue);
+	background: var(--dk-blue-soft);
+}
+
+.dk-moments-btn:focus-visible {
+	outline: 3px solid var(--dk-blue);
+	outline-offset: 2px;
+}
+
+.dk-moments-btn:disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+@media (max-width: 760px) {
+	.dk-moments-track li {
+		width: 72vw;
+	}
+}
+
+/* Photos beside text stay straight. */
+.dk-zone-photo img {
+	transform: none;
+	box-shadow: none;
+}
+
+/* Internship: two LETCO photos, the second set a little lower. */
+@media (min-width: 761px) {
+	.dk-photo-trio {
+		grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+	}
+
+	.dk-photo-trio figure:nth-child(2) img {
+		aspect-ratio: 4 / 3;
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-photo-trio {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Finance notes: what is not included on the left, the balance requirement on the right. */
+.dk-page .dk-outside {
+	display: block;
+}
+
+.dk-page .dk-outside-grid {
+	align-items: start;
+}
+
+/* Organiser details live in one expandable row. */
+.dk-org-details {
+	margin-top: var(--lp-32);
+}
+
+.dk-org-list {
+	display: grid;
+	gap: var(--lp-16);
+	margin: 0 0 var(--lp-16);
+}
+
+.dk-org-list dt {
+	color: var(--lp-ink);
+	font-weight: 700;
+}
+
+.dk-org-list dd {
+	margin: var(--lp-4) 0 0;
+	line-height: 1.6;
+}
+
+@media (min-width: 961px) {
+	.dk-org-list {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--lp-32);
+	}
+}
+
+/* Extra scholarships fold away on every screen. */
+.dk-page .dk-scholar-more {
+	align-self: start;
+	border-bottom: 1px solid var(--lp-line);
+}
+
+/* Source lines: the kind of source, its name and a link that looks like a link. */
+.dk-src-line {
+	display: block;
+	margin-top: var(--lp-4);
+	color: var(--lp-muted);
+	font-size: 0.8125rem;
+	line-height: 1.5;
+}
+
+.dk-src-kind {
+	font-weight: 650;
+}
+
+.dk-page a.dk-src {
+	display: inline-flex;
+	min-height: 24px;
+	align-items: center;
+	gap: 2px;
+	margin-left: var(--lp-4);
+	color: var(--dk-blue);
+	font-weight: 700;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.dk-page a.dk-src:hover {
+	color: var(--dk-blue-deep);
+	text-decoration-thickness: 2px;
+}
+
+.dk-page a.dk-src:focus-visible {
+	outline: 3px solid var(--dk-blue);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+.dk-page .dk-work .dk-src-line {
+	color: var(--lp-muted);
+}
+
+/* Static preview contact card. */
+.dk-page .form-fallback>p:first-child strong {
+	color: var(--lp-ink);
+	font-size: 1.125rem;
+}
+
+.dk-page .form-fallback-actions .lp-button {
+	min-height: 48px;
+}
+
+/* The popup keeps its own intro, so the card's lines are hidden there. */
+.lp-consult-dialog .form-fallback>p:not(.form-fallback-actions) {
+	display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dk-moments-btn {
+		transition: none;
+	}
+
+	.dk-moments-track {
+		scroll-behavior: auto;
+	}
+}
+
+/* ================================================================
+ * Daeduk "campus editorial": big type, real photos in offset frames,
+ * a boarding-ticket intake label, one colour per programme, a full-width
+ * internship band. Blue is the ground, gold the accent, coral and
+ * turquoise appear only in chosen places.
+ * ================================================================ */
+body.is-landing:has(.dk-page),
+.study-landing.dk-page {
+	--dk-coral: oklch(66% 0.17 30);
+	--dk-teal: oklch(64% 0.11 195);
+	--dk-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Hero: 58/42, title and CTA high, an offset photo pair ---------- */
+@media (min-width: 961px) {
+	.dk-hero .dk-hero-grid {
+		grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+		gap: var(--lp-64);
+		padding-block: var(--lp-48) var(--lp-64);
+	}
+}
+
+.dk-hero-copy h1 {
+	font-size: clamp(2.5rem, 1.3rem + 3.6vw, 4.5rem);
+	line-height: 1.02;
+	letter-spacing: -0.04em;
+}
+
+/* "Đại học Daeduk" in gold with a hand-drawn coral swoosh under it. */
+.dk-hero-copy h1 em {
+	position: relative;
+	z-index: 0;
+}
+
+.dk-hero-copy h1 em::after {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	left: 0;
+	right: 0;
+	bottom: -0.14em;
+	height: 0.28em;
+	background: var(--dk-coral);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'%3E%3Cpath d='M3 14 C 70 4, 140 4, 200 9 S 280 15, 297 6' fill='none' stroke='black' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'%3E%3Cpath d='M3 14 C 70 4, 140 4, 200 9 S 280 15, 297 6' fill='none' stroke='black' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+/* Intake label as a boarding ticket: main part and a perforated stub. */
+.dk-ticket {
+	display: inline-flex;
+	margin-bottom: var(--lp-24);
+	transform: rotate(-2deg);
+	color: var(--lp-ink);
+	text-decoration: none;
+	filter: drop-shadow(0 6px 14px oklch(15% 0.08 262 / 0.35));
+	transition: transform 200ms var(--dk-ease);
+}
+
+.dk-ticket>span {
+	display: grid;
+	padding: var(--lp-8) var(--lp-16);
+	line-height: 1.2;
+}
+
+.dk-ticket small {
+	font-size: 0.6875rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	opacity: 0.75;
+}
+
+.dk-ticket strong {
+	font-size: 1rem;
+	font-weight: 800;
+}
+
+.dk-ticket-main {
+	border-radius: 10px 0 0 10px;
+	background: var(--dk-gold);
+}
+
+.dk-ticket-stub {
+	border-left: 2px dashed oklch(25% 0.06 256 / 0.45);
+	border-radius: 0 10px 10px 0;
+	background: oklch(100% 0 0);
+}
+
+.dk-ticket:hover {
+	transform: rotate(0deg) translateY(-2px);
+}
+
+.dk-ticket:focus-visible {
+	outline: 3px solid oklch(100% 0 0);
+	outline-offset: 4px;
+	border-radius: 10px;
+}
+
+/* CTA: clear lift on hover, press on click, ring on focus. */
+.dk-hero .lp-actions .lp-button {
+	transition: transform 160ms var(--dk-ease), box-shadow 160ms var(--dk-ease), background-color 200ms var(--lp-ease);
+}
+
+.dk-hero .lp-actions .lp-button:not(.lp-button--glass):hover {
+	transform: translateY(-3px);
+	box-shadow: 0 10px 22px oklch(15% 0.08 262 / 0.4);
+}
+
+.dk-hero .lp-actions .lp-button:active {
+	transform: translateY(1px) scale(0.98);
+	box-shadow: none;
+}
+
+.dk-hero .lp-actions .lp-button:focus-visible {
+	outline: 3px solid oklch(100% 0 0);
+	outline-offset: 3px;
+}
+
+/* Photo pair: the tower straight, the clock tower framed and tilted at the lower left. */
+.dk-hero .dk-hero-media {
+	position: relative;
+	padding: 0 0 var(--lp-64) var(--lp-48);
+}
+
+.dk-hero .dk-hero-media>img {
+	aspect-ratio: 4 / 5;
+	border: 0;
+	border-radius: 28px;
+	box-shadow: 0 24px 48px oklch(15% 0.08 262 / 0.35);
+}
+
+.dk-hero-pic2 {
+	position: absolute;
+	z-index: 2;
+	left: 0;
+	bottom: var(--lp-24);
+	width: 46%;
+	overflow: hidden;
+	border: 6px solid oklch(100% 0 0);
+	border-radius: 18px;
+	box-shadow: 0 16px 32px oklch(15% 0.08 262 / 0.35);
+	transform: rotate(-3deg);
+}
+
+.dk-hero-pic2 img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1;
+	object-fit: cover;
+}
+
+/* Round sticker on the photo's top-right corner. */
+.dk-sticker {
+	position: absolute;
+	z-index: 3;
+	top: calc(-1 * var(--lp-16));
+	right: calc(-1 * var(--lp-16));
+	display: grid;
+	width: 96px;
+	height: 96px;
+	place-items: center;
+	border-radius: 50%;
+	background: var(--dk-coral);
+	color: oklch(100% 0 0);
+	font-size: 0.8125rem;
+	font-weight: 800;
+	line-height: 1.15;
+	text-align: center;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	transform: rotate(12deg);
+	box-shadow: 0 8px 18px oklch(15% 0.08 262 / 0.3);
+}
+
+/* LETCO card: small, on the right edge so the building stays clear. */
+.dk-hero .dk-hero-org {
+	position: absolute;
+	z-index: 3;
+	right: calc(-1 * var(--lp-16));
+	bottom: 0;
+	width: 236px;
+	margin: 0;
+	padding: var(--lp-12) var(--lp-16);
+	border-radius: 14px;
+	font-size: 0.8125rem;
+}
+
+.dk-hero .dk-hero-org .dk-hero-org-name {
+	font-size: 0.9375rem;
+	line-height: 1.3;
+}
+
+.dk-hero .dk-hero-media figcaption {
+	position: absolute;
+	left: 48%;
+	bottom: calc(-1 * var(--lp-32));
+	margin: 0;
+	font-size: 0.75rem;
+}
+
+/* ---------- Programme cards: one colour each, icon, offset columns ---------- */
+.dk-page .dk-major {
+	position: relative;
+	padding-top: var(--lp-24);
+	border-top: 4px solid var(--dk-tone, var(--dk-blue));
+	transition: transform 200ms var(--dk-ease), box-shadow 200ms var(--dk-ease), border-color 200ms var(--dk-ease);
+}
+
+.dk-page .dk-major.is-blue { --dk-tone: var(--dk-blue); }
+.dk-page .dk-major.is-coral { --dk-tone: var(--dk-coral); }
+.dk-page .dk-major.is-teal { --dk-tone: var(--dk-teal); }
+.dk-page .dk-major.is-gold { --dk-tone: oklch(70% 0.15 75); }
+
+.dk-major-icon {
+	position: absolute;
+	top: var(--lp-24);
+	right: var(--lp-24);
+	display: grid;
+	width: 44px;
+	height: 44px;
+	place-items: center;
+	border-radius: 12px;
+	background: color-mix(in oklch, var(--dk-tone), transparent 85%);
+	color: var(--dk-tone);
+	transition: transform 200ms var(--dk-ease);
+}
+
+.dk-page .dk-major .dk-major-years {
+	background: color-mix(in oklch, var(--dk-tone), transparent 86%);
+	color: color-mix(in oklch, var(--dk-tone), black 30%);
+}
+
+.dk-page .dk-major h3 {
+	padding-right: 56px;
+	font-size: 1.5rem;
+	letter-spacing: -0.02em;
+}
+
+.dk-page .dk-major-skills li::before {
+	background: var(--dk-tone);
+}
+
+@media (hover: hover) {
+	.dk-page .dk-major:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 18px 36px oklch(30% 0.08 260 / 0.14);
+	}
+
+	.dk-page .dk-major:hover .dk-major-icon {
+		transform: translate(2px, -2px) rotate(-8deg);
+	}
+}
+
+@media (min-width: 961px) {
+	.dk-majors>:nth-child(even) {
+		translate: 0 var(--lp-32);
+	}
+
+	.dk-majors {
+		padding-bottom: var(--lp-32);
+	}
+}
+
+/* ---------- Real photos with a little play ---------- */
+@media (min-width: 961px) {
+	.dk-school-photos figure:nth-child(2) img {
+		transform: rotate(-2deg);
+	}
+
+	.dk-school-photos figure:nth-child(3) img {
+		transform: rotate(2deg) translateY(var(--lp-12));
+	}
+
+	.dk-split-side .dk-zone-photo img {
+		transform: rotate(2deg);
+		box-shadow: 0 16px 32px oklch(30% 0.08 260 / 0.16);
+	}
+
+	.dk-photo-trio figure:nth-child(2) img {
+		transform: rotate(-2deg);
+	}
+}
+
+/* ---------- Internship: a full-width blue band with big stage numbers ---------- */
+.dk-page .dk-zone.dk-zone.dk-work {
+	margin-inline: 0;
+	border-radius: 0;
+}
+
+.dk-page .dk-work .dk-route-step {
+	width: 48px;
+	height: 48px;
+	font-size: 1.375rem;
+	font-weight: 800;
+}
+
+.dk-page .dk-work .dk-route li {
+	padding-top: var(--lp-64);
+}
+
+.dk-page .dk-work .dk-route li::before {
+	top: 23px;
+	height: 0;
+	border-top: 2px dashed oklch(100% 0 0 / 0.5);
+	background: none;
+}
+
+/* Arrowhead at the end of each connector. */
+.dk-page .dk-work .dk-route li:not(:last-child)::after {
+	content: "";
+	position: absolute;
+	top: 18px;
+	right: -2px;
+	width: 10px;
+	height: 10px;
+	border-top: 2px solid oklch(100% 0 0 / 0.7);
+	border-right: 2px solid oklch(100% 0 0 / 0.7);
+	transform: rotate(45deg);
+}
+
+@media (max-width: 1080px) {
+	.dk-page .dk-work .dk-route li {
+		padding: 0 0 var(--lp-24) 68px;
+	}
+
+	.dk-page .dk-work .dk-route li::before {
+		top: 0;
+		bottom: 0;
+		left: 23px;
+		height: auto;
+		border-top: 0;
+		border-left: 2px dashed oklch(100% 0 0 / 0.5);
+	}
+
+	.dk-page .dk-work .dk-route li:not(:last-child)::after {
+		top: auto;
+		right: auto;
+		bottom: 6px;
+		left: 19px;
+		transform: rotate(135deg);
+	}
+}
+
+/* ---------- Section openers: a bigger, tighter headline ---------- */
+.dk-page .dk-head h2 {
+	font-size: clamp(2.125rem, 1.2rem + 2.8vw, 3.75rem);
+	letter-spacing: -0.04em;
+}
+
+/* ---------- Phones: no tilt, no offsets, stickers out of the way ---------- */
+@media (max-width: 960px) {
+	.dk-hero .dk-hero-media {
+		padding: 0 0 var(--lp-48);
+	}
+
+	.dk-hero .dk-hero-media>img {
+		aspect-ratio: 4 / 3;
+	}
+
+	.dk-hero-pic2 {
+		width: 38%;
+		bottom: 0;
+		left: var(--lp-12);
+	}
+
+	.dk-sticker {
+		top: calc(-1 * var(--lp-12));
+		right: var(--lp-8);
+		width: 76px;
+		height: 76px;
+		font-size: 0.6875rem;
+	}
+
+	.dk-hero .dk-hero-org {
+		position: relative;
+		right: auto;
+		width: auto;
+		margin: var(--lp-12) 0 0;
+	}
+
+	.dk-hero .dk-hero-media figcaption {
+		position: static;
+		margin-top: var(--lp-8);
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-ticket {
+		transform: rotate(-1deg);
+	}
+
+	.dk-hero-copy h1 {
+		font-size: clamp(2.25rem, 1.6rem + 3vw, 2.75rem);
+	}
+
+	.dk-hero .dk-hero-media {
+		padding-bottom: var(--lp-32);
+	}
+
+	.dk-hero-pic2 {
+		transform: rotate(-2deg);
+	}
+
+	.dk-page .dk-major h3 {
+		font-size: 1.25rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dk-ticket,
+	.dk-page .dk-major,
+	.dk-major-icon,
+	.dk-hero .lp-actions .lp-button {
+		transition: none;
+	}
+
+	.dk-ticket:hover,
+	.dk-page .dk-major:hover,
+	.dk-page .dk-major:hover .dk-major-icon,
+	.dk-hero .lp-actions .lp-button:hover {
+		transform: none;
+	}
+}
+
+/* Hero photo credit sits above the photo pair, clear of the LETCO card. */
+@media (min-width: 961px) {
+	.dk-hero .dk-hero-media {
+		padding-top: var(--lp-24);
+	}
+
+	.dk-hero .dk-hero-media figcaption {
+		top: 0;
+		bottom: auto;
+		left: var(--lp-48);
+		color: oklch(88% 0.03 250);
+	}
+}
+
+/* Tablet: the second photo tucks into the main photo's lower-left corner. */
+@media (max-width: 960px) {
+	.dk-hero .dk-hero-media {
+		padding: 0;
+	}
+
+	.dk-hero-pic2 {
+		top: auto;
+		bottom: auto;
+		left: var(--lp-12);
+		margin-top: -96px;
+		position: relative;
+		display: block;
+		width: 36%;
+	}
+}
+
+/* Phones: one photo and the sticker; the second photo is left out. */
+@media (max-width: 760px) {
+	.dk-hero-pic2 {
+		display: none;
+	}
+}
+
+/* The vertical route line stops at the last stage. */
+@media (max-width: 1080px) {
+	.dk-page .dk-work .dk-route li:last-child::before {
+		display: none;
+	}
+}
+
+/* Hero panel on a campus photo: deep LETCO blue under the copy, easing off towards the photo pair. */
+.dk-hero .dk-hero-grid {
+	background:
+		linear-gradient(100deg, oklch(26% 0.13 262 / 0.95) 0%, oklch(30% 0.14 262 / 0.88) 45%, oklch(34% 0.15 258 / 0.62) 100%),
+		url(../images/daeduk-campus-business.jpg) center 40% / cover no-repeat,
+		oklch(30% 0.14 262);
+}
+
+@media (max-width: 960px) {
+	.dk-hero .dk-hero-grid {
+		background:
+			linear-gradient(180deg, oklch(26% 0.13 262 / 0.93) 0%, oklch(30% 0.14 262 / 0.86) 100%),
+			url(../images/daeduk-campus-business.jpg) center 30% / cover no-repeat,
+			oklch(30% 0.14 262);
+	}
+}
+
+/* ---------- Hero: the campus photo is the panel itself ---------- */
+.dk-hero .dk-hero-grid {
+	min-height: min(620px, 78vh);
+	align-items: stretch;
+	background:
+		linear-gradient(95deg, oklch(24% 0.13 262 / 0.94) 0%, oklch(28% 0.14 262 / 0.82) 40%, oklch(30% 0.14 262 / 0.25) 72%, oklch(30% 0.14 262 / 0.05) 100%),
+		url(../images/daeduk-campus-jeonggok.jpg) 75% 35% / cover no-repeat,
+		oklch(30% 0.14 262);
+}
+
+.dk-hero-copy {
+	align-self: center;
+}
+
+/* Labels on the photo: sticker top right, LETCO card and credit at the bottom right. */
+.dk-hero-aside {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: var(--lp-16);
+	min-height: 100%;
+}
+
+.dk-hero-aside .dk-sticker {
+	position: static;
+	transform: rotate(12deg);
+}
+
+.dk-hero-aside .dk-hero-org {
+	position: static;
+	width: 260px;
+	margin: auto 0 0;
+	padding: var(--lp-12) var(--lp-16);
+	border-radius: 14px;
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+	font-size: 0.8125rem;
+	box-shadow: 0 12px 28px oklch(15% 0.08 262 / 0.35);
+}
+
+.dk-hero-aside .dk-hero-org p {
+	margin: 0;
+}
+
+.dk-hero-aside .dk-hero-org-name {
+	margin-bottom: var(--lp-4);
+	font-size: 0.9375rem;
+	font-weight: 800;
+	line-height: 1.3;
+}
+
+.dk-hero-credit {
+	margin: 0;
+	padding: var(--lp-4) var(--lp-8);
+	border-radius: 6px;
+	background: oklch(15% 0.05 262 / 0.55);
+	color: oklch(95% 0.01 250);
+	font-size: 0.75rem;
+}
+
+@media (max-width: 960px) {
+	/* The copy sits on the shaded top; the photo shows through below it, under the labels. */
+	.dk-hero .dk-hero-grid {
+		min-height: 0;
+		background:
+			linear-gradient(180deg, oklch(24% 0.13 262 / 0.95) 0%, oklch(27% 0.14 262 / 0.88) 55%, oklch(30% 0.14 262 / 0.15) 82%, oklch(30% 0.14 262 / 0) 100%),
+			url(../images/daeduk-campus-jeonggok.jpg) center 70% / cover no-repeat,
+			oklch(30% 0.14 262);
+	}
+
+	.dk-hero-aside {
+		min-height: 220px;
+		padding-top: var(--lp-24);
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-hero-aside {
+		min-height: 200px;
+	}
+
+	.dk-hero-aside .dk-sticker {
+		width: 72px;
+		height: 72px;
+		font-size: 0.6875rem;
+	}
+
+	.dk-hero-aside .dk-hero-org {
+		width: 100%;
+	}
+}
+
+/* The portrait campus photo fills the right of the panel at about its own width, so it stays
+   sharp; the blue gradient blends its left edge into the copy side. */
+@media (min-width: 961px) {
+	.dk-hero .dk-hero-grid {
+		background:
+			linear-gradient(90deg, oklch(26% 0.13 262) 0%, oklch(26% 0.13 262) 36%, oklch(27% 0.13 262 / 0.75) 48%, oklch(28% 0.13 262 / 0.15) 66%, oklch(28% 0.13 262 / 0) 100%),
+			url(../images/daeduk-campus-jeonggok.jpg) right 48% / min(62%, 916px) auto no-repeat,
+			oklch(26% 0.13 262);
+	}
+}
+
+/* The fade is sized and placed exactly like the photo, so the photo's left edge always
+   melts into the blue, whatever the screen width. */
+@media (min-width: 961px) {
+	.dk-hero .dk-hero-grid {
+		--dk-hero-photo-w: min(62%, 916px);
+		background:
+			linear-gradient(90deg, oklch(26% 0.13 262) 0%, oklch(26% 0.13 262 / 0.7) 18%, oklch(26% 0.13 262 / 0.2) 42%, oklch(26% 0.13 262 / 0) 60%) right top / var(--dk-hero-photo-w) 100% no-repeat,
+			url(../images/daeduk-campus-jeonggok.jpg) right 48% / var(--dk-hero-photo-w) auto no-repeat,
+			oklch(26% 0.13 262);
+	}
+}
+
+/* ================================================================
+ * Round 3: hero with a student snapshot, clearer programme toggles,
+ * a photo journey for the route, fewer big rounded panels.
+ * ================================================================ */
+
+/* ---------- Hero: copy high, campus behind, one tilted student snapshot ---------- */
+.dk-hero .dk-hero-grid {
+	align-items: start;
+	padding-top: var(--lp-32);
+}
+
+.dk-hero-copy {
+	align-self: start;
+}
+
+.dk-hero-copy h1 {
+	text-wrap: balance;
+}
+
+/* The school name always takes its own line and never splits. */
+.dk-hero-copy h1 em {
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.dk-hero-aside {
+	align-items: flex-start;
+	justify-content: flex-end;
+	gap: var(--lp-12);
+	padding-top: var(--lp-64);
+}
+
+.dk-hero-snap {
+	position: relative;
+	width: min(100%, 300px);
+	margin: 0;
+	padding: var(--lp-8) var(--lp-8) var(--lp-12);
+	border-radius: 8px;
+	background: oklch(100% 0 0);
+	box-shadow: 0 20px 40px oklch(12% 0.06 262 / 0.45);
+	transform: rotate(-4deg);
+}
+
+.dk-hero-snap img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	border-radius: 4px;
+}
+
+.dk-hero-snap figcaption {
+	margin-top: var(--lp-8);
+	color: var(--lp-ink);
+	font-size: 0.8125rem;
+	font-weight: 700;
+	text-align: center;
+}
+
+/* A strip of tape holding the snapshot. */
+.dk-hero-snap::before {
+	content: "";
+	position: absolute;
+	top: -12px;
+	left: 50%;
+	width: 88px;
+	height: 24px;
+	background: oklch(88% 0.12 88 / 0.85);
+	transform: translateX(-50%) rotate(3deg);
+}
+
+.dk-hero-chip {
+	margin: var(--lp-12) 0 0;
+	padding: var(--lp-8) var(--lp-12);
+	border-radius: 999px;
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+	font-size: 0.8125rem;
+	line-height: 1.3;
+}
+
+.dk-hero-chip strong {
+	font-weight: 800;
+}
+
+.dk-hero-aside .dk-hero-credit {
+	margin-top: auto;
+	align-self: flex-end;
+}
+
+@media (max-width: 960px) {
+	.dk-hero-aside {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		padding-top: var(--lp-16);
+		min-height: 0;
+	}
+
+	.dk-hero-snap {
+		width: 58%;
+		transform: rotate(-3deg);
+	}
+
+	.dk-hero-chip {
+		margin: 0;
+	}
+
+	.dk-hero-aside .dk-hero-credit {
+		width: 100%;
+		margin-top: 0;
+		text-align: right;
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-hero-snap {
+		width: 64%;
+		margin-left: var(--lp-8);
+	}
+
+	.dk-hero-copy h1 {
+		font-size: clamp(2.125rem, 1.4rem + 3.4vw, 2.75rem);
+	}
+}
+
+/* ---------- Programme cards: a clear toggle for the modules ---------- */
+.dk-page .dk-major .lp-details summary {
+	display: inline-flex;
+	min-height: 40px;
+	align-items: center;
+	gap: var(--lp-8);
+	padding: 0 var(--lp-16);
+	border: 1px solid color-mix(in oklch, var(--dk-tone, var(--dk-blue)), transparent 55%);
+	border-radius: 999px;
+	color: color-mix(in oklch, var(--dk-tone, var(--dk-blue)), black 25%);
+	font-size: 0.875rem;
+	transition: background-color 160ms var(--dk-ease);
+}
+
+.dk-page .dk-major .lp-details summary::after {
+	width: auto;
+	height: auto;
+	border: 0;
+	content: "▾";
+	line-height: 1;
+	transition: transform 200ms var(--dk-ease);
+}
+
+.dk-page .dk-major .lp-details[open] summary::after {
+	content: "▾";
+	transform: rotate(180deg);
+}
+
+.dk-page .dk-major .lp-details summary:hover {
+	background: color-mix(in oklch, var(--dk-tone, var(--dk-blue)), transparent 88%);
+}
+
+.dk-page .dk-major .lp-details summary:focus-visible {
+	outline: 3px solid var(--dk-tone, var(--dk-blue));
+	outline-offset: 2px;
+}
+
+.dk-page .dk-major .lp-details {
+	border: 0;
+	margin-top: var(--lp-12);
+}
+
+.dk-page .dk-major .lp-details p {
+	margin-top: var(--lp-12);
+}
+
+/* ---------- Fewer rounded panels: programmes and partners sit on the page ground ---------- */
+.dk-page .dk-zone.dk-zone.dk-study,
+.dk-page .dk-zone.dk-zone.dk-trust {
+	margin-inline: 0;
+	border-radius: 0;
+	background: transparent;
+}
+
+.dk-page .dk-study .dk-major {
+	background: var(--lp-surface);
+	box-shadow: 0 1px 2px oklch(30% 0.05 260 / 0.06), 0 8px 24px oklch(30% 0.05 260 / 0.06);
+}
+
+/* ---------- Route as a photo journey: zigzag stages, the internship stage lit up ---------- */
+.dk-journey {
+	align-items: start;
+}
+
+.dk-journey-photo {
+	margin: 0 0 var(--lp-12);
+}
+
+.dk-journey-photo img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	border: 4px solid oklch(100% 0 0);
+	border-radius: 12px;
+}
+
+.dk-journey-photo figcaption {
+	margin-top: var(--lp-4);
+	color: oklch(85% 0.04 250);
+	font-size: 0.75rem;
+}
+
+.dk-page .dk-work .dk-journey li.is-key {
+	padding-inline: var(--lp-16);
+	padding-bottom: var(--lp-16);
+	border-radius: 16px;
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+}
+
+.dk-page .dk-work .dk-journey li.is-key h3,
+.dk-page .dk-work .dk-journey li.is-key p,
+.dk-page .dk-work .dk-journey li.is-key .dk-route-when {
+	color: var(--dk-on-gold);
+}
+
+.dk-page .dk-work .dk-journey li.is-key h3 {
+	font-size: 1.375rem;
+}
+
+@media (min-width: 1081px) {
+	.dk-journey {
+		grid-template-columns: 1.2fr 1.2fr 1.1fr 1fr 1fr;
+		margin-bottom: var(--lp-64);
+	}
+
+	/* High-low rhythm: stages without a photo drop lower so the path climbs and dips. */
+	.dk-page .dk-work .dk-journey li:not(.has-photo) {
+		margin-top: var(--lp-96);
+	}
+
+	.dk-page .dk-work .dk-journey li.is-key {
+		margin-top: var(--lp-48);
+		padding-top: var(--lp-64);
+	}
+
+	.dk-page .dk-work .dk-journey li.has-photo:nth-child(2) .dk-journey-photo img {
+		transform: rotate(2deg);
+	}
+
+	.dk-page .dk-work .dk-journey li.has-photo:nth-child(1) .dk-journey-photo img {
+		transform: rotate(-2deg);
+	}
+}
+
+/* Phones and tablets: a vertical timeline; photos sit inside their stage. */
+@media (max-width: 1080px) {
+	.dk-journey-photo {
+		max-width: 320px;
+	}
+
+	.dk-page .dk-work .dk-journey li.is-key {
+		margin-left: -12px;
+		padding-left: calc(68px + 12px);
+		padding-top: var(--lp-12);
+	}
+
+	.dk-page .dk-work .dk-journey li.is-key .dk-route-step {
+		left: 12px;
+		top: var(--lp-12);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dk-page .dk-major .lp-details summary,
+	.dk-page .dk-major .lp-details summary::after {
+		transition: none;
+	}
+}
+
+@media (min-width: 961px) {
+	/* The snapshot leans over the blue edge so the tower stays in view. */
+	.dk-hero-aside {
+		padding-top: var(--lp-96);
+	}
+
+	.dk-hero-snap {
+		width: 260px;
+		margin-left: calc(-1 * var(--lp-64));
+	}
+
+	.dk-hero-chip {
+		margin-left: calc(-1 * var(--lp-48));
+	}
+}
+
+@media (min-width: 1081px) {
+	/* The connector line stays on one row; only the stage content steps up and down. */
+	.dk-page .dk-work .dk-journey li:not(.has-photo),
+	.dk-page .dk-work .dk-journey li.is-key {
+		margin-top: 0;
+	}
+
+	.dk-page .dk-work .dk-journey li:nth-child(even) {
+		padding-top: calc(var(--lp-64) + var(--lp-32));
+	}
+
+	/* The internship stage: a gold card that starts just under the connector row. */
+	.dk-page .dk-work .dk-journey li.is-key {
+		padding: var(--lp-64) var(--lp-16) var(--lp-16);
+		background: linear-gradient(transparent 48px, var(--dk-gold) 48px);
+		border-radius: 0 0 16px 16px;
+	}
+}
+
+/* Inline field error for phone numbers. */
+.field-error {
+	display: block;
+	margin-top: var(--lp-4);
+	color: oklch(50% 0.2 25);
+	font-size: 0.875rem;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+input[aria-invalid="true"] {
+	border-color: oklch(55% 0.2 25) !important;
+}
+
+/* ---------- Money: the two sums to pay, side by side and equally prominent ---------- */
+.dk-totals {
+	display: grid;
+	gap: var(--lp-12);
+	align-items: stretch;
+}
+
+.dk-totals .dk-total-figure {
+	padding: var(--lp-24);
+	border-radius: 24px;
+}
+
+.dk-totals .dk-total-figure.is-vn {
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+}
+
+.dk-totals .dk-total-figure.is-school {
+	background: var(--dk-blue);
+	color: oklch(100% 0 0);
+}
+
+.dk-totals .dk-total-label {
+	margin: 0 0 var(--lp-8);
+	font-size: 0.9375rem;
+	font-weight: 700;
+	color: inherit;
+}
+
+.dk-totals .dk-total-value {
+	margin: 0;
+	color: inherit;
+	font-size: clamp(2rem, 1.2rem + 2.4vw, 3.25rem);
+	font-weight: 800;
+	line-height: 1.05;
+	letter-spacing: -0.03em;
+	font-variant-numeric: tabular-nums;
+}
+
+.dk-totals .dk-total-formula {
+	margin: var(--lp-12) 0 0;
+	color: inherit;
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	opacity: 0.92;
+}
+
+.dk-totals-plus {
+	display: grid;
+	place-items: center;
+	color: var(--lp-ink);
+	font-size: 2rem;
+	font-weight: 800;
+}
+
+.dk-totals-note {
+	grid-column: 1 / -1;
+	margin: 0;
+	padding: var(--lp-12) var(--lp-16);
+	border-radius: 12px;
+	background: var(--dk-gold-tint);
+	color: var(--lp-ink);
+	font-size: 0.9375rem;
+	line-height: 1.5;
+}
+
+@media (min-width: 761px) {
+	.dk-totals {
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-totals-plus {
+		font-size: 1.5rem;
+		line-height: 1;
+	}
+}
+
+/* Phones: in the sign-up band the form comes right after the heading and one line of intro;
+   the bullet list and quick-contact buttons follow it. */
+@media (max-width: 760px) {
+	.dk-page .study-lead-layout {
+		display: flex;
+		flex-direction: column;
+		gap: var(--lp-16);
+	}
+
+	.dk-page .study-lead-copy {
+		display: contents;
+	}
+
+	.dk-page .study-lead-copy h2 { order: 1; margin: 0; }
+	.dk-page .study-lead-copy>p:not(.study-lead-actions) { order: 2; margin: 0; }
+	.dk-page .study-lead-form-wrap { order: 3; }
+	.dk-page .study-lead-copy ul { order: 4; margin: 0; }
+	.dk-page .study-lead-actions { order: 5; margin: 0; }
+}
+
+/* ---------- Summary row: conditions, programmes, budget, deadline, each linked ---------- */
+.dk-hero .dk-keyfacts dt {
+	display: grid;
+	gap: var(--lp-4);
+}
+
+.dk-fact-kind {
+	color: var(--lp-muted);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.dk-hero .dk-keyfacts .is-urgent .dk-fact-kind {
+	color: var(--dk-on-gold);
+	opacity: 0.8;
+}
+
+.dk-page a.dk-fact-link {
+	display: inline-block;
+	margin-top: var(--lp-4);
+	color: var(--dk-blue);
+	font-weight: 700;
+	white-space: nowrap;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.dk-page .is-urgent a.dk-fact-link {
+	color: var(--dk-on-gold);
+}
+
+.dk-page a.dk-fact-link:focus-visible {
+	outline: 3px solid var(--dk-blue);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* Payee line items: open on wide screens, folded behind one row on phones. */
+.dk-payee-fold>.lp-fold-head .lp-fold-title {
+	display: none;
+}
+
+@media (max-width: 760px) {
+	.dk-payee-fold>.lp-fold-head .lp-fold-title {
+		display: block;
+		color: var(--dk-blue);
+		font-size: 0.9375rem;
+		font-weight: 700;
+	}
+
+	.dk-page .dk-payee .dk-payee-fold {
+		border-bottom: 0;
+	}
+
+	/* Secondary photos make way on phones: the hero snapshot and the route photos. */
+	.dk-hero-snap,
+	.dk-journey-photo {
+		display: none;
+	}
+
+	.dk-hero-aside {
+		padding-top: var(--lp-12);
+	}
+}
+
+/* Phones: the five in-page links fit on one row, spread evenly, so none is cut off.
+   Only very narrow screens fall back to the scrolling row with a faded edge. */
+@media (max-width: 760px) and (min-width: 340px) {
+	.lp-header-nav {
+		justify-content: space-between;
+		gap: var(--lp-8);
+		padding-right: 0;
+		-webkit-mask-image: none;
+		mask-image: none;
+	}
+
+	.lp-header-nav a {
+		font-size: 0.8125rem;
+	}
+}
+
+/* Secondary hero button: a solid dark fill with a white outline reads as active on any part of the photo. */
+.dk-page .dk-hero-copy .lp-button.lp-button--glass {
+	border: 2px solid oklch(100% 0 0 / 0.85);
+	background: oklch(24% 0.12 262 / 0.88);
+	color: oklch(100% 0 0);
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+}
+
+.dk-page .dk-hero-copy .lp-button.lp-button--glass:hover {
+	background: oklch(100% 0 0);
+	color: var(--lp-ink);
+}
+
+@media (max-width: 960px) {
+	/* The LETCO chip and the photo credit stack instead of overlapping. */
+	.dk-hero-aside {
+		flex-direction: column;
+		flex-wrap: nowrap;
+		align-items: flex-start;
+		gap: var(--lp-8);
+		padding-top: var(--lp-96);
+	}
+
+	.dk-hero-chip {
+		border-radius: 14px;
+	}
+
+	.dk-hero-aside .dk-hero-credit {
+		width: auto;
+		margin: 0;
+		align-self: flex-start;
+		text-align: left;
+	}
+}
+
+/* ================================================================
+ * Review fixes: footer, link underline, shared button style, callout width,
+ * section-heading actions, campus column.
+ * ================================================================ */
+
+/* Footer: brand on the left, the contact lines in a two-column block beside it. */
+@media (min-width: 761px) {
+	.lp-footer-inner {
+		display: grid;
+		grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+		gap: var(--lp-48);
+	}
+
+	.lp-footer .lp-footer-contact {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--lp-8) var(--lp-32);
+		align-content: start;
+	}
+
+	.lp-footer .lp-footer-contact p:first-child,
+	.lp-footer .lp-footer-contact .lp-footer-address {
+		grid-column: 1 / -1;
+	}
+}
+
+.lp-footer-bottom {
+	margin-top: var(--lp-32);
+	padding-top: var(--lp-16);
+	border-top: 1px solid var(--lp-line);
+}
+
+/* Phones: the space kept for the fixed sign-up bar belongs to the footer, not an empty strip. */
+@media (max-width: 760px) {
+	.is-landing {
+		padding-bottom: 0;
+	}
+
+	.is-landing .lp-footer {
+		padding-bottom: calc(var(--lp-32) + 72px);
+	}
+}
+
+/* Text links: a full underline that thickens on hover, never a partial stroke. */
+.lp-link::after {
+	transform: none;
+	opacity: 0.6;
+	transition: opacity 200ms var(--lp-ease), height 200ms var(--lp-ease);
+}
+
+.lp-link:hover::after {
+	transform: none;
+	opacity: 1;
+	height: 2px;
+}
+
+/* One button style on every landing: pill shape, gold primary, blue outline secondary. */
+.is-landing .lp-button {
+	border-radius: 999px;
+}
+
+.is-landing .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--glass):not(.lp-button--block) {
+	background: var(--dk-gold, oklch(81% 0.16 78));
+	color: oklch(25% 0.06 256);
+}
+
+.is-landing .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--glass):not(.lp-button--block):hover {
+	background: oklch(86% 0.15 85);
+	color: oklch(25% 0.06 256);
+}
+
+.is-landing .lp-button:focus-visible {
+	outline: 3px solid oklch(50% 0.2 258);
+	outline-offset: 3px;
+}
+
+/* Daeduk notes span the full content width, in line with the tables and grids above them. */
+.dk-page .dk-callout,
+.dk-page .dk-totals-note {
+	max-width: none;
+}
+
+/* A sign-up action under section headings that sit beside a long list. */
+.section-heading-action {
+	margin: var(--lp-24) 0 0;
+}
+
+/* Daeduk: campus life sits under the campus photos so both columns carry content. */
+.dk-school-photos .dk-campus {
+	grid-column: 1 / -1;
+	margin-top: var(--lp-16);
+}
+
+.dk-school-photos .dk-campus .dk-campus-title {
+	margin-top: 0;
+}
+
+/* The tilted ticket's corners reach past the copy box, so the box must not clip them;
+   the copy column is a little wider and the ticket sizes to its content. */
+.dk-hero .dk-hero-copy {
+	overflow: visible;
+	padding-top: var(--lp-8);
+}
+
+.dk-hero .dk-ticket {
+	display: inline-flex;
+	align-self: flex-start;
+	margin-left: var(--lp-4);
+}
+
+@media (min-width: 961px) {
+	.dk-hero .dk-hero-grid {
+		grid-template-columns: minmax(0, 62fr) minmax(0, 38fr);
+	}
+}
+
+/* ================================================================
+ * Hero after the architectural landing reference: a solid dark-blue
+ * panel, the campus tower photo rising out of its top edge, a card
+ * overlapping the photo's lower-left corner, big stats under the CTA,
+ * and a partner strip under the summary row. LETCO blue and gold.
+ * ================================================================ */
+.dk-hero.lp-hero--cinema {
+	padding-top: var(--lp-64);
+}
+
+.dk-hero .dk-hero-grid,
+.dk-hero .dk-hero-grid:is(*) {
+	overflow: visible;
+	min-height: 0;
+	padding-block: var(--lp-64);
+	background:
+		radial-gradient(60% 80% at 85% 20%, oklch(42% 0.17 255 / 0.55), transparent 70%),
+		oklch(24% 0.12 262);
+}
+
+@media (min-width: 961px) {
+	.dk-hero .dk-hero-grid {
+		grid-template-columns: minmax(0, 56fr) minmax(0, 44fr);
+		align-items: end;
+		background:
+			radial-gradient(60% 80% at 85% 20%, oklch(42% 0.17 255 / 0.55), transparent 70%),
+			oklch(24% 0.12 262);
+	}
+}
+
+/* Stats: three big figures with a short label each. */
+.dk-hero-stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--lp-16) var(--lp-48);
+	margin: var(--lp-32) 0 0;
+	padding-top: var(--lp-24);
+	border-top: 1px solid oklch(100% 0 0 / 0.18);
+}
+
+.dk-hero-stats dt {
+	color: oklch(100% 0 0);
+	font-size: clamp(1.75rem, 1.2rem + 1.4vw, 2.5rem);
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -0.03em;
+	font-variant-numeric: tabular-nums;
+}
+
+.dk-hero-stats dd {
+	margin: var(--lp-4) 0 0;
+	color: oklch(85% 0.03 250);
+	font-size: 0.875rem;
+}
+
+/* The tower photo rises out of the panel's top edge. */
+.dk-hero-figure {
+	position: relative;
+	margin: 0;
+}
+
+.dk-hero-figure img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+	object-position: center 40%;
+	border-radius: 20px;
+	box-shadow: 0 24px 56px oklch(15% 0.08 262 / 0.45);
+}
+
+@media (min-width: 961px) {
+	.dk-hero-figure {
+		margin-top: calc(-1 * (var(--lp-64) + var(--lp-96)));
+	}
+}
+
+/* Card over the photo's lower-left corner. */
+.dk-hero-card {
+	position: absolute;
+	left: calc(-1 * var(--lp-48));
+	bottom: var(--lp-48);
+	min-width: 230px;
+	padding: var(--lp-16) var(--lp-24);
+	border-radius: 14px;
+	background: var(--dk-gold);
+	color: var(--dk-on-gold);
+	box-shadow: 0 16px 32px oklch(15% 0.08 262 / 0.35);
+}
+
+.dk-hero-card p {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.4;
+}
+
+.dk-hero-card .dk-hero-card-kind {
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	opacity: 0.8;
+}
+
+.dk-hero-card .dk-hero-card-name {
+	margin: var(--lp-4) 0 2px;
+	font-size: 1.125rem;
+	font-weight: 800;
+}
+
+.dk-hero-figure figcaption {
+	margin-top: var(--lp-12);
+	color: oklch(85% 0.03 250);
+	font-size: 0.75rem;
+	text-align: right;
+}
+
+/* Partner strip: the internship companies as a quiet row of names. */
+.dk-partners {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--lp-16) var(--lp-32);
+	margin-top: var(--lp-32);
+	padding-block: var(--lp-24);
+	border-block: 1px solid var(--lp-line);
+}
+
+.dk-partners-label {
+	margin: 0;
+	color: var(--lp-muted);
+	font-size: 0.8125rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.dk-partners ul {
+	display: flex;
+	flex: 1;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: var(--lp-12) var(--lp-32);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dk-partners li {
+	display: grid;
+	color: oklch(45% 0.03 260);
+	font-size: 1.125rem;
+	font-weight: 800;
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+}
+
+.dk-partners li span {
+	color: var(--lp-muted);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0;
+}
+
+@media (max-width: 960px) {
+	.dk-hero.lp-hero--cinema {
+		padding-top: var(--lp-16);
+	}
+
+	.dk-hero-figure {
+		max-width: 520px;
+		margin-top: var(--lp-8);
+	}
+
+	.dk-hero-figure img {
+		aspect-ratio: 4 / 3;
+	}
+
+	.dk-hero-card {
+		left: var(--lp-12);
+		bottom: var(--lp-32);
+	}
+}
+
+@media (max-width: 760px) {
+	.dk-hero .dk-hero-grid {
+		padding-block: var(--lp-32);
+	}
+
+	.dk-hero-stats {
+		gap: var(--lp-12) var(--lp-24);
+	}
+
+	.dk-hero-card {
+		min-width: 0;
+		padding: var(--lp-12) var(--lp-16);
+	}
+
+	.dk-partners {
+		display: grid;
+		gap: var(--lp-12);
+	}
+
+	.dk-partners ul {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--lp-12);
+	}
+}
+
+@media (min-width: 961px) {
+	.dk-hero .dk-hero-grid {
+		grid-template-columns: minmax(0, 60fr) minmax(0, 40fr);
+	}
+
+	.dk-hero-copy h1 {
+		font-size: clamp(2.5rem, 1.4rem + 2.6vw, 3.75rem);
+	}
+
+	/* The photo is shifted up so its top rises out of the panel's top edge. */
+	.dk-hero-figure {
+		margin-top: 0;
+		translate: 0 calc(-1 * var(--lp-96));
+		margin-bottom: calc(-1 * var(--lp-96));
+	}
+}
+
+@media (min-width: 961px) {
+	/* Start the photo 48px above the panel: past the panel's 64px top padding and beyond. */
+	.dk-hero-figure {
+		align-self: start;
+		translate: none;
+		margin: calc(-1 * (var(--lp-64) + var(--lp-48))) 0 0;
+	}
+}
+
+/* ================================================================
+ * Daeduk, after the "architectural landing" reference: edge-to-edge
+ * sections alternating white and light grey, a dark hero joined to
+ * the header, square-ish corners, a short blue rule over section
+ * headings, outline-circle icons, framed photos. LETCO navy replaces
+ * the reference's charcoal; LETCO blue and gold are the accents.
+ * ================================================================ */
+body.is-landing:has(.dk-page),
+.study-landing.dk-page {
+	--dk-navy: oklch(23% 0.1 262);
+	--dk-grey: oklch(96.8% 0.004 260);
+	--dk-r: 4px;
+	--lp-radius: 4px;
+}
+
+/* ---------- Header joins the hero on the dark ground ---------- */
+.is-landing:has(.dk-page) .lp-header {
+	background: var(--dk-navy);
+	border-bottom-color: oklch(100% 0 0 / 0.08);
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+}
+
+.is-landing:has(.dk-page) .lp-header-nav a,
+.is-landing:has(.dk-page) .lp-header-phone {
+	color: oklch(92% 0.015 250);
+}
+
+.is-landing:has(.dk-page) .lp-header-nav a:hover,
+.is-landing:has(.dk-page) .lp-header-phone:hover {
+	color: var(--dk-gold);
+}
+
+.is-landing:has(.dk-page) .lp-header-nav {
+	border-top-color: oklch(100% 0 0 / 0.1);
+}
+
+.is-landing:has(.dk-page) .lp-header a:focus-visible {
+	outline-color: var(--dk-gold);
+}
+
+/* ---------- Buttons: rectangular with a small radius ---------- */
+.is-landing .lp-button,
+.is-landing:has(.dk-page) .lp-header .lp-button,
+.is-landing:has(.dk-page) .lp-mobile-cta .lp-button {
+	border-radius: var(--dk-r, 4px);
+}
+
+/* ---------- Hero: edge to edge, photo bleeding off the right and top ---------- */
+.dk-hero.lp-hero--cinema {
+	padding: 0;
+	background: var(--dk-navy);
+}
+
+.dk-hero .dk-hero-grid,
+.dk-hero .dk-hero-grid:is(*) {
+	width: auto;
+	max-width: none;
+	margin: 0;
+	border-radius: 0;
+	padding: var(--lp-64) max(var(--lp-24), calc((100% - 1180px) / 2)) var(--lp-96);
+	background: var(--dk-navy);
+}
+
+@media (min-width: 961px) {
+	.dk-hero .dk-hero-grid {
+		grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+		align-items: center;
+		padding-right: 0;
+		background: var(--dk-navy);
+	}
+
+	.dk-hero-figure {
+		align-self: stretch;
+		margin: calc(-1 * var(--lp-64)) 0 calc(-1 * var(--lp-96));
+	}
+
+	.dk-hero-figure img {
+		height: 100%;
+		min-height: 560px;
+		aspect-ratio: auto;
+		border-radius: 0;
+		box-shadow: none;
+	}
+
+	.dk-hero-figure figcaption {
+		position: absolute;
+		top: var(--lp-12);
+		right: var(--lp-16);
+		margin: 0;
+		padding: 2px var(--lp-8);
+		border-radius: 2px;
+		background: oklch(15% 0.05 262 / 0.55);
+		color: oklch(96% 0.01 250);
+	}
+
+	/* The LETCO card straddles the hero's bottom edge, under the photo. */
+	.dk-hero-card {
+		left: calc(-1 * var(--lp-64));
+		right: auto;
+		bottom: calc(-1 * var(--lp-48));
+		display: grid;
+		grid-template-columns: auto auto 1fr;
+		align-items: center;
+		gap: var(--lp-24);
+		width: min(560px, 100% + var(--lp-48));
+		padding: var(--lp-24) var(--lp-32);
+		border-radius: 0;
+		background: linear-gradient(110deg, oklch(42% 0.17 258), oklch(52% 0.17 245));
+		color: oklch(100% 0 0);
+		box-shadow: 0 18px 40px oklch(15% 0.08 262 / 0.3);
+	}
+
+	.dk-hero-card .dk-hero-card-name {
+		margin: 0;
+		font-size: 1.375rem;
+		white-space: nowrap;
+	}
+
+	.dk-hero-card .dk-hero-card-text {
+		font-size: 0.8125rem;
+		opacity: 0.9;
+	}
+}
+
+.dk-hero-card {
+	border-radius: var(--dk-r);
+}
+
+.dk-hero .dk-hero-copy h1 {
+	letter-spacing: -0.03em;
+}
+
+.dk-hero-stats {
+	border-top: 0;
+	padding-top: 0;
+}
+
+/* Summary row and partner strip: on white, clear of the hero card. */
+.dk-hero .container:not(.dk-hero-grid) {
+	padding-top: var(--lp-96);
+}
+
+.dk-hero .container:not(.dk-hero-grid) {
+	background: transparent;
+}
+
+.dk-hero .dk-keyfacts>div,
+.dk-hero .dk-keyfacts>div + div,
+.dk-hero .dk-keyfacts>div:nth-child(n) {
+	border-radius: var(--dk-r);
+}
+
+/* Partner names read like a logo strip: grey, evenly spread, centred. */
+.dk-partners {
+	border-block: 0;
+	padding-block: var(--lp-32);
+}
+
+.dk-partners ul {
+	justify-content: space-around;
+	align-items: center;
+}
+
+.dk-partners li {
+	color: oklch(58% 0.015 260);
+	font-size: 1.25rem;
+	text-align: center;
+}
+
+/* ---------- Sections: edge to edge, alternating white and light grey ---------- */
+.dk-page .dk-zone.dk-zone,
+.is-landing .dk-page .study-lead-section {
+	margin: 0;
+	border-radius: 0;
+}
+
+.dk-page .dk-zone.dk-zone.dk-fit { background: var(--dk-grey); }
+.dk-page .dk-zone.dk-zone.dk-study { background: oklch(100% 0 0); }
+.dk-page .dk-zone.dk-zone.dk-money { background: var(--dk-grey); }
+.dk-page .dk-zone.dk-zone.dk-trust { background: oklch(100% 0 0); }
+.dk-page .dk-zone.dk-zone#hoi-dap { background: var(--dk-grey); }
+
+.dk-page .dk-moments {
+	background: oklch(100% 0 0);
+}
+
+/* Section labels: a short blue rule over a small caption, as in the reference. */
+.dk-page .dk-label {
+	display: grid;
+	gap: var(--lp-12);
+	padding: 0;
+	border-radius: 0;
+	background: none;
+	color: var(--dk-blue);
+	font-size: 0.8125rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.dk-page .dk-label::before {
+	content: "";
+	display: block;
+	width: 48px;
+	height: 3px;
+	background: var(--dk-blue);
+}
+
+.dk-page .dk-work .dk-label {
+	color: oklch(90% 0.06 230);
+	background: none;
+}
+
+.dk-page .dk-work .dk-label::before {
+	background: var(--dk-gold);
+}
+
+/* ---------- Programmes: four columns with outline-circle icons ---------- */
+@media (min-width: 961px) {
+	.dk-study-grid {
+		grid-template-columns: 1fr;
+		gap: var(--lp-48);
+	}
+
+	.dk-study-aside {
+		position: static;
+	}
+
+	.dk-study-aside .dk-head {
+		grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+	}
+
+	.dk-majors {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: var(--lp-32);
+	}
+
+	.dk-majors>:nth-child(even) {
+		translate: 0 var(--lp-24);
+	}
+}
+
+.dk-page .dk-study .dk-major {
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: none;
+	box-shadow: none;
+}
+
+.dk-page .dk-major .dk-major-icon {
+	position: static;
+	width: 56px;
+	height: 56px;
+	margin-bottom: var(--lp-16);
+	border: 2px solid var(--dk-tone, var(--dk-blue));
+	border-radius: 50%;
+	background: none;
+}
+
+.dk-page .dk-major h3 {
+	padding-right: 0;
+	font-size: 1.1875rem;
+}
+
+.dk-page .dk-major .dk-major-years {
+	margin: 0 0 var(--lp-8);
+}
+
+@media (hover: hover) {
+	.dk-page .dk-study .dk-major:hover {
+		transform: none;
+		box-shadow: none;
+		background: none;
+	}
+
+	.dk-page .dk-major:hover .dk-major-icon {
+		background: var(--dk-tone, var(--dk-blue));
+		color: oklch(100% 0 0);
+		transform: none;
+	}
+}
+
+/* ---------- Framed photos: white border, soft shadow, square corners ---------- */
+.dk-page .dk-school-photos img,
+.dk-page .dk-zone-photo img,
+.dk-page .dk-evidence img,
+.dk-journey-photo img {
+	border: 8px solid oklch(100% 0 0);
+	border-radius: 0;
+	box-shadow: 0 10px 30px oklch(30% 0.04 260 / 0.14);
+	transform: none;
+}
+
+/* Photo row: caption under the photo, like news cards. */
+.dk-page .dk-moments-track figure {
+	border-radius: 0;
+	overflow: visible;
+}
+
+.dk-page .dk-moments-track img {
+	aspect-ratio: 4 / 3;
+	border-radius: 0;
+}
+
+.dk-page .dk-moments-track figcaption {
+	position: static;
+	margin-top: var(--lp-12);
+	padding: 0;
+	background: none;
+	color: var(--lp-ink);
+	font-size: 0.9375rem;
+	font-weight: 700;
+}
+
+/* ---------- Partners: the signing photo with a dark card over its edge ---------- */
+.dk-page .dk-evidence-card {
+	border-radius: 0;
+	background: var(--dk-navy);
+	color: oklch(92% 0.015 250);
+	box-shadow: 0 18px 40px oklch(15% 0.08 262 / 0.3);
+}
+
+.dk-page .dk-evidence-card h3 {
+	color: oklch(100% 0 0);
+}
+
+.dk-page .dk-evidence-card .dk-src-line,
+.dk-page .dk-evidence-card .lp-source {
+	color: oklch(85% 0.03 250);
+}
+
+.dk-page .dk-evidence-card a.dk-src {
+	color: var(--dk-gold);
+}
+
+/* ---------- Cards and panels: small radius throughout ---------- */
+.dk-page .dk-start li,
+.dk-page .dk-payee,
+.dk-page .dk-outside,
+.dk-page .dk-proof,
+.dk-page .dk-note-block,
+.dk-page .dk-role,
+.dk-page .dk-callout,
+.dk-page .dk-totals .dk-total-figure,
+.dk-page .dk-totals-note,
+.dk-page .study-lead-form-wrap,
+.dk-page .dk-journey li.is-key,
+.dk-page .dk-ticket-main,
+.dk-page .dk-ticket-stub {
+	border-radius: var(--dk-r);
+}
+
+.dk-page .dk-work .dk-journey li.is-key {
+	border-radius: 0 0 var(--dk-r) var(--dk-r);
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 960px) {
+	.dk-hero .dk-hero-grid {
+		padding-bottom: var(--lp-48);
+	}
+
+	.dk-hero-figure {
+		max-width: none;
+		margin-inline: calc(-1 * max(var(--lp-24), calc((100% - 1180px) / 2)));
+	}
+
+	.dk-hero-figure img {
+		border-radius: 0;
+		aspect-ratio: 16 / 10;
+	}
+
+	.dk-hero-card {
+		position: relative;
+		left: auto;
+		bottom: auto;
+		margin: calc(-1 * var(--lp-32)) var(--lp-24) 0;
+		background: linear-gradient(110deg, oklch(42% 0.17 258), oklch(52% 0.17 245));
+		color: oklch(100% 0 0);
+	}
+
+	.dk-hero-figure figcaption {
+		padding-inline: var(--lp-24);
+		text-align: left;
+	}
+
+	.dk-hero .container:not(.dk-hero-grid) {
+		padding-top: var(--lp-32);
+	}
+
+	.dk-majors>:nth-child(even) {
+		translate: none;
+	}
+}
+
+@media (min-width: 761px) and (max-width: 960px) {
+	.dk-majors {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--lp-32);
+	}
+}
+
+/* Only the hero grid is dark; the summary row and partner strip below sit on white. */
+.dk-hero.lp-hero--cinema {
+	background: oklch(100% 0 0);
 }

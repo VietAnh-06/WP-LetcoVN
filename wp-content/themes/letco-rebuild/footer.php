@@ -3,14 +3,20 @@
 <?php if ( letco_is_landing() ) : ?>
 	<?php
 	$landing_is_daeduk = is_page( 'dai-hoc-daeduk' );
-	$landing_cta       = $landing_is_daeduk ? 'Nhận tư vấn lộ trình phù hợp' : 'Đăng ký tư vấn';
-	$landing_contact   = array();
+	$landing_cta       = $landing_is_daeduk ? 'Kiểm tra điều kiện hồ sơ' : 'Đăng ký tư vấn';
+	// Every landing shows the same contact block; the Daeduk page overrides it from its config.
+	$landing_contact   = array(
+		'label'     => 'Đơn vị tư vấn',
+		'partners'  => 'Trung tâm Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
+		'phones'    => array( '0989.086.386' ),
+		'addresses' => array( 'Tòa nhà A5, Đại học Công nghiệp Hà Nội, 298 Cầu Diễn, Tây Tựu, Hà Nội' ),
+	);
 	$landing_zalo      = '0989086386';
 
 	if ( $landing_is_daeduk ) {
 		$landing_configs = require get_template_directory() . '/template-parts/study-school-configs.php';
 		if ( isset( $landing_configs['dai-hoc-daeduk'] ) ) {
-			$landing_contact = isset( $landing_configs['dai-hoc-daeduk']['contact'] ) ? $landing_configs['dai-hoc-daeduk']['contact'] : array();
+			$landing_contact = isset( $landing_configs['dai-hoc-daeduk']['contact'] ) ? $landing_configs['dai-hoc-daeduk']['contact'] : $landing_contact;
 			$landing_zalo    = isset( $landing_configs['dai-hoc-daeduk']['zalo'] ) ? $landing_configs['dai-hoc-daeduk']['zalo'] : $landing_zalo;
 		}
 	}
@@ -47,7 +53,7 @@
 	</div>
 </footer>
 <div class="lp-mobile-cta">
-	<a class="lp-button" href="#form-dang-ky"><?php echo esc_html( $landing_cta ); ?></a>
+	<a class="lp-button" href="#dang-ky"><?php echo esc_html( $landing_cta ); ?></a>
 	<a class="lp-button lp-button--light" href="https://zalo.me/<?php echo esc_attr( $landing_zalo ); ?>" rel="noopener" target="_blank">Zalo</a>
 </div>
 <?php else : ?>

@@ -28,6 +28,12 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 			<h2><?php echo esc_html( $lead['title'] ); ?></h2>
 			<p><?php echo esc_html( $lead['intro'] ); ?></p>
 			<ul><?php foreach ( $lead['bullets'] as $bullet ) : ?><li><?php echo esc_html( $bullet ); ?></li><?php endforeach; ?></ul>
+			<?php if ( ! empty( $args['quick_contact'] ) ) : ?>
+				<p class="study-lead-actions">
+					<a class="lp-button lp-button--light" href="tel:<?php echo esc_attr( preg_replace( '/\D+/', '', $args['quick_contact'] ) ); ?>">Gọi <?php echo esc_html( $args['quick_contact'] ); ?></a>
+					<?php if ( $zalo ) : ?><a class="lp-button lp-button--ghost" href="https://zalo.me/<?php echo esc_attr( $zalo ); ?>" rel="noopener" target="_blank">Nhắn Zalo</a><?php endif; ?>
+				</p>
+			<?php endif; ?>
 			<?php if ( ! empty( $contact ) && ! $contact_in_footer ) : ?>
 				<div class="study-contact">
 					<p><strong><?php echo esc_html( isset( $contact['label'] ) ? $contact['label'] : 'Đơn vị tuyển sinh chính thức' ); ?>:</strong> <?php echo esc_html( $contact['partners'] ); ?></p>
@@ -45,6 +51,7 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 		<div class="study-lead-form-wrap" id="form-dang-ky">
 			<?php if ( 'success' === $lead_status ) : ?><div class="form-notice form-success">Cảm ơn bạn! LETCO đã nhận được thông tin và sẽ sớm liên hệ.</div><?php endif; ?>
 			<?php if ( 'error' === $lead_status ) : ?><div class="form-notice form-error">Vui lòng nhập đầy đủ họ tên và số điện thoại.</div><?php endif; ?>
+			<?php if ( 'phone' === $lead_status ) : ?><div class="form-notice form-error">Số điện thoại chưa đúng. Vui lòng nhập số Việt Nam gồm 10 chữ số, ví dụ 0989 086 386.</div><?php endif; ?>
 			<form class="study-lead-form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
 				<input type="hidden" name="action" value="letco_submit_lead">
 				<?php if ( empty( $program_choices ) ) : ?>
@@ -55,7 +62,7 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 				<div class="form-honeypot" aria-hidden="true"><label>Công ty<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
 				<label>Họ và tên <span>*</span><input type="text" name="full_name" required autocomplete="name" placeholder="Nguyễn Văn A"></label>
 				<?php if ( $compact ) : ?>
-					<label>Số điện thoại / Zalo <span>*</span><input type="tel" name="phone" required autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
+					<label>Số điện thoại / Zalo <span>*</span><input type="tel" name="phone" required pattern="[\s.\-]*(\+?84|0)[\s.\-]*[35789]([\s.\-]*\d){8}[\s.\-]*" title="Số điện thoại Việt Nam gồm 10 chữ số, ví dụ 0989 086 386" data-phone autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
 					<?php if ( ! empty( $major_choices ) ) : ?>
 						<div class="form-row">
 							<label>Ngành học <span class="field-optional">(không bắt buộc)</span>
@@ -72,7 +79,7 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 						<label>Email<input type="email" name="email" autocomplete="email" placeholder="email@example.com"></label>
 				<?php else : ?>
 				<div class="form-row">
-					<label>Số điện thoại <span>*</span><input type="tel" name="phone" required autocomplete="tel" placeholder="09xx xxx xxx"></label>
+					<label>Số điện thoại <span>*</span><input type="tel" name="phone" required pattern="[\s.\-]*(\+?84|0)[\s.\-]*[35789]([\s.\-]*\d){8}[\s.\-]*" title="Số điện thoại Việt Nam gồm 10 chữ số, ví dụ 0989 086 386" data-phone autocomplete="tel" placeholder="09xx xxx xxx"></label>
 					<label>Email<input type="email" name="email" autocomplete="email" placeholder="email@example.com"></label>
 				</div>
 				<?php endif; ?>

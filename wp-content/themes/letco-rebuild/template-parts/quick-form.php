@@ -18,7 +18,7 @@ $collect_birth_year = ! empty( $args['collect_birth_year'] );
 	<input type="hidden" name="letco_lead_nonce" value="<?php echo esc_attr( wp_create_nonce( 'letco_submit_lead' ) ); ?>">
 	<div class="form-honeypot" aria-hidden="true"><label>Công ty<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
 	<label>Họ và tên<input type="text" name="full_name" required autocomplete="name" placeholder="Nguyễn Văn A"></label>
-	<label>Số điện thoại / Zalo<input type="tel" name="phone" required autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
+	<label>Số điện thoại / Zalo<input type="tel" name="phone" required pattern="[\s.\-]*(\+?84|0)[\s.\-]*[35789]([\s.\-]*\d){8}[\s.\-]*" title="Số điện thoại Việt Nam gồm 10 chữ số, ví dụ 0989 086 386" data-phone autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
 	<?php if ( ! empty( $major_choices ) || $collect_birth_year ) : ?>
 		<div class="lp-quick-form-row">
 			<?php if ( ! empty( $major_choices ) ) : ?>

@@ -3,8 +3,10 @@
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" href="<?php echo letco_asset( 'favicon.svg' ); ?>" type="image/svg+xml">
-	<link rel="alternate icon" href="<?php echo esc_url( home_url( '/favicon.ico' ) ); ?>" type="image/x-icon" sizes="32x32">
+	<link rel="icon" href="<?php echo letco_asset( 'favicon-32.png' ); ?>" type="image/png" sizes="32x32">
+	<link rel="icon" href="<?php echo letco_asset( 'favicon-192.png' ); ?>" type="image/png" sizes="192x192">
+	<link rel="icon" href="<?php echo esc_url( home_url( '/favicon.ico' ) ); ?>" sizes="any">
+	<link rel="apple-touch-icon" href="<?php echo letco_asset( 'favicon-180.png' ); ?>" sizes="180x180">
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

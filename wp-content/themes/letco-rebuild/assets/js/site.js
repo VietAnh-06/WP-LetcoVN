@@ -188,12 +188,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const disclosureMotionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     && 'animate' in Element.prototype;
   if (disclosureMotionOk) {
-    document.querySelectorAll('.lp-budget-group, .lp-details--wide').forEach((details) => {
+    document.querySelectorAll('.lp-budget-group, .lp-details, .study-accordion details, .study-documents--details, .study-lead-more, .jd-mini-details').forEach((details) => {
       const summary = details.querySelector('summary');
       const content = details.querySelector('.lp-budget-group-panel');
       const listItems = content
         ? Array.from(content.querySelectorAll('li'))
-        : Array.from(details.querySelectorAll(':scope > p, :scope > ul > li'));
+        : Array.from(details.querySelectorAll(':scope > p, :scope > ul > li, :scope > dl > div'));
       const tableRows = content ? [] : Array.from(details.querySelectorAll(':scope > div table tr'));
       const items = listItems.length
         ? listItems
@@ -221,10 +221,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!closing) details.open = true;
 
-        const borderHeight = Number.parseFloat(getComputedStyle(details).borderTopWidth)
-          + Number.parseFloat(getComputedStyle(details).borderBottomWidth);
+        // A closed details box is its summary plus the box's own border and padding.
+        const style = getComputedStyle(details);
+        const frameHeight = ['borderTopWidth', 'borderBottomWidth', 'paddingTop', 'paddingBottom']
+          .reduce((sum, key) => sum + Number.parseFloat(style[key]), 0);
         const endHeight = closing
-          ? summary.offsetHeight + borderHeight
+          ? summary.offsetHeight + frameHeight
           : details.offsetHeight;
 
         details.classList.add('is-animating');
@@ -273,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dialog = consultModal.querySelector('[role="dialog"]');
     const closeButtons = consultModal.querySelectorAll('[data-consult-close]');
     const focusSelector = 'a[href], button:not([disabled]), input:not([type="hidden"]):not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
-    const openDelay = Number.parseInt(consultModal.dataset.modalDelay || '4500', 10);
+    const openDelay = Number.parseInt(consultModal.dataset.modalDelay || '0', 10);
     const modalMotionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const modalTransitionDuration = modalMotionOk ? 380 : 0;
     let previousFocus = null;
@@ -287,7 +289,9 @@ document.addEventListener('DOMContentLoaded', () => {
           window.requestAnimationFrame(() => {
             consultModal.classList.add('is-open');
             window.setTimeout(() => {
-              const firstField = consultModal.querySelector('input:not([type="hidden"]):not([tabindex="-1"])');
+              // The static preview disables and hides the fields, so only a usable one takes focus.
+              const firstField = Array.from(consultModal.querySelectorAll('input:not([type="hidden"]):not([tabindex="-1"])'))
+                .find((field) => !field.disabled && field.offsetParent !== null);
               (firstField || dialog)?.focus();
             }, modalMotionOk ? 240 : 0);
           });
@@ -327,7 +331,281 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    window.setTimeout(openConsultModal, openDelay);
+    // On phones the fixed sign-up bar already offers the form, so the entry popup only
+    // opens to show a submission result.
+    const isPhone = window.matchMedia('(max-width: 760px)').matches;
+    if (openDelay > 0 && (!isPhone || openDelay <= 150)) window.setTimeout(openConsultModal, openDelay);
+
+    // Interest trigger: open once per visit when the reader has read down to a chosen point,
+    // unless they are already at the sign-up form.
+    const triggerTarget = consultModal.dataset.modalTrigger && document.querySelector(consultModal.dataset.modalTrigger);
+    if (triggerTarget && !isPhone && 'IntersectionObserver' in window) {
+      let seen = false;
+      try { seen = sessionStorage.getItem('letco-consult-shown') === '1'; } catch (error) { seen = false; }
+      if (!seen) {
+        const signup = document.getElementById('dang-ky');
+        // Besides reading that far, the reader must have spent a while on the page.
+        const minDwell = 30000;
+        const openIfStillReading = () => {
+          if (signup && (signup.contains(document.activeElement) || signup.getBoundingClientRect().top < window.innerHeight)) return;
+          if (!consultModal.hidden) return;
+          try { sessionStorage.setItem('letco-consult-shown', '1'); } catch (error) { /* storage unavailable */ }
+          openConsultModal();
+        };
+        const watcher = new IntersectionObserver((entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          watcher.disconnect();
+          window.setTimeout(openIfStillReading, Math.max(0, minDwell - performance.now()));
+        }, { rootMargin: '0px 0px -40% 0px' });
+        watcher.observe(triggerTarget);
+      }
+    }
+  }
+
+  // Blocks that fold behind a toggle on phones and are simply open on wider screens.
+  // The toggle is hidden there, so it cannot be focused or read as a collapsible control.
+  const folds = document.querySelectorAll('[data-fold]');
+  if (folds.length) {
+    document.documentElement.classList.add('has-folds');
+    const narrowQuery = window.matchMedia('(max-width: 760px)');
+    // Phones start folded and keep whatever the reader opened; wider screens show everything.
+    const opened = new WeakSet();
+    const setFold = (fold, open) => {
+      fold.classList.toggle('is-open', open);
+      fold.querySelector('.lp-fold-toggle').setAttribute('aria-expanded', String(open));
+      fold.querySelector('.lp-fold-body').hidden = !open;
+    };
+    const syncFolds = () => folds.forEach((fold) => setFold(fold, !narrowQuery.matches || opened.has(fold)));
+    // Same motion as the native dropdowns: the panel eases its height while rows fade in turn.
+    const foldMotionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'animate' in Element.prototype;
+    const animateFold = (fold, open) => {
+      const body = fold.querySelector('.lp-fold-body');
+      body.getAnimations().forEach((animation) => animation.cancel());
+      if (!foldMotionOk) {
+        setFold(fold, open);
+        return;
+      }
+      const rows = Array.from(body.querySelectorAll(':scope > p, :scope > ul > li, :scope > ol > li, :scope > dl > div, :scope > div > table tr, :scope > details'));
+      const items = rows.length ? rows : Array.from(body.children);
+      const startHeight = open ? 0 : body.offsetHeight;
+      if (open) setFold(fold, true);
+      // Read the open-state padding while the block still has its open class.
+      const padding = getComputedStyle(body).paddingBottom;
+      const endHeight = open ? body.offsetHeight : 0;
+      if (!open) {
+        fold.classList.remove('is-open');
+        fold.querySelector('.lp-fold-toggle').setAttribute('aria-expanded', 'false');
+      }
+      const ordered = open ? items : [ ...items ].reverse();
+      const stagger = Math.max(18, Math.min(45, 360 / Math.max(1, ordered.length - 1)));
+      const lead = open ? 40 : 0;
+      const duration = Math.max(240, lead + 180 + Math.max(0, ordered.length - 1) * stagger);
+      body.classList.add('is-animating');
+      ordered.forEach((item, index) => item.animate(
+        open
+          ? [ { opacity: 0, transform: 'translateY(-10px)' }, { opacity: 1, transform: 'translateY(0)' } ]
+          : [ { opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-10px)' } ],
+        { duration: 180, delay: lead + index * stagger, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)', fill: 'both' }
+      ));
+      // Padding eases with the height so the panel grows from nothing.
+      const panel = body.animate(
+        {
+          height: [ `${startHeight}px`, `${endHeight}px` ],
+          paddingBottom: open ? [ '0px', padding ] : [ padding, '0px' ],
+        },
+        { duration, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' }
+      );
+      panel.onfinish = () => {
+        items.forEach((item) => item.getAnimations().forEach((animation) => animation.cancel()));
+        body.classList.remove('is-animating');
+        if (!open) setFold(fold, false);
+      };
+    };
+    folds.forEach((fold) => {
+      fold.querySelector('.lp-fold-toggle').addEventListener('click', () => {
+        if (opened.has(fold)) opened.delete(fold); else opened.add(fold);
+        animateFold(fold, opened.has(fold));
+      });
+    });
+    syncFolds();
+    narrowQuery.addEventListener('change', syncFolds);
+  }
+
+  // Phone fields: check the Vietnamese number format on blur and on submit, with the message
+  // right under the field. The server applies the same rule.
+  document.querySelectorAll('input[data-phone]').forEach((input, index) => {
+    const message = document.createElement('span');
+    message.className = 'field-error';
+    message.id = `phone-error-${index}`;
+    message.hidden = true;
+    input.insertAdjacentElement('afterend', message);
+    input.setAttribute('aria-describedby', message.id);
+    const check = () => {
+      const value = input.value.trim();
+      let text = '';
+      if (value === '') text = 'Vui lòng nhập số điện thoại hoặc Zalo.';
+      else if (input.validity.patternMismatch) text = 'Số điện thoại chưa đúng. Nhập số Việt Nam gồm 10 chữ số, ví dụ 0989 086 386.';
+      message.textContent = text;
+      message.hidden = !text;
+      input.setAttribute('aria-invalid', text ? 'true' : 'false');
+      return !text;
+    };
+    input.addEventListener('blur', () => { if (input.value.trim() !== '' || input.getAttribute('aria-invalid') === 'true') check(); });
+    input.addEventListener('input', () => { if (input.getAttribute('aria-invalid') === 'true') check(); });
+    // The browser blocks an invalid submit itself; show our message instead of its bubble.
+    input.addEventListener('invalid', (event) => {
+      event.preventDefault();
+      check();
+      input.focus();
+    });
+    input.form?.addEventListener('submit', (event) => {
+      if (!check()) {
+        event.preventDefault();
+        input.focus();
+      }
+    });
+  });
+
+  // Photo row: previous/next buttons scroll one card; they disable at either end.
+  document.querySelectorAll('.dk-moments-viewport').forEach((viewport) => {
+    const track = viewport.querySelector('.dk-moments-track');
+    const buttons = viewport.querySelectorAll('[data-moments]');
+    if (!track || !buttons.length) return;
+    const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth - 2;
+      buttons.forEach((button) => {
+        button.disabled = Number(button.dataset.moments) < 0 ? track.scrollLeft <= 2 : track.scrollLeft >= max;
+      });
+    };
+    // Rows marked data-autoplay drift on their own and loop: the photos are repeated once
+    // (hidden from assistive tech) and the scroll position wraps by one set's width.
+    // Hover, focus, touch, an off-screen row or a hidden tab pauses the drift.
+    const loop = viewport.hasAttribute('data-autoplay') && smooth;
+    let half = 0;
+    if (loop) {
+      [...track.children].forEach((item) => {
+        const copy = item.cloneNode(true);
+        copy.setAttribute('aria-hidden', 'true');
+        copy.querySelectorAll('img').forEach((img) => { img.alt = ''; });
+        track.appendChild(copy);
+      });
+      const measure = () => { half = track.scrollWidth / 2; };
+      measure();
+      window.addEventListener('resize', measure);
+      window.addEventListener('load', measure);
+      track.style.scrollSnapType = 'none';
+      let held = false;
+      let inView = false;
+      let resumeAt = 0;
+      let last = 0;
+      let position = track.scrollLeft;
+      const hold = () => { resumeAt = performance.now() + 2500; };
+      viewport.addEventListener('pointerenter', () => { held = true; });
+      viewport.addEventListener('pointerleave', () => { held = false; hold(); });
+      viewport.addEventListener('focusin', () => { held = true; });
+      viewport.addEventListener('focusout', () => { held = false; hold(); });
+      track.addEventListener('pointerdown', hold);
+      track.addEventListener('wheel', hold, { passive: true });
+      track.addEventListener('touchstart', hold, { passive: true });
+      new IntersectionObserver((entries) => { inView = entries[0].isIntersecting; }).observe(viewport);
+      const tick = (now) => {
+        const dt = last ? Math.min(now - last, 64) : 0;
+        last = now;
+        if (Math.abs(track.scrollLeft - position) > 1) position = track.scrollLeft;
+        if (inView && !held && !document.hidden && now > resumeAt && half) {
+          position += dt * 0.03;
+          if (position >= half) position -= half;
+          track.scrollLeft = position;
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+    buttons.forEach((button) => button.addEventListener('click', () => {
+      const card = track.querySelector('li');
+      const step = card ? card.getBoundingClientRect().width + 12 : track.clientWidth * 0.8;
+      const direction = Number(button.dataset.moments);
+      if (loop && direction < 0 && track.scrollLeft < step) track.scrollLeft += half;
+      if (loop && direction > 0 && track.scrollLeft + step >= half) track.scrollLeft -= half;
+      track.scrollBy({ left: direction * step, behavior: 'smooth' });
+    }));
+    if (!loop) {
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    }
+  });
+
+  // Card rows with side buttons: each press moves one card; a button hides at its end.
+  document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector('ul');
+    const buttons = carousel.querySelectorAll('[data-carousel-step]');
+    if (!track || !buttons.length) return;
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth - 8;
+      buttons.forEach((button) => {
+        button.disabled = Number(button.dataset.carouselStep) < 0 ? track.scrollLeft <= 8 : track.scrollLeft >= max;
+      });
+    };
+    buttons.forEach((button) => button.addEventListener('click', () => {
+      const card = track.querySelector('li');
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      const step = card ? card.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
+      track.scrollBy({ left: Number(button.dataset.carouselStep) * step });
+    }));
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+
+  // A link to folded content opens it first, so the jump lands on the content itself.
+  const openTarget = () => {
+    const target = window.location.hash && document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+    if (!target) return;
+    const fold = target.closest('[data-fold]');
+    const details = target.closest('details');
+    let changed = false;
+    if (fold && fold.querySelector('.lp-fold-body').hidden) {
+      fold.querySelector('.lp-fold-toggle').click();
+      changed = true;
+    }
+    if (details && !details.open) {
+      details.open = true;
+      changed = true;
+    }
+    if (changed) target.scrollIntoView();
+  };
+  openTarget();
+  window.addEventListener('hashchange', openTarget);
+
+  // On narrow screens the landing header tucks away while reading down and returns on scroll up.
+  const landingHeader = document.querySelector('.lp-header');
+  if (landingHeader) {
+    const narrowQuery = window.matchMedia('(max-width: 1080px)');
+    let lastY = window.scrollY;
+    let ticking = false;
+    // A jump to an in-page section keeps the header in place, so the section lands below it.
+    let holdUntil = 0;
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('a[href^="#"]')) {
+        holdUntil = Date.now() + 1500;
+        landingHeader.classList.remove('is-tucked');
+      }
+    });
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const tuck = narrowQuery.matches && y > 240 && y > lastY + 4 && Date.now() > holdUntil;
+        if (tuck) landingHeader.classList.add('is-tucked');
+        else if (y < lastY - 4 || y <= 240) landingHeader.classList.remove('is-tucked');
+        lastY = y;
+        ticking = false;
+      });
+    }, { passive: true });
+    landingHeader.addEventListener('focusin', () => landingHeader.classList.remove('is-tucked'));
   }
 
   // The fixed sign-up bar steps aside near the hero action and while a form is on screen.
@@ -366,17 +644,34 @@ document.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(tick);
     };
     const revealTargets = document.querySelectorAll('.study-landing .section > .container > *, .lp-stats-list > div, .lp-bridge-figure');
+    const reveal = (target) => {
+      if (target.classList.contains('is-in')) return;
+      target.classList.add('is-in');
+      target.querySelectorAll('[data-countup]').forEach(countUp);
+      revealer.unobserve(target);
+    };
+    // Starts just before a block enters the screen, so it is settled by the time it is read.
     const revealer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in');
-        entry.target.querySelectorAll('[data-countup]').forEach(countUp);
-        revealer.unobserve(entry.target);
-      });
-    }, { rootMargin: '0px 0px -8% 0px' });
+      entries.forEach((entry) => { if (entry.isIntersecting) reveal(entry.target); });
+    }, { rootMargin: '0px 0px 15% 0px' });
+    const armed = [];
     revealTargets.forEach((target) => {
+      // Blocks already on screen at load are left alone.
+      if (target.getBoundingClientRect().top < window.innerHeight) return;
       target.classList.add('lp-reveal');
       revealer.observe(target);
+      armed.push(target);
+    });
+    // An anchor jump skips the scroll in between: settle everything up to the destination.
+    const settleAbove = () => {
+      const limit = window.scrollY + window.innerHeight * 1.5;
+      armed.forEach((target) => {
+        if (target.getBoundingClientRect().top + window.scrollY < limit) reveal(target);
+      });
+    };
+    window.addEventListener('hashchange', settleAbove);
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('a[href^="#"]')) window.setTimeout(settleAbove, 50);
     });
   }
 });
