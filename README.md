@@ -114,10 +114,15 @@ site, and a `404.html` page provides proper missing-page behavior on Pages.
 No PHP source, WordPress login, database, local credentials, or backups are
 included. The local WordPress installation is not changed.
 
-The two consultation forms are displayed with disabled fields and a notice that
-the preview does not accept registrations. WordPress administration, comments,
-search, and server-side form handling require a separate backend. Phone, email,
-and Zalo links still work. See Cloudflare's
+Consultation forms stay active: they post to `/api/lead`, handled by
+[`scripts/cloudflare/_worker.js`](scripts/cloudflare/_worker.js), which the exporter
+copies into the export. It applies the same checks as the theme (name, Vietnamese
+phone number, hidden spam field) and appends each sign-up to a Google Sheet through
+a Google Apps Script web app. The result messages are exported from WordPress
+(`?lead=success`, `error`, `phone`) and served from `/_lead/`. If the sheet cannot be
+reached, visitors see a page with the hotline and Zalo link. WordPress
+administration, comments, and search are not available on the static copy.
+See Cloudflare's
 [static WordPress guide](https://developers.cloudflare.com/pages/how-to/deploy-a-wordpress-site/).
 
 Sign in once with the official Wrangler CLI (Node.js and npm required):
@@ -138,10 +143,30 @@ npx --yes wrangler@4.148.0 pages deploy dist/cloudflare \
   --project-name=letco-rebuild --branch=main --commit-dirty=true
 ```
 
-Wrangler prints the public URL after deployment. Alternatively, upload
-`dist/letco-cloudflare-pages.zip` through **Cloudflare > Workers & Pages >
-Create application > Pages > Direct Upload**. Upload only the export folder or
-ZIP, never the WordPress checkout. Both outputs are ignored by Git.
+Wrangler prints the public URL after deployment. Deploy with Wrangler so the
+sign-up worker is included; dashboard drag-and-drop upload of
+`dist/letco-cloudflare-pages.zip` publishes only static files. Upload only the
+export folder or ZIP, never the WordPress checkout. Both outputs are ignored by Git.
+
+### Connect the sign-up forms to Google Sheets
+
+1. Create a Google Sheet, open **Extensions > Apps Script**, and replace the code
+   with [`scripts/cloudflare/google-sheets-lead.gs`](scripts/cloudflare/google-sheets-lead.gs).
+2. Generate a secret, for example with `openssl rand -hex 32`. In Apps Script,
+   open **Project Settings > Script properties** and add `LEAD_SECRET` with it.
+3. **Deploy > New deployment > Web app**: execute as *Me*, access *Anyone*.
+   Authorize it and copy the web app URL ending in `/exec`.
+4. Store both values on the Pages project, then deploy again:
+
+```sh
+npx --yes wrangler@4.148.0 pages secret put SHEET_WEBHOOK_URL --project-name=letco-rebuild
+npx --yes wrangler@4.148.0 pages secret put SHEET_WEBHOOK_SECRET --project-name=letco-rebuild
+```
+
+Sign-ups appear in the sheet's **Leads** tab, which the script creates with a
+header row. After editing the Apps Script code, use **Deploy > Manage deployments >
+Edit > New version** so the URL stays the same. Sign-ups on the static site are
+not stored in WordPress.
 
 ## Requirements
 

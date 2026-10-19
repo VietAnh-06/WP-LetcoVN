@@ -25,14 +25,12 @@ ASSETS = {'.css', '.js', '.mjs', '.png', '.jpg', '.jpeg', '.gif', '.webp',
           '.mp4', '.webm', '.pdf'}
 PRIVATE = {'wp-admin', 'wp-json', 'dev', 'scripts', 'node_modules'}
 CSS_URL = re.compile(r'url\(\s*([\'"]?)(.*?)\1\s*\)', re.I)
-FORM_FALLBACK = (
-    '<div class="form-fallback" role="note">'
-    '<p><strong>Liên hệ tư vấn viên LETCO qua điện thoại hoặc Zalo</strong></p>'
-    '<p>Tư vấn viên đối chiếu hồ sơ của bạn với điều kiện chương trình và gửi dự toán theo trường hợp cụ thể.</p>'
-    '<p class="form-fallback-actions">'
-    '<a class="lp-button" href="tel:0989086386">Gọi 0989.086.386</a> '
-    '<a class="lp-button lp-button--light" href="https://zalo.me/0989086386" rel="noopener">Nhắn Zalo</a>'
-    '</p></div>')
+# Sign-ups go to the Pages worker; WordPress-only hidden fields are left out.
+LEAD_ENDPOINT = '/api/lead'
+WORDPRESS_FIELDS = {'action', 'letco_lead_nonce', '_wp_http_referer'}
+# Result pages shown after a sign-up, served by the worker from /_lead/<status>/<page>.
+LEAD_STATUSES = ('success', 'error', 'phone')
+WORKER = ROOT / 'scripts' / 'cloudflare' / '_worker.js'
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
         'meta', 'param', 'source', 'track', 'wbr'}
 
@@ -124,13 +122,15 @@ class Exporter:
             data, mime, final_url = self.fetch(url)
             path = unquote(urlsplit(url).path).lstrip('/')
             if mime == 'text/html':
-                parser = StaticHTML(self, final_url)
-                parser.feed(data.decode('utf-8'))
-                parser.close()
-                data = ''.join(parser.output).encode('utf-8')
                 if not path.endswith('.html'):
                     path = path.rstrip('/') + '/index.html'
                 path = path.lstrip('/')
+                data, forms = self.page(data, final_url)
+                if forms:
+                    self.forms += forms
+                    for status in LEAD_STATUSES:
+                        variant, _, variant_url = self.fetch(url + '?lead=' + status)
+                        self.write(f'_lead/{status}/{path}', self.page(variant, variant_url)[0])
                 self.pages += 1
             else:
                 if Path(path).suffix.lower() not in ASSETS:
@@ -138,12 +138,21 @@ class Exporter:
                 if mime == 'text/css' or path.endswith('.css'):
                     data = self.css(data.decode('utf-8'), final_url).encode('utf-8')
                 self.assets += 1
-            if len(data) > 25 * 1024 * 1024:
-                raise RuntimeError('Asset exceeds Cloudflare Pages 25 MiB limit: ' + path)
-            target = self.output / path
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(data)
-            print('Exported', '/' + path)
+            self.write(path, data)
+
+    def page(self, data, base):
+        parser = StaticHTML(self, base)
+        parser.feed(data.decode('utf-8'))
+        parser.close()
+        return ''.join(parser.output).encode('utf-8'), parser.forms
+
+    def write(self, path, data):
+        if len(data) > 25 * 1024 * 1024:
+            raise RuntimeError('Asset exceeds Cloudflare Pages 25 MiB limit: ' + path)
+        target = self.output / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+        print('Exported', '/' + path)
 
 
 class StaticHTML(HTMLParser):
@@ -153,11 +162,11 @@ class StaticHTML(HTMLParser):
         self.base = base
         self.output = []
         self.form = False
+        self.forms = 0
         self.style = False
 
     def handle_starttag(self, tag, attributes):
         attrs = dict(attributes)
-        opened_form = False
         if tag == 'link':
             if attrs.get('rel', '').lower() in {'canonical', 'shortlink', 'edituri', 'https://api.w.org/'}:
                 return
@@ -166,15 +175,14 @@ class StaticHTML(HTMLParser):
                 return
         if tag == 'form':
             self.form = True
-            self.exporter.forms += 1
-            tag = 'div'
-            attrs = {key: value for key, value in attrs.items() if key in {'id', 'class'}}
-            attrs['class'] = (attrs.get('class', '') + ' is-static').strip()
-            opened_form = True
+            self.forms += 1
+            attrs['action'] = LEAD_ENDPOINT
+            attrs['method'] = 'post'
         if self.form and tag == 'input' and attrs.get('type') == 'hidden':
-            return
-        if self.form and tag in {'input', 'textarea', 'select', 'button'}:
-            attrs['disabled'] = None
+            if attrs.get('name') in WORDPRESS_FIELDS:
+                return
+            if attrs.get('name') == 'redirect_to':
+                attrs['value'] = urlsplit(self.base).path or '/'
         for key in ('href', 'src', 'poster'):
             if key in attrs:
                 attrs[key] = self.exporter.url(attrs[key], self.base)
@@ -195,9 +203,6 @@ class StaticHTML(HTMLParser):
         encoded = ''.join(' ' + key + ('' if value is None else '="' + escape(value, quote=True) + '"')
                           for key, value in attrs.items())
         self.output.append('<' + tag + encoded + '>')
-        if opened_form:
-            # The static copy cannot store sign-ups, so offer contact routes that work.
-            self.output.append(FORM_FALLBACK)
         if tag == 'style':
             self.style = True
 
@@ -208,7 +213,6 @@ class StaticHTML(HTMLParser):
 
     def handle_endtag(self, tag):
         if tag == 'form':
-            tag = 'div'
             self.form = False
         if tag == 'style':
             self.style = False
@@ -252,9 +256,8 @@ def main():
             '<meta name="viewport" content="width=device-width, initial-scale=1">'
             '<title>Không tìm thấy trang</title><h1>Không tìm thấy trang</h1>'
             '<p><a href="/">Về trang chủ LETCO</a></p></html>', encoding='utf-8')
-        (output / '_headers').write_text(
-            '/*\n  X-Content-Type-Options: nosniff\n'
-            '  Referrer-Policy: strict-origin-when-cross-origin\n', encoding='utf-8')
+        # The worker receives sign-ups and sets the security headers on every response.
+        shutil.copyfile(WORKER, output / '_worker.js')
         for file in output.rglob('*'):
             if file.is_file() and file.suffix in {'.html', '.css', '.js'}:
                 contents = file.read_text(encoding='utf-8')
@@ -270,7 +273,7 @@ def main():
             if file.is_file():
                 bundle.write(file, file.relative_to(destination))
     print(f'Complete: {exporter.pages} pages, {exporter.assets} assets, '
-          f'{exporter.forms} forms made read-only.')
+          f'{exporter.forms} sign-up forms sent to {LEAD_ENDPOINT}.')
     print('Pages directory:', destination)
     print('Upload archive:', archive)
 
