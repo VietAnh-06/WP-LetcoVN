@@ -1,7 +1,9 @@
 <?php
 /**
  * Consultation popup: shows the result after a submission. It opens on its own only when
- * the page sets popup_delay above 0, or once when the reader reaches popup_trigger (a selector). $args: data (page config), lead_status ('', 'success' or 'error').
+ * the page sets popup_delay above 0, or once when the reader reaches popup_trigger (a selector).
+ * With popup_buttons, every sign-up link to #dang-ky opens it too. $args: data (page config),
+ * lead_status ('', 'success' or 'error').
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -11,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $data        = $args['data'];
 $lead_status = $args['lead_status'];
 ?>
-<div class="lp-consult-modal" data-consult-modal data-modal-delay="<?php echo $lead_status ? '150' : esc_attr( isset( $data['popup_delay'] ) ? $data['popup_delay'] : 0 ); ?>"<?php echo ( ! $lead_status && ! empty( $data['popup_trigger'] ) ) ? ' data-modal-trigger="' . esc_attr( $data['popup_trigger'] ) . '"' : ''; ?> hidden>
+<div class="lp-consult-modal" data-consult-modal data-modal-delay="<?php echo $lead_status ? '150' : esc_attr( isset( $data['popup_delay'] ) ? $data['popup_delay'] : 0 ); ?>"<?php echo ( ! $lead_status && ! empty( $data['popup_trigger'] ) ) ? ' data-modal-trigger="' . esc_attr( $data['popup_trigger'] ) . '"' : ''; ?><?php echo empty( $data['popup_buttons'] ) ? '' : ' data-modal-buttons'; ?> hidden>
 	<div class="lp-consult-modal-backdrop" data-consult-close></div>
 	<section class="lp-consult-dialog" role="dialog" aria-modal="true" aria-labelledby="daeduk-consult-title" tabindex="-1">
 		<button class="lp-consult-close" type="button" data-consult-close aria-label="Đóng form tư vấn">×</button>

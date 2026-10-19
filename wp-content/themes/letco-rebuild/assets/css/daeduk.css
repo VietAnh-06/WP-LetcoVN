@@ -239,6 +239,184 @@
 	margin-top: clamp(48px, 6vw, 80px);
 }
 
+/* Five Daeduk options: three visa routes plus the K-Tech and degree pathways. */
+.jd-pathway-grid {
+	display: grid;
+	align-items: start;
+	gap: 20px;
+}
+
+.jd-pathway-card {
+	position: relative;
+	transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+	padding: clamp(22px, 3vw, 30px);
+	border: 1px solid var(--jd-line);
+	border-radius: 24px;
+	background: #ffffff;
+	box-shadow: 0 16px 42px rgba(11, 42, 79, 0.06);
+}
+
+.jd-pathway-card.is-featured {
+	border-color: color-mix(in srgb, var(--jd-blue) 42%, var(--jd-line));
+	background: linear-gradient(155deg, var(--jd-blue-soft), #ffffff 48%);
+}
+
+.jd-pathway-card.is-featured::before {
+	content: "Nổi bật";
+	position: absolute;
+	top: 18px;
+	right: 18px;
+	padding: 5px 10px;
+	border-radius: 999px;
+	background: var(--jd-blue);
+	color: #ffffff;
+	font-size: 0.6875rem;
+	font-weight: 800;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+/* Each card is a native disclosure: the summary stays short, the facts drop down on click. */
+.jd-pathway-card > summary {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	box-sizing: border-box;
+	min-height: var(--jd-row-summary, 0px);
+	cursor: pointer;
+	list-style: none;
+}
+
+.jd-pathway-card > summary::-webkit-details-marker {
+	display: none;
+}
+
+.jd-pathway-card > summary:focus-visible {
+	outline: 3px solid var(--jd-blue);
+	outline-offset: 6px;
+	border-radius: 12px;
+}
+
+.jd-pathway-card:hover {
+	border-color: color-mix(in srgb, var(--jd-blue) 42%, var(--jd-line));
+	box-shadow: var(--jd-shadow-lift);
+}
+
+.jd-pathway-card:not([open]):hover {
+	transform: translateY(-4px);
+}
+
+.jd-pathway-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: auto;
+	padding-top: 16px;
+	color: var(--jd-blue);
+	font-size: 0.9375rem;
+	font-weight: 700;
+}
+
+.jd-pathway-toggle::after {
+	content: "+";
+	display: grid;
+	width: 28px;
+	height: 28px;
+	place-items: center;
+	border-radius: 50%;
+	background: var(--jd-blue-soft);
+	font-size: 1.125rem;
+	line-height: 1;
+}
+
+.jd-pathway-card[open] .jd-pathway-toggle::after {
+	content: "−";
+	background: var(--jd-blue);
+	color: #ffffff;
+}
+
+/* site.js animates the height; while closing, the icon already shows the closed state. */
+.jd-pathway-card.is-closing .jd-pathway-toggle::after {
+	content: "+";
+	background: var(--jd-blue-soft);
+	color: inherit;
+}
+
+.jd-pathway-card.is-animating {
+	overflow: hidden;
+}
+
+.jd-pathway-tag {
+	display: inline-flex;
+	align-items: center;
+	min-height: 28px;
+	margin: 0 0 14px;
+	padding: 4px 10px;
+	border-radius: 999px;
+	background: var(--jd-red-soft);
+	color: var(--jd-red-deep);
+	font-size: 0.75rem;
+	font-weight: 800;
+	letter-spacing: 0.03em;
+}
+
+.jd-pathway-card.is-featured > summary {
+	padding-right: 72px;
+}
+
+.jd-pathway-card.is-featured .jd-pathway-tag {
+	background: #ffffff;
+	color: var(--jd-blue-deep);
+}
+
+.jd-pathway-card h3 {
+	margin: 0;
+	text-wrap: pretty;
+	font-family: var(--jd-serif);
+	font-size: clamp(1.35rem, 1.15rem + 0.45vw, 1.65rem);
+	line-height: 1.25;
+}
+
+.jd-pathway-summary {
+	margin: 10px 0 0;
+	color: var(--jd-text);
+	line-height: 1.65;
+}
+
+.jd-pathway-facts {
+	display: grid;
+	gap: 0;
+	margin: 22px 0 0;
+}
+
+.jd-pathway-facts > div {
+	display: grid;
+	gap: 5px;
+	padding: 13px 0;
+	border-top: 1px solid var(--jd-line);
+}
+
+.jd-pathway-facts dt {
+	color: var(--jd-blue-deep);
+	font-size: 0.75rem;
+	font-weight: 800;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.jd-pathway-facts dd {
+	margin: 0;
+	color: var(--jd-ink);
+	font-size: 0.9375rem;
+	line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+	.jd-pathway-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
 .jd-note {
 	margin: 16px 0 0;
 	color: var(--jd-text);
@@ -1145,12 +1323,9 @@
 .jd-steps {
 	display: grid;
 	gap: 28px;
-	margin: 0;
-	padding: 0;
-	list-style: none;
 }
 
-.jd-steps li {
+.jd-step {
 	display: grid;
 	grid-template-columns: 52px 1fr;
 	gap: 18px;
@@ -2828,5 +3003,556 @@
 	/* Cards in the second row are 1.5 times wider; a 2:1 picture keeps both rows the same height. */
 	.jd-companies li:nth-child(n + 4) img {
 		aspect-ratio: 2 / 1;
+	}
+}
+
+/* Landing motion: a staggered hero entrance, a gently floating deadline card and planes, and
+   cards that rise in turn when their block scrolls into view. Only when motion is welcome. */
+@media (prefers-reduced-motion: no-preference) {
+	@keyframes jd-rise {
+		from { opacity: 0; transform: translateY(24px); }
+		to { opacity: 1; transform: none; }
+	}
+
+	@keyframes jd-zoom-in {
+		from { opacity: 0; transform: scale(0.94); }
+		to { opacity: 1; transform: none; }
+	}
+
+	@keyframes jd-float {
+		0%, 100% { transform: translateY(0); }
+		50% { transform: translateY(-10px); }
+	}
+
+	@keyframes jd-drift {
+		0%, 100% { transform: translate(0, 0) rotate(0deg); }
+		50% { transform: translate(8px, -12px) rotate(6deg); }
+	}
+
+	@keyframes jd-blob {
+		0%, 100% { transform: scale(1); }
+		50% { transform: scale(1.06) translate(-12px, 10px); }
+	}
+
+	.jd-hero-copy > * {
+		animation: jd-rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+
+	.jd-hero-copy > :nth-child(2) { animation-delay: 90ms; }
+	.jd-hero-copy > :nth-child(3) { animation-delay: 180ms; }
+	.jd-hero-copy > :nth-child(4) { animation-delay: 270ms; }
+	.jd-hero-copy > :nth-child(5) { animation-delay: 360ms; }
+
+	.jd-hero-media > img {
+		animation: jd-zoom-in 900ms cubic-bezier(0.2, 0.7, 0.2, 1) 120ms both;
+	}
+
+	.jd-hero h1 em::after {
+		transform-origin: left center;
+		animation: jd-underline 700ms cubic-bezier(0.2, 0.7, 0.2, 1) 650ms both;
+	}
+
+	@keyframes jd-underline {
+		from { transform: rotate(-1.2deg) scaleX(0); }
+		to { transform: rotate(-1.2deg) scaleX(1); }
+	}
+
+	.jd-float-card {
+		animation: jd-rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) 500ms both, jd-float 5s ease-in-out 1.2s infinite;
+	}
+
+	.jd-float-tag {
+		animation: jd-rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) 650ms both;
+	}
+
+	.jd-plane--a {
+		animation: jd-drift 7s ease-in-out infinite;
+	}
+
+	.jd-plane--b {
+		animation: jd-drift 9s ease-in-out 1.5s infinite reverse;
+	}
+
+	.jd-hero-blob {
+		animation: jd-blob 14s ease-in-out infinite;
+	}
+
+	.jd-facts > div {
+		animation: jd-rise 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+		transition: transform 250ms ease, box-shadow 250ms ease;
+	}
+
+	.jd-facts > div:nth-child(1) { animation-delay: 450ms; }
+	.jd-facts > div:nth-child(2) { animation-delay: 530ms; }
+	.jd-facts > div:nth-child(3) { animation-delay: 610ms; }
+	.jd-facts > div:nth-child(4) { animation-delay: 690ms; }
+
+	.jd-facts > div:hover {
+		transform: translateY(-4px);
+		box-shadow: var(--jd-shadow-lift);
+	}
+
+	/* Blocks revealed on scroll (site.js adds .lp-reveal, then .is-in): their cards follow in turn. */
+	.lp-reveal :is(.jd-pathway-card, .jd-steps > .jd-step, .jd-card, .jd-panel) {
+		opacity: 0;
+		transform: translateY(18px);
+		transition: opacity 500ms ease, transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 250ms ease, border-color 250ms ease;
+	}
+
+	.lp-reveal.is-in :is(.jd-pathway-card, .jd-steps > .jd-step, .jd-card, .jd-panel) {
+		opacity: 1;
+		transform: none;
+	}
+
+	.lp-reveal.is-in :is(.jd-pathway-card, .jd-steps > .jd-step, .jd-card, .jd-panel):nth-child(2) { transition-delay: 80ms, 80ms, 0s, 0s; }
+	.lp-reveal.is-in :is(.jd-pathway-card, .jd-steps > .jd-step, .jd-card, .jd-panel):nth-child(3) { transition-delay: 160ms, 160ms, 0s, 0s; }
+	.lp-reveal.is-in :is(.jd-pathway-card, .jd-steps > .jd-step, .jd-card, .jd-panel):nth-child(4) { transition-delay: 240ms, 240ms, 0s, 0s; }
+	.lp-reveal.is-in :is(.jd-pathway-card, .jd-steps > .jd-step, .jd-card, .jd-panel):nth-child(5) { transition-delay: 320ms, 320ms, 0s, 0s; }
+
+	.lp-reveal.is-in .jd-pathway-card:not([open]):hover,
+	.lp-reveal.is-in .jd-card:hover {
+		transform: translateY(-4px);
+	}
+}
+
+/* ================================================================
+ * Short page: students skim, so the rhythm is tight, headings are
+ * smaller and every section fits in about one screen.
+ * ================================================================ */
+.is-landing .jd-page .jd-section {
+	padding-block: clamp(40px, 5vw, 72px);
+}
+
+.is-landing .jd-page .jd-section + .jd-section {
+	padding-top: clamp(16px, 2vw, 32px);
+}
+
+.jd-page .jd-head {
+	margin-bottom: clamp(20px, 3vw, 32px);
+}
+
+.jd-page .jd-head h2 {
+	font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+}
+
+.jd-page .jd-hero {
+	padding-bottom: clamp(8px, 2vw, 24px);
+}
+
+.jd-page .jd-hero h1 {
+	font-size: clamp(2.25rem, 1.4rem + 2.8vw, 3.75rem);
+}
+
+.jd-page .jd-pathway-grid {
+	align-items: stretch;
+}
+
+/* Steps read as cards, like the hero facts: icon, title, date and one line. */
+.jd-page .jd-steps {
+	gap: 16px;
+}
+
+.jd-page .jd-step {
+	grid-template-columns: 44px 1fr;
+	align-content: start;
+	gap: 14px;
+	padding: 22px 24px;
+	border-radius: 20px;
+	background: #ffffff;
+	box-shadow: var(--jd-shadow);
+}
+
+.jd-page .jd-step-icon {
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+}
+
+.jd-page .jd-steps + .jd-mini-details {
+	margin-top: 20px;
+}
+
+@media (min-width: 900px) {
+	.jd-page .jd-steps {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	/* Three across, the icon sits above the text like the hero facts. */
+	.jd-page .jd-step {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Sign-up button at the end of a section. */
+.jd-cta-row {
+	margin: clamp(20px, 3vw, 28px) 0 0;
+}
+
+/* Application countdown under the hero: copy, four time boxes and a sign-up button. */
+.jd-countdown-inner {
+	display: grid;
+	gap: 20px;
+	align-items: center;
+	padding: clamp(22px, 3vw, 32px);
+	border-radius: 24px;
+	background: linear-gradient(135deg, var(--jd-navy), var(--jd-blue-deep));
+	color: #ffffff;
+	box-shadow: var(--jd-shadow-lift);
+}
+
+.jd-countdown-copy .jd-eyebrow {
+	color: var(--jd-sky);
+}
+
+.jd-countdown-copy h2 {
+	margin: 0;
+	color: #ffffff;
+	font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+	line-height: 1.2;
+}
+
+.jd-countdown-copy p:last-child {
+	margin: 8px 0 0;
+	color: rgba(255, 255, 255, 0.82);
+}
+
+.jd-countdown-clock {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.jd-countdown-clock li {
+	display: grid;
+	justify-items: center;
+	gap: 2px;
+	padding: 12px 6px;
+	border-radius: 14px;
+	background: #ffffff;
+	color: var(--jd-ink);
+}
+
+.jd-countdown-clock span {
+	font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+	font-weight: 800;
+	font-variant-numeric: tabular-nums;
+	line-height: 1.1;
+}
+
+.jd-countdown-clock small {
+	color: var(--jd-text);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.jd-countdown .jd-button {
+	background: var(--jd-red);
+	box-shadow: 0 16px 30px rgba(227, 30, 53, 0.3);
+}
+
+.jd-countdown-closed {
+	margin: 0;
+	font-weight: 700;
+}
+
+@media (min-width: 900px) {
+	.jd-countdown-inner {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) auto;
+		gap: 32px;
+	}
+}
+
+/* The date sits under the step title, so short titles never wrap around it. */
+.jd-page .jd-step-tag {
+	display: block;
+	width: fit-content;
+	margin: 6px 0 0;
+}
+
+@media (min-width: 900px) {
+	.jd-page .jd-facts {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 639px) {
+	.jd-page .jd-hero-media > img {
+		aspect-ratio: 16 / 11;
+		border-radius: 120px 120px 24px 24px;
+	}
+
+	.jd-page .jd-facts > div {
+		padding: 16px 18px;
+	}
+
+	.jd-cta-row .jd-button {
+		display: flex;
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+/* ================================================================
+ * Motion across the short page. Each kind of block has its own entrance,
+ * so the page does not repeat one effect. site.js marks blocks below the
+ * fold with .lp-reveal and adds .is-in as they arrive; without the script,
+ * or with reduced motion, everything is simply shown.
+ * ================================================================ */
+@media (prefers-reduced-motion: no-preference) {
+	@keyframes jd-pop {
+		0% { opacity: 0; transform: scale(0.6); }
+		60% { opacity: 1; transform: scale(1.06); }
+		100% { opacity: 1; transform: none; }
+	}
+
+	@keyframes jd-fact-in {
+		from { opacity: 0; transform: translateY(26px) scale(0.92); }
+		to { opacity: 1; transform: none; }
+	}
+
+	/* Hero facts zoom up instead of rising like the hero copy. */
+	.jd-page .jd-facts > div {
+		animation-name: jd-fact-in;
+		animation-timing-function: cubic-bezier(0.34, 1.4, 0.64, 1);
+	}
+
+	/* Section heads: eyebrow slides in, the title wipes on, the intro follows. */
+	.jd-page .lp-reveal.jd-head .jd-eyebrow {
+		opacity: 0;
+		transform: translateX(-24px);
+		transition: opacity 450ms ease, transform 450ms ease;
+	}
+
+	.jd-page .lp-reveal.jd-head h2 {
+		clip-path: inset(-0.4em 100% -0.4em -0.1em);
+		transition: clip-path 750ms cubic-bezier(0.65, 0, 0.35, 1) 120ms;
+	}
+
+	.jd-page .lp-reveal.jd-head .jd-intro {
+		opacity: 0;
+		transition: opacity 600ms ease 500ms;
+	}
+
+	.jd-page .lp-reveal.is-in.jd-head .jd-eyebrow,
+	.jd-page .lp-reveal.is-in.jd-head .jd-intro {
+		opacity: 1;
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in.jd-head h2 {
+		clip-path: inset(-0.4em -0.1em -0.4em -0.1em);
+	}
+
+	/* Programme cards come in from opposite sides. */
+	.jd-page .lp-reveal .jd-pathway-card:nth-child(1) {
+		transform: translateX(-48px);
+	}
+
+	.jd-page .lp-reveal .jd-pathway-card:nth-child(2) {
+		transform: translateX(48px);
+	}
+
+	.jd-page .lp-reveal.is-in .jd-pathway-card {
+		transform: none;
+		transition-duration: 700ms;
+	}
+
+	/* Step cards pop up with a little overshoot; their icons spin in after. */
+	.jd-page .lp-reveal .jd-steps > .jd-step,
+	.jd-page .lp-reveal.jd-steps > .jd-step {
+		opacity: 0;
+		transform: scale(0.85) translateY(12px);
+		transition: opacity 400ms ease, transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 250ms ease;
+	}
+
+	.jd-page .lp-reveal.jd-steps .jd-step-icon {
+		transform: rotate(-120deg) scale(0);
+		transition: transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1) 250ms;
+	}
+
+	.jd-page .lp-reveal.is-in.jd-steps > .jd-step {
+		opacity: 1;
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in.jd-steps .jd-step-icon {
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in.jd-steps > .jd-step:nth-child(2),
+	.jd-page .lp-reveal.is-in.jd-steps > .jd-step:nth-child(2) .jd-step-icon { transition-delay: 120ms, 120ms, 0s; }
+	.jd-page .lp-reveal.is-in.jd-steps > .jd-step:nth-child(3),
+	.jd-page .lp-reveal.is-in.jd-steps > .jd-step:nth-child(3) .jd-step-icon { transition-delay: 240ms, 240ms, 0s; }
+
+	/* Countdown: copy slides in, the time boxes flip down one by one, the button bounces. */
+	.jd-page .lp-reveal.jd-countdown-copy {
+		opacity: 0;
+		transform: translateX(-32px);
+		transition: opacity 500ms ease, transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.jd-page .lp-reveal.jd-countdown-clock {
+		perspective: 600px;
+	}
+
+	.jd-page .lp-reveal.jd-countdown-clock li {
+		opacity: 0;
+		transform: rotateX(-90deg);
+		transform-origin: top center;
+		transition: opacity 300ms ease, transform 600ms cubic-bezier(0.34, 1.3, 0.64, 1);
+	}
+
+	.jd-page .lp-reveal.is-in.jd-countdown-copy,
+	.jd-page .lp-reveal.is-in.jd-countdown-clock li {
+		opacity: 1;
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in.jd-countdown-clock li:nth-child(2) { transition-delay: 100ms; }
+	.jd-page .lp-reveal.is-in.jd-countdown-clock li:nth-child(3) { transition-delay: 200ms; }
+	.jd-page .lp-reveal.is-in.jd-countdown-clock li:nth-child(4) { transition-delay: 300ms; }
+
+	/* Sign-up buttons bounce into place. */
+	.jd-page .lp-reveal:is(.jd-cta-row, .jd-countdown-inner > .jd-button) {
+		opacity: 0;
+	}
+
+	.jd-page .lp-reveal.is-in.jd-cta-row {
+		animation: jd-pop 650ms cubic-bezier(0.2, 0.7, 0.2, 1) 150ms both;
+	}
+
+	.jd-page .jd-countdown-inner > .lp-reveal.is-in.jd-button {
+		animation: jd-pop 650ms cubic-bezier(0.2, 0.7, 0.2, 1) 450ms both, jd-pulse 2.4s ease-in-out 1.2s infinite;
+	}
+
+	/* Cost totals slide toward each other; the plus sign spins in between them. */
+	.jd-page .lp-reveal.jd-totals .jd-total {
+		opacity: 0;
+		transition: opacity 500ms ease, transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 250ms ease;
+	}
+
+	.jd-page .lp-reveal.jd-totals .jd-total:first-child {
+		transform: translateX(-56px);
+	}
+
+	.jd-page .lp-reveal.jd-totals .jd-total:last-child {
+		transform: translateX(56px);
+	}
+
+	.jd-page .lp-reveal.jd-totals .jd-totals-plus {
+		transform: rotate(-180deg) scale(0);
+		transition: transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1) 350ms;
+	}
+
+	.jd-page .lp-reveal.is-in.jd-totals .jd-total,
+	.jd-page .lp-reveal.is-in.jd-totals .jd-totals-plus {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* The note bar wipes open from its coloured edge. */
+	.jd-page .lp-reveal.jd-callout {
+		clip-path: inset(0 100% 0 0);
+		transition: clip-path 800ms cubic-bezier(0.65, 0, 0.35, 1);
+	}
+
+	.jd-page .lp-reveal.is-in.jd-callout {
+		clip-path: inset(0 0 0 0);
+	}
+
+	/* Folds grow open slightly; small notes simply fade. */
+	.jd-page .lp-reveal.jd-mini-details {
+		opacity: 0;
+		transform: scale(0.96);
+		transition: opacity 450ms ease, transform 450ms ease;
+	}
+
+	.jd-page .lp-reveal.jd-note {
+		opacity: 0;
+		transition: opacity 700ms ease 200ms;
+	}
+
+	.jd-page .lp-reveal.is-in:is(.jd-mini-details, .jd-note) {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* Company cards are dealt in with a small tilt. */
+	.jd-page .lp-reveal.jd-companies > li {
+		opacity: 0;
+		transform: translateY(36px) rotate(-6deg);
+		transition: opacity 450ms ease, transform 650ms cubic-bezier(0.34, 1.3, 0.64, 1), box-shadow 250ms ease;
+	}
+
+	/* FAQ questions slide in from the right. */
+	.jd-page .lp-reveal .jd-faq-stack > details,
+	.jd-page .lp-reveal.jd-faq-stack > details {
+		opacity: 0;
+		transform: translateX(48px);
+		transition: opacity 450ms ease, transform 550ms cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.jd-page .lp-reveal.is-in.jd-companies > li,
+	.jd-page .lp-reveal.is-in.jd-faq-stack > details {
+		opacity: 1;
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in:is(.jd-companies, .jd-faq-stack) > :nth-child(2) { transition-delay: 90ms, 90ms, 0s; }
+	.jd-page .lp-reveal.is-in:is(.jd-companies, .jd-faq-stack) > :nth-child(3) { transition-delay: 180ms, 180ms, 0s; }
+	.jd-page .lp-reveal.is-in:is(.jd-companies, .jd-faq-stack) > :nth-child(4) { transition-delay: 270ms, 270ms, 0s; }
+	.jd-page .lp-reveal.is-in:is(.jd-companies, .jd-faq-stack) > :nth-child(5) { transition-delay: 360ms, 360ms, 0s; }
+
+	/* The sign-up block: copy from the left, form from the right. */
+	.jd-page .lp-reveal.study-lead-copy,
+	.jd-page .lp-reveal.study-lead-form-wrap {
+		opacity: 0;
+		transition: opacity 550ms ease, transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.jd-page .lp-reveal.study-lead-copy {
+		transform: translateX(-40px);
+	}
+
+	.jd-page .lp-reveal.study-lead-form-wrap {
+		transform: translateX(40px);
+		transition-delay: 120ms;
+	}
+
+	.jd-page .lp-reveal.is-in:is(.study-lead-copy, .study-lead-form-wrap) {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* Cards lift under the pointer once they have arrived. */
+	.jd-page :is(.jd-step, .jd-companies > li, .jd-total):hover,
+	.jd-page .lp-reveal.is-in :is(.jd-step, .jd-companies > li, .jd-total):hover,
+	.jd-page .lp-reveal.is-in:is(.jd-steps, .jd-companies) > :hover {
+		transform: translateY(-4px);
+		box-shadow: var(--jd-shadow-lift);
+	}
+
+	/* The countdown: each digit drops in as it changes, and the button pulses gently. */
+	@keyframes jd-tick {
+		from { opacity: 0.2; transform: translateY(-40%); }
+		to { opacity: 1; transform: none; }
+	}
+
+	.jd-countdown-clock span.is-tick {
+		animation: jd-tick 350ms cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	@keyframes jd-pulse {
+		0%, 100% { box-shadow: 0 16px 30px rgba(227, 30, 53, 0.3), 0 0 0 0 rgba(227, 30, 53, 0.45); }
+		50% { box-shadow: 0 16px 30px rgba(227, 30, 53, 0.3), 0 0 0 12px rgba(227, 30, 53, 0); }
+	}
+
+	.jd-countdown .jd-button {
+		animation: jd-pulse 2.4s ease-in-out infinite;
 	}
 }

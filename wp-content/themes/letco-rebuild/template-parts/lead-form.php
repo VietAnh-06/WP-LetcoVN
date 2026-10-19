@@ -3,7 +3,8 @@
  * Sign-up section shared by the homepage and the study-abroad landing pages.
  *
  * $args: lead (title, intro, bullets), contact (optional), lead_extra (bool),
- * program (hidden value) or program_choices (list shown as a select).
+ * program (hidden value) or program_choices (list shown as a select),
+ * study_status (bool, compact form: asks what the applicant studies now and where).
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,6 +21,7 @@ $button          = isset( $args['button'] ) ? $args['button'] : 'Gửi đăng k�
 $program         = isset( $args['program'] ) ? $args['program'] : '';
 $program_choices = isset( $args['program_choices'] ) ? $args['program_choices'] : array();
 $major_choices   = isset( $args['major_choices'] ) ? $args['major_choices'] : array();
+$study_status    = ! empty( $args['study_status'] );
 $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lead'] ) ) : '';
 ?>
 <section class="section study-lead-section" id="dang-ky">
@@ -63,6 +65,17 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 				<label>Họ và tên <span>*</span><input type="text" name="full_name" required autocomplete="name" placeholder="Nguyễn Văn A"></label>
 				<?php if ( $compact ) : ?>
 					<label>Số điện thoại / Zalo <span>*</span><input type="tel" name="phone" required pattern="[\s.\-]*(\+?84|0)[\s.\-]*[35789]([\s.\-]*\d){8}[\s.\-]*" title="Số điện thoại Việt Nam gồm 10 chữ số, ví dụ 0989 086 386" data-phone autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
+					<?php if ( $study_status ) : ?>
+						<div class="form-row">
+							<label>Tình trạng học hiện tại <span class="field-optional">(không bắt buộc)</span>
+								<select name="study_status">
+									<option value="">Chọn tình trạng</option>
+									<?php foreach ( array( 'Sinh viên năm cuối Đại học, Cao đẳng', 'Sinh viên năm 1 – 3 Đại học, Cao đẳng', 'Chưa phải sinh viên' ) as $choice ) : ?><option value="<?php echo esc_attr( $choice ); ?>"><?php echo esc_html( $choice ); ?></option><?php endforeach; ?>
+								</select>
+							</label>
+							<label>Trường đang học <span class="field-optional">(không bắt buộc)</span><input type="text" name="school_name" maxlength="120" placeholder="Đại học Công nghiệp Hà Nội"></label>
+						</div>
+					<?php endif; ?>
 					<?php if ( ! empty( $major_choices ) ) : ?>
 						<div class="form-row">
 							<label>Ngành học <span class="field-optional">(không bắt buộc)</span>
@@ -96,12 +109,12 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 							<label>Năm sinh<input type="text" name="birth_year" inputmode="numeric" maxlength="4" placeholder="2007"></label>
 							<label>Điểm GPA THPT<input type="text" name="gpa" inputmode="decimal" maxlength="4" placeholder="7.5"></label>
 						</div>
-					<?php else : ?>
+					<?php elseif ( ! $study_status ) : ?>
 						<label>Điểm GPA THPT<input type="text" name="gpa" inputmode="decimal" maxlength="4" placeholder="7.5"></label>
 					<?php endif; ?>
 					<fieldset class="study-choice-group">
 						<legend>Trình độ tiếng Hàn hiện tại</legend>
-						<?php foreach ( array( 'Chưa học', 'Đang học', 'Có TOPIK 1/2' ) as $level ) : ?>
+						<?php foreach ( array( 'Chưa học', 'Đang học', 'Có TOPIK 1', 'Có TOPIK 2 trở lên' ) as $level ) : ?>
 							<label><input type="radio" name="korean_level" value="<?php echo esc_attr( $level ); ?>"> <?php echo esc_html( $level ); ?></label>
 						<?php endforeach; ?>
 					</fieldset>

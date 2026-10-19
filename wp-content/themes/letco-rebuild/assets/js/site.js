@@ -269,6 +269,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Countdown to an application deadline: ticks each second and swaps to the closed note at zero.
+  document.querySelectorAll('[data-countdown]').forEach((block) => {
+    const deadline = Date.parse(block.dataset.countdown);
+    if (Number.isNaN(deadline)) return;
+    const clock = block.querySelector('.jd-countdown-clock');
+    const button = block.querySelector('.jd-button');
+    const closed = block.querySelector('.jd-countdown-closed');
+    const cells = {};
+    block.querySelectorAll('[data-countdown-unit]').forEach((cell) => { cells[cell.dataset.countdownUnit] = cell; });
+    let timer = 0;
+    const tick = () => {
+      const left = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+      const values = { days: Math.floor(left / 86400), hours: Math.floor(left % 86400 / 3600), minutes: Math.floor(left % 3600 / 60), seconds: left % 60 };
+      Object.entries(values).forEach(([unit, value]) => {
+        const cell = cells[unit];
+        const text = String(value).padStart(2, '0');
+        if (!cell || cell.textContent === text) return;
+        cell.textContent = text;
+        // Restart the drop-in animation for the digit that changed.
+        cell.classList.remove('is-tick');
+        void cell.offsetWidth;
+        cell.classList.add('is-tick');
+      });
+      if (left === 0) {
+        window.clearInterval(timer);
+        if (clock) clock.hidden = true;
+        if (button) button.hidden = true;
+        if (closed) closed.hidden = false;
+      }
+    };
+    tick();
+    timer = window.setInterval(tick, 1000);
+  });
+
   // Daeduk opens a lightweight consultation form on entry and keeps focus inside it.
   const consultModal = document.querySelector('[data-consult-modal]');
   if (consultModal) {
@@ -331,10 +365,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // On phones the fixed sign-up bar already offers the form, so the entry popup only
-    // opens to show a submission result.
+    // Pages with popup_buttons open the popup from every sign-up button; the links still point
+    // at the form at the bottom, which stays in place and is used when scripts do not run.
+    if (consultModal.hasAttribute('data-modal-buttons')) {
+      document.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href="#dang-ky"]');
+        if (!link || link.closest('#dang-ky') || consultModal.contains(link)) return;
+        event.preventDefault();
+        if (consultModal.hidden) openConsultModal();
+      });
+    }
+
+    // A page with popup_delay opens the form on every visit, on every screen size.
     const isPhone = window.matchMedia('(max-width: 760px)').matches;
-    if (openDelay > 0 && (!isPhone || openDelay <= 150)) window.setTimeout(openConsultModal, openDelay);
+    if (openDelay > 0) window.setTimeout(openConsultModal, openDelay);
 
     // Interest trigger: open once per visit when the reader has read down to a chosen point,
     // unless they are already at the sign-up form.
@@ -344,8 +388,9 @@ document.addEventListener('DOMContentLoaded', () => {
       try { seen = sessionStorage.getItem('letco-consult-shown') === '1'; } catch (error) { seen = false; }
       if (!seen) {
         const signup = document.getElementById('dang-ky');
-        // Besides reading that far, the reader must have spent a while on the page.
-        const minDwell = 30000;
+        // Besides reading that far, the reader must have spent a while on the page;
+        // the Daeduk page is short, so a quarter of a minute is enough.
+        const minDwell = 10000;
         const openIfStillReading = () => {
           if (signup && (signup.contains(document.activeElement) || signup.getBoundingClientRect().top < window.innerHeight)) return;
           if (!consultModal.hidden) return;
