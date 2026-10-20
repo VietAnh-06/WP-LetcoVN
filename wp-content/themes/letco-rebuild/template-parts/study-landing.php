@@ -319,7 +319,7 @@ get_template_part(
 );
 ?>
 
-<div class="study-landing <?php echo esc_attr( $data['class'] ); ?>">
+<div class="study-landing <?php echo esc_attr( $data['class'] ); ?> jd-page">
 <?php ob_start(); ?>
 	<?php if ( ! empty( $data['hero_form'] ) ) : ?>
 	<section class="lp-hero lp-hero--lead">

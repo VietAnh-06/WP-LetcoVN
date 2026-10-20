@@ -4,7 +4,8 @@
  * sans for sub-headings and sums. Programmes and the journey break the centred
  * rhythm with left-aligned headings, staggered cards and one navy band; costs
  * and conditions stay on a straight grid so they are easy to compare.
- * Loaded only on the Daeduk page, after landing.css.
+ * Loaded on every page after landing.css; it applies wherever the content root carries
+ * .jd-page. jd-skin.css extends it to the blocks used only by the other pages.
  */
 
 @font-face {

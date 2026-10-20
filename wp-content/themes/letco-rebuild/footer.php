@@ -1,32 +1,56 @@
 </main>
 
-<?php if ( letco_is_landing() ) : ?>
-	<?php
-	$landing_is_daeduk = is_page( 'dai-hoc-daeduk' );
-	$landing_cta       = $landing_is_daeduk ? 'Kiểm tra điều kiện hồ sơ' : 'Đăng ký tư vấn';
-	// Every landing shows the same contact block; the Daeduk page overrides it from its config.
-	$landing_contact   = array(
-		'label'     => 'Đơn vị tư vấn',
-		'partners'  => 'Trung tâm Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
-		'phones'    => array( '0989.086.386' ),
-		'addresses' => array( 'Tòa nhà A5, Đại học Công nghiệp Hà Nội, 298 Cầu Diễn, Tây Tựu, Hà Nội' ),
-	);
-	$landing_zalo      = '0989086386';
+<?php
+$landing_page      = letco_is_landing();
+$landing_is_daeduk = is_page( 'dai-hoc-daeduk' );
+$landing_cta       = $landing_is_daeduk ? 'Kiểm tra điều kiện hồ sơ' : 'Đăng ký tư vấn';
+// Landings sign up in their own form; other pages send visitors to the contact page.
+$landing_cta_url   = $landing_page ? '#dang-ky' : home_url( '/lien-he/' );
+// Every page shows the same contact block; the Daeduk page overrides it from its config.
+$landing_contact   = array(
+	'label'     => 'Đơn vị tư vấn',
+	'partners'  => 'Trung tâm Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
+	'phones'    => array( '0989.086.386' ),
+	'addresses' => array( 'Tòa nhà A5, Đại học Công nghiệp Hà Nội, 298 Cầu Diễn, Tây Tựu, Hà Nội' ),
+);
+$landing_zalo      = '0989086386';
 
-	if ( $landing_is_daeduk ) {
-		$landing_configs = require get_template_directory() . '/template-parts/study-school-configs.php';
-		if ( isset( $landing_configs['dai-hoc-daeduk'] ) ) {
-			$landing_contact = isset( $landing_configs['dai-hoc-daeduk']['contact'] ) ? $landing_configs['dai-hoc-daeduk']['contact'] : $landing_contact;
-			$landing_zalo    = isset( $landing_configs['dai-hoc-daeduk']['zalo'] ) ? $landing_configs['dai-hoc-daeduk']['zalo'] : $landing_zalo;
-		}
+if ( $landing_is_daeduk ) {
+	$landing_configs = require get_template_directory() . '/template-parts/study-school-configs.php';
+	if ( isset( $landing_configs['dai-hoc-daeduk'] ) ) {
+		$landing_contact = isset( $landing_configs['dai-hoc-daeduk']['contact'] ) ? $landing_configs['dai-hoc-daeduk']['contact'] : $landing_contact;
+		$landing_zalo    = isset( $landing_configs['dai-hoc-daeduk']['zalo'] ) ? $landing_configs['dai-hoc-daeduk']['zalo'] : $landing_zalo;
 	}
-	?>
+}
+?>
+<?php if ( ! $landing_page ) : ?>
+<section class="lp-site-cta">
+	<div class="container lp-site-cta-inner">
+		<div>
+			<h2>Bạn cần một lộ trình phù hợp?</h2>
+			<p>Tư vấn viên LETCO đối chiếu hồ sơ của bạn với chương trình học tập và việc làm phù hợp.</p>
+		</div>
+		<div class="lp-actions">
+			<a class="lp-button" href="<?php echo esc_url( $landing_cta_url ); ?>"><?php echo esc_html( $landing_cta ); ?></a>
+			<a class="lp-button lp-button--light" href="https://zalo.me/<?php echo esc_attr( $landing_zalo ); ?>" rel="noopener" target="_blank">Nhắn Zalo</a>
+		</div>
+	</div>
+</section>
+<?php endif; ?>
 <footer class="lp-footer">
 	<div class="container lp-footer-inner">
 		<div class="lp-footer-brand">
 			<img src="<?php echo letco_asset( 'logo.png' ); ?>" alt="LETCO" width="120" height="36">
 			<p>Công ty TNHH Một thành viên Đào tạo và Cung ứng Nhân lực – HaUI. Đơn vị trực thuộc Đại học Công nghiệp Hà Nội.</p>
 		</div>
+		<?php if ( ! $landing_page ) : ?>
+			<nav class="lp-footer-links" aria-label="Khám phá LETCO">
+				<a href="<?php echo esc_url( home_url( '/gioi-thieu/' ) ); ?>">Giới thiệu LETCO</a>
+				<a href="<?php echo esc_url( home_url( '/cung-ung-nhan-luc/' ) ); ?>">Cung ứng nhân lực</a>
+				<a href="<?php echo esc_url( home_url( '/du-hoc/' ) ); ?>">Chương trình du học</a>
+				<a href="<?php echo esc_url( home_url( '/don-hang/' ) ); ?>">Đơn hàng tuyển dụng</a>
+			</nav>
+		<?php endif; ?>
 		<?php if ( ! empty( $landing_contact ) ) : ?>
 			<div class="study-contact lp-footer-contact">
 				<p><strong><?php echo esc_html( isset( $landing_contact['label'] ) ? $landing_contact['label'] : 'Đơn vị tuyển sinh chính thức' ); ?>:</strong> <?php echo esc_html( $landing_contact['partners'] ); ?></p>
@@ -53,58 +77,13 @@
 	</div>
 </footer>
 <div class="lp-mobile-cta">
-	<a class="lp-button" href="#dang-ky"><?php echo esc_html( $landing_cta ); ?></a>
+	<a class="lp-button" href="<?php echo esc_url( $landing_cta_url ); ?>"><?php echo esc_html( $landing_cta ); ?></a>
 	<a class="lp-button lp-button--light" href="https://zalo.me/<?php echo esc_attr( $landing_zalo ); ?>" rel="noopener" target="_blank">Zalo</a>
 </div>
-<?php else : ?>
-<section class="footer-cta">
-	<div class="container footer-cta-inner">
-		<div>
-			<span class="eyebrow eyebrow-light">Bắt đầu hành trình quốc tế</span>
-			<h2>Bạn cần một lộ trình phù hợp?</h2>
-			<p>Đội ngũ LETCO sẵn sàng tư vấn chương trình học tập và việc làm dành riêng cho bạn.</p>
-		</div>
-		<a class="button button-light" href="<?php echo esc_url( home_url( '/lien-he/' ) ); ?>">Nhận tư vấn miễn phí</a>
-	</div>
-</section>
-
-<footer class="site-footer">
-	<div class="container footer-grid">
-		<div class="footer-brand">
-			<img src="<?php echo letco_asset( 'logo-white.png' ); ?>" alt="LETCO">
-			<p>Công ty TNHH Một thành viên Đào tạo và Cung ứng Nhân lực – HaUI.</p>
-			<p class="footer-slogan">Đổi mới · Sáng tạo · Hội nhập · Phát triển bền vững</p>
-		</div>
-		<div>
-			<h3>Khám phá</h3>
-			<ul>
-				<li><a href="<?php echo esc_url( home_url( '/gioi-thieu/' ) ); ?>">Giới thiệu LETCO</a></li>
-				<li><a href="<?php echo esc_url( home_url( '/cung-ung-nhan-luc/' ) ); ?>">Cung ứng nhân lực</a></li>
-				<li><a href="<?php echo esc_url( home_url( '/du-hoc/' ) ); ?>">Chương trình du học</a></li>
-				<li><a href="<?php echo esc_url( home_url( '/don-hang/' ) ); ?>">Đơn hàng tuyển dụng</a></li>
-			</ul>
-		</div>
-		<div>
-			<h3>Liên hệ</h3>
-			<ul class="contact-list">
-				<li>Nhà A5, Đại học Công nghiệp Hà Nội, 298 Cầu Diễn, Tây Tựu, Hà Nội</li>
-				<li><a href="tel:02437638154">(84.24) 3763 8154</a></li>
-				<li><a href="mailto:haui@letco.vn">haui@letco.vn</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="container footer-bottom">
-		<p>© <?php echo esc_html( gmdate( 'Y' ) ); ?> LETCO – HaUI. All rights reserved.</p>
-		<div class="footer-bottom-links"><a href="<?php echo esc_url( home_url( '/nguon-anh/' ) ); ?>">Nguồn ảnh</a><a href="#main-content">Lên đầu trang ↑</a></div>
-	</div>
-</footer>
-
-<div class="floating-contact" aria-label="Liên hệ nhanh">
-	<a class="floating-zalo" href="https://zalo.me/0346753345" target="_blank" rel="noopener">Zalo</a>
-	<a class="floating-phone" href="tel:02437638154" aria-label="Gọi LETCO">☎</a>
-</div>
-
-<?php endif; ?>
+<button class="lp-to-top" type="button" data-to-top hidden>
+	<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+	<span class="screen-reader-text">Lên đầu trang</span>
+</button>
 
 <?php wp_footer(); ?>
 </body>

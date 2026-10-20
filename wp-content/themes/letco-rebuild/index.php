@@ -1,17 +1,17 @@
 <?php get_header(); ?>
+<?php
+$news_page = (int) get_option( 'page_for_posts' );
+if ( is_category() ) {
+	$heading = single_cat_title( '', false );
+} elseif ( is_home() && $news_page ) {
+	$heading = get_the_title( $news_page );
+} else {
+	$heading = get_bloginfo( 'name' );
+}
+?>
+<header class="lp-page-hero"><div class="container"><h1><?php echo esc_html( $heading ); ?></h1></div></header>
 <section class="section archive-section">
 	<div class="container content-narrow">
-		<?php
-		$news_page = (int) get_option( 'page_for_posts' );
-		if ( is_category() ) {
-			$heading = single_cat_title( '', false );
-		} elseif ( is_home() && $news_page ) {
-			$heading = get_the_title( $news_page );
-		} else {
-			$heading = get_bloginfo( 'name' );
-		}
-		?>
-		<div class="section-heading"><span class="eyebrow">LETCO</span><h1><?php echo esc_html( $heading ); ?></h1></div>
 		<?php if ( $news_page && ( is_home() || is_category() ) ) : ?>
 			<nav class="post-filters" aria-label="Chuyên mục tin tức">
 				<a href="<?php echo esc_url( get_permalink( $news_page ) ); ?>"<?php echo is_home() ? ' class="is-active" aria-current="page"' : ''; ?>>Tất cả</a>

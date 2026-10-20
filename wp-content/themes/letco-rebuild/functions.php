@@ -25,9 +25,15 @@ function letco_is_landing() {
 	return is_front_page() || is_page( array( 'du-hoc-han-quoc', 'du-hoc-nhat-ban' ) ) || is_page_template( 'template-study-school.php' );
 }
 
+/**
+ * Every page uses the landing design system (tokens, buttons, header, footer, scroll
+ * reveals all hang off .is-landing). Regular pages add .is-site-page for the site menu,
+ * page heading and article styles in site-pages.css.
+ */
 function letco_landing_body_class( $classes ) {
-	if ( letco_is_landing() ) {
-		$classes[] = 'is-landing';
+	$classes[] = 'is-landing';
+	if ( ! letco_is_landing() ) {
+		$classes[] = 'is-site-page';
 	}
 	return $classes;
 }
@@ -44,11 +50,16 @@ function letco_asset_version( $relative_path ) {
 
 function letco_rebuild_assets() {
 	wp_enqueue_style( 'letco-rebuild', get_stylesheet_uri(), array(), letco_asset_version( 'style.css' ) );
-	if ( letco_is_landing() ) {
-		wp_enqueue_style( 'letco-landing', get_template_directory_uri() . '/assets/css/landing.css', array( 'letco-rebuild' ), letco_asset_version( 'assets/css/landing.css' ) );
-		if ( is_page( 'dai-hoc-daeduk' ) ) {
-			wp_enqueue_style( 'letco-daeduk', get_template_directory_uri() . '/assets/css/daeduk.css', array( 'letco-landing' ), letco_asset_version( 'assets/css/daeduk.css' ) );
-		}
+	wp_enqueue_style( 'letco-landing', get_template_directory_uri() . '/assets/css/landing.css', array( 'letco-rebuild' ), letco_asset_version( 'assets/css/landing.css' ) );
+	// The Daeduk page sets the look of the whole site: its stylesheet applies wherever the
+	// content root carries .jd-page. jd-skin.css carries that look over to the blocks the
+	// other pages use and the Daeduk page does not.
+	wp_enqueue_style( 'letco-daeduk', get_template_directory_uri() . '/assets/css/daeduk.css', array( 'letco-landing' ), letco_asset_version( 'assets/css/daeduk.css' ) );
+	if ( ! letco_is_landing() ) {
+		wp_enqueue_style( 'letco-site-pages', get_template_directory_uri() . '/assets/css/site-pages.css', array( 'letco-daeduk' ), letco_asset_version( 'assets/css/site-pages.css' ) );
+	}
+	if ( ! is_page( 'dai-hoc-daeduk' ) ) {
+		wp_enqueue_style( 'letco-jd-skin', get_template_directory_uri() . '/assets/css/jd-skin.css', array( letco_is_landing() ? 'letco-daeduk' : 'letco-site-pages' ), letco_asset_version( 'assets/css/jd-skin.css' ) );
 	}
 	wp_enqueue_script(
 		'letco-rebuild',
@@ -129,7 +140,7 @@ function letco_landing_meta() {
 }
 add_action( 'wp_head', 'letco_landing_meta', 5 );
 
-function letco_primary_menu_fallback() {
+function letco_primary_menu_fallback( $args = array() ) {
 	$links = array(
 		'Trang chủ'         => home_url( '/' ),
 		'Giới thiệu'        => home_url( '/gioi-thieu/' ),
@@ -140,7 +151,7 @@ function letco_primary_menu_fallback() {
 		'Đơn hàng'          => home_url( '/don-hang/' ),
 	);
 
-	echo '<ul class="primary-menu">';
+	echo '<ul class="' . esc_attr( ! empty( $args['menu_class'] ) ? $args['menu_class'] : 'primary-menu' ) . '">';
 	foreach ( $links as $label => $url ) {
 		printf( '<li><a href="%1$s">%2$s</a></li>', esc_url( $url ), esc_html( $label ) );
 	}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Header for the homepage and landing pages: logo, up to four in-page links,
+ * Header for the homepage and landing pages: logo (links to the homepage), up to four in-page links,
  * hotline and the sign-up button. $args: links (anchor id => label), hotline,
  * button (optional CTA label), logo (optional image file for dark headers).
  */
@@ -16,7 +16,7 @@ $logo    = isset( $args['logo'] ) ? $args['logo'] : 'logo.png';
 <span id="top" class="lp-top-anchor" aria-hidden="true"></span>
 <header class="lp-header">
 	<div class="container lp-header-inner">
-		<a class="lp-logo" href="#top" aria-label="LETCO – HaUI, về đầu trang"><img src="<?php echo letco_asset( $logo ); ?>" alt="LETCO" width="132" height="<?php echo 'logo.png' === $logo ? '40' : '34'; ?>"></a>
+		<a class="lp-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="LETCO – HaUI, trang chủ"><img src="<?php echo letco_asset( $logo ); ?>" alt="LETCO" width="132" height="<?php echo 'logo.png' === $logo ? '40' : '34'; ?>"></a>
 		<nav class="lp-header-nav" aria-label="Nội dung trang">
 			<?php foreach ( $args['links'] as $anchor_id => $anchor_label ) : ?>
 				<a href="#<?php echo esc_attr( $anchor_id ); ?>"><?php echo esc_html( $anchor_label ); ?></a>

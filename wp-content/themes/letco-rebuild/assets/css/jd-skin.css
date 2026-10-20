@@ -1,0 +1,920 @@
+/*
+ * The Daeduk page's look on every other page. daeduk.css already styles the header,
+ * buttons, type and sign-up block wherever the content root carries .jd-page; this file
+ * gives the blocks only the other pages use the same treatment: white ground, serif
+ * headings under a small grey label, rounded white cards on a soft navy shadow, a blue
+ * circle behind the hero and the Daeduk entrances. Not loaded on the Daeduk page.
+ * Values come from the --jd-* tokens in daeduk.css.
+ */
+
+/* ---------- Ground: the landing tokens take the Daeduk colours ---------- */
+.is-landing:has(.jd-page) {
+	--lp-surface: #ffffff;
+	--lp-line: var(--jd-line);
+	--lp-line-strong: color-mix(in srgb, var(--jd-line), var(--jd-ink) 14%);
+	--lp-ink: var(--jd-ink);
+	--lp-text: var(--jd-text);
+	--lp-muted: var(--jd-text);
+	--lp-navy: var(--jd-navy);
+	--lp-radius: 12px;
+	--jd-card-radius: 24px;
+	--jd-card-shadow: 0 16px 42px rgba(11, 42, 79, 0.06);
+	--jd-ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+	--jd-ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+	color: var(--jd-text);
+}
+
+.jd-page .section {
+	padding-block: clamp(64px, 8vw, 112px);
+	border-top: 0;
+	background: transparent;
+}
+
+.jd-page .section + .section:not(.study-lead-section) {
+	padding-top: clamp(32px, 4vw, 56px);
+}
+
+/* Every other section sits on the soft grey the Daeduk FAQ fades into. */
+.jd-page .study-faq,
+.jd-page .lp-quotes {
+	background: linear-gradient(180deg, #ffffff 0%, var(--jd-soft) 100%);
+}
+
+/* ---------- Section heads: grey label, serif title, plain intro ---------- */
+.is-landing .jd-page .eyebrow {
+	display: block;
+	margin: 0 0 10px;
+	padding: 0;
+	color: var(--jd-text);
+	font-size: 0.875rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.is-landing .jd-page .eyebrow::before {
+	display: none;
+}
+
+.jd-page .section-heading {
+	max-width: 720px;
+	margin-bottom: clamp(32px, 5vw, 56px);
+}
+
+.jd-page .section-heading-center {
+	margin-inline: auto;
+	text-align: center;
+}
+
+.jd-page .section-heading-center p {
+	margin-inline: auto;
+}
+
+.jd-page .heading-row {
+	max-width: none;
+}
+
+/* A heading in the sticky column beside the reasons reads left, like the Daeduk FAQ head. */
+.jd-page .study-benefits:not(.study-scholarships) .section-heading-center,
+.jd-page .study-benefits:not(.study-scholarships) .section-heading-center p {
+	margin-inline: 0;
+	text-align: left;
+}
+
+.jd-page .section:not(.study-lead-section) h2 {
+	font-size: clamp(2rem, 1.4rem + 2.2vw, 3.125rem);
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+	text-wrap: balance;
+}
+
+.jd-page .section-heading p,
+.jd-page .study-faq-layout > div > p,
+.jd-page .study-partner-copy > p {
+	color: var(--jd-text);
+	font-size: 1.0625rem;
+	line-height: 1.7;
+}
+
+.jd-page h3 {
+	color: var(--jd-ink);
+}
+
+/* ---------- Hero: a blue circle behind the photo, a red label, an arched photo ---------- */
+.jd-page .lp-hero {
+	position: relative;
+	overflow: hidden;
+	padding-block: clamp(16px, 3vw, 40px) clamp(48px, 6vw, 80px);
+	background: transparent;
+}
+
+.jd-page .lp-hero::before {
+	content: "";
+	position: absolute;
+	top: -120px;
+	right: -160px;
+	width: min(62vw, 820px);
+	height: min(62vw, 820px);
+	border-radius: 50%;
+	background: var(--jd-blue-soft);
+	pointer-events: none;
+}
+
+.jd-page .lp-hero-grid {
+	position: relative;
+	align-items: center;
+}
+
+.jd-page .lp-kicker {
+	margin: 0 0 18px;
+	color: var(--jd-red);
+	font-size: 0.9375rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+}
+
+.jd-page .lp-hero h1 {
+	margin: 0;
+	font-size: clamp(2.5rem, 1.6rem + 2.6vw, 3.75rem);
+	line-height: 1.1;
+}
+
+.jd-page .lp-lede {
+	max-width: 540px;
+	margin: 20px 0 0;
+	color: var(--jd-text);
+	font-size: 1.0625rem;
+	line-height: 1.75;
+}
+
+.jd-page .lp-hero .lp-actions {
+	gap: 16px 28px;
+	margin-top: 32px;
+}
+
+/* The secondary hero link becomes the Daeduk red arrow button. */
+.jd-page .lp-hero .lp-link {
+	gap: 14px;
+	color: var(--jd-text);
+	font-weight: 600;
+}
+
+.jd-page .lp-hero .lp-link::before {
+	content: "→";
+	display: grid;
+	flex: none;
+	width: 52px;
+	height: 52px;
+	place-items: center;
+	border-radius: 50%;
+	background: var(--jd-red);
+	color: #ffffff;
+	box-shadow: 0 14px 28px rgba(227, 30, 53, 0.3);
+	font-size: 1.125rem;
+	transition: transform 200ms ease;
+}
+
+.jd-page .lp-hero .lp-link::after {
+	display: none;
+}
+
+.jd-page .lp-hero .lp-link:hover {
+	color: var(--jd-ink);
+}
+
+.jd-page .lp-hero .lp-link:hover::before {
+	transform: translateX(3px);
+}
+
+.jd-page .lp-hero-media {
+	position: relative;
+	margin: 0;
+	padding: 24px 0 0 24px;
+}
+
+.jd-page .lp-hero-media img {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 4 / 4.3;
+	object-fit: cover;
+	border-radius: 200px 200px 32px 32px;
+	box-shadow: var(--jd-shadow-lift);
+}
+
+/* ---------- Highlights under the hero: white cards, like the Daeduk facts ---------- */
+.jd-page .lp-facts {
+	position: relative;
+	padding: 0 0 clamp(32px, 4vw, 56px);
+	background: transparent;
+	border: 0;
+}
+
+.jd-page .lp-facts-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 16px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.jd-page .lp-facts-list > li:nth-child(n) {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	justify-content: stretch;
+	align-content: start;
+	gap: 6px;
+	margin: 0;
+	padding: 22px 24px;
+	border: 0;
+	border-radius: 20px;
+	background: #ffffff;
+	box-shadow: var(--jd-shadow);
+	color: var(--jd-ink);
+	font-weight: 700;
+	line-height: 1.45;
+	transition: transform 250ms ease, box-shadow 250ms ease;
+}
+
+.jd-page .lp-facts-list > li:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--jd-shadow-lift);
+}
+
+.jd-page .lp-facts-list strong {
+	color: var(--jd-blue);
+	font-family: var(--jd-serif);
+	font-size: 1.75rem;
+	line-height: 1.1;
+}
+
+.jd-page .lp-facts-list strong + span {
+	color: var(--jd-text);
+	font-size: 0.9375rem;
+	font-weight: 500;
+}
+
+/* ---------- Cards ---------- */
+.jd-page :is(
+	.lp-program,
+	.study-benefit-grid > article,
+	.lp-quote,
+	.study-region,
+	.study-cost-card,
+	.study-timeline > article,
+	.study-program-card,
+	.study-partner-list > article,
+	.study-overview-facts > div,
+	.study-condition-list > div,
+	.study-documents
+) {
+	border: 1px solid var(--jd-line);
+	border-radius: var(--jd-card-radius);
+	background: #ffffff;
+	box-shadow: var(--jd-card-shadow);
+	transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+}
+
+.jd-page :is(
+	.lp-program,
+	.study-benefit-grid > article,
+	.lp-quote,
+	.study-timeline > article,
+	.study-program-card,
+	.study-partner-list > article,
+	.study-overview-facts > div,
+	.study-condition-list > div
+):hover {
+	transform: translateY(-4px);
+	border-color: color-mix(in srgb, var(--jd-blue) 42%, var(--jd-line));
+	box-shadow: var(--jd-shadow-lift);
+}
+
+.jd-page :is(
+	.study-benefit-grid > article,
+	.lp-quote,
+	.study-region,
+	.study-cost-card,
+	.study-program-card,
+	.study-overview-facts > div,
+	.study-condition-list > div,
+	.study-documents
+) {
+	padding: clamp(22px, 3vw, 30px);
+}
+
+.jd-page :is(.lp-program, .study-partner-list > article) {
+	overflow: hidden;
+}
+
+.jd-page :is(.study-benefit-grid, .lp-program-grid, .lp-quote-grid, .study-region-grid, .study-condition-list, .study-overview-facts) {
+	gap: 20px;
+	border: 0;
+}
+
+/* The landing lists and 2 x 2 grids were divided by hairlines; as cards they need gaps instead. */
+.is-landing .jd-page .study-benefits .study-benefit-grid {
+	display: grid;
+	gap: 16px;
+	border: 0;
+}
+
+/* Beside the sticky heading the reasons stay one card per row. */
+.is-landing .jd-page .study-benefits:not(.study-scholarships) .study-benefit-grid {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.is-landing .jd-page .study-benefit-grid > article:nth-child(n) {
+	padding: clamp(22px, 3vw, 30px);
+	border: 1px solid var(--jd-line);
+}
+
+.is-landing .jd-page .study-scholarships .study-benefit-grid h3 {
+	padding: 0 0 12px;
+}
+
+/* Serif titles inside cards, like the Daeduk programme cards. */
+.jd-page :is(.lp-program-copy h3, .study-program-card h3, .study-region h3, .study-cost-card h3, .study-documents h3) {
+	font-family: var(--jd-serif);
+	font-size: clamp(1.25rem, 1.1rem + 0.4vw, 1.5rem);
+	line-height: 1.25;
+}
+
+/* Small tags in the Daeduk style: a soft red pill. */
+.jd-page .study-program-tag {
+	display: inline-flex;
+	min-height: 28px;
+	align-items: center;
+	padding: 4px 10px;
+	border-radius: 999px;
+	background: var(--jd-red-soft);
+	color: var(--jd-red-deep);
+	font-size: 0.75rem;
+	font-weight: 800;
+	letter-spacing: 0.03em;
+}
+
+.jd-page .study-icon {
+	border-radius: 14px;
+	background: var(--jd-blue-soft);
+	color: var(--jd-blue);
+}
+
+/* Programme cards on the homepage: photo on top, blue figures. */
+.jd-page .lp-program img {
+	border-radius: 0;
+}
+
+.jd-page .lp-program dd,
+.jd-page .study-overview-facts dt,
+.jd-page .study-cost-card li > span {
+	color: var(--jd-blue);
+}
+
+/* Serif figures: Lora widens the space in tabular mode ("26  năm"), so proportional figures. */
+.jd-page .study-overview-facts dt,
+.jd-page .lp-facts-list strong {
+	font-family: var(--jd-serif);
+	font-variant-numeric: normal;
+}
+
+.jd-page .lp-program-more {
+	color: var(--jd-blue);
+	font-weight: 700;
+}
+
+/* Quotes: the opening mark in red. */
+.jd-page .lp-quote blockquote p::before {
+	color: var(--jd-red);
+}
+
+/* Partner school photos keep the card corners. */
+.jd-page .study-partner-image img {
+	border-radius: 0;
+}
+
+/* Major chips: soft blue pills. */
+.jd-page .study-major-chips li {
+	border: 0;
+	border-radius: 999px;
+	background: var(--jd-blue-soft);
+	color: var(--jd-blue-deep);
+	font-weight: 700;
+}
+
+/* Region and cost lists: hairline rows inside the card. */
+.jd-page :is(.study-region, .study-cost-card) li {
+	border-color: var(--jd-line);
+}
+
+.jd-page .study-region li img {
+	border-radius: 14px;
+}
+
+/* ---------- Steps: numbered cards with a navy, red or blue badge ---------- */
+.jd-page .study-timeline > article {
+	padding: clamp(20px, 2.4vw, 26px);
+}
+
+/* The connector line between the old numbered dots goes; each step is its own card. */
+.jd-page .study-timeline::before,
+.is-landing .jd-page .study-timeline article:nth-child(n)::before,
+.jd-page .study-timeline > article::after {
+	display: none;
+}
+
+.jd-page .study-timeline > article > span {
+	display: grid;
+	width: 52px;
+	height: 52px;
+	margin-bottom: 16px;
+	place-items: center;
+	border: 0;
+	border-radius: 14px;
+	background: var(--jd-navy);
+	color: #ffffff;
+	font-size: 1.125rem;
+	font-weight: 800;
+}
+
+.jd-page .study-timeline > article:nth-child(3n + 1) > span {
+	background: var(--jd-red);
+}
+
+.jd-page .study-timeline > article:nth-child(3n + 2) > span {
+	background: var(--jd-blue);
+}
+
+.jd-page .study-timeline h3 {
+	font-size: 1.0625rem;
+	line-height: 1.4;
+}
+
+/* ---------- Tables: a white card on the soft shadow ---------- */
+.jd-page .study-program-section .lp-ledger-wrap {
+	border: 1px solid var(--jd-line);
+	border-radius: var(--jd-card-radius);
+	background: #ffffff;
+	box-shadow: var(--jd-card-shadow);
+}
+
+.jd-page .study-program-section .lp-ledger th.is-featured,
+.jd-page .study-program-section .lp-ledger td.is-featured {
+	background: var(--jd-blue-soft);
+}
+
+/* ---------- FAQ: the Daeduk question cards ---------- */
+.jd-page .study-faq .study-accordion {
+	display: grid;
+	gap: 14px;
+	border: 0;
+}
+
+.is-landing .jd-page .study-faq .study-accordion details {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 20px;
+	background: #ffffff;
+	box-shadow: var(--jd-shadow);
+}
+
+.is-landing .jd-page .study-faq .study-accordion summary {
+	padding: 20px 24px;
+	color: var(--jd-ink);
+	font-weight: 600;
+}
+
+.is-landing .jd-page .study-faq .study-accordion details > p {
+	margin: 0;
+	padding: 0 24px 22px;
+	line-height: 1.7;
+}
+
+.is-landing .jd-page .study-faq .study-accordion details[open] {
+	box-shadow: var(--jd-shadow-lift);
+	outline: 2px solid var(--jd-blue-soft);
+}
+
+/* ---------- Regular pages ---------- */
+.jd-page .lp-page-hero {
+	position: relative;
+	overflow: hidden;
+	padding-block: clamp(48px, 7vw, 96px) clamp(32px, 4vw, 56px);
+	background: transparent;
+}
+
+.jd-page .lp-page-hero::before {
+	content: "";
+	position: absolute;
+	top: -180px;
+	right: -120px;
+	width: min(48vw, 560px);
+	height: min(48vw, 560px);
+	border-radius: 50%;
+	background: var(--jd-blue-soft);
+	pointer-events: none;
+}
+
+.jd-page .lp-page-hero .container {
+	position: relative;
+}
+
+.jd-page .lp-page-hero h1 {
+	font-size: clamp(2.5rem, 1.6rem + 2.6vw, 3.75rem);
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	line-height: 1.1;
+}
+
+.jd-page .lp-page-meta a {
+	color: var(--jd-red);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.jd-page .lp-page-hero + .section,
+.jd-page .lp-page-hero + .archive-section {
+	padding-top: clamp(16px, 3vw, 32px);
+}
+
+.jd-page .entry-content h2 {
+	font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+	line-height: 1.25;
+}
+
+.jd-page .entry-content a {
+	color: var(--jd-blue);
+}
+
+.jd-page .entry-content li::marker {
+	color: var(--jd-red);
+}
+
+.jd-page .entry-content table {
+	border-radius: 20px;
+	box-shadow: var(--jd-card-shadow);
+}
+
+.jd-page .entry-content th {
+	background: var(--jd-blue-soft);
+}
+
+.jd-page .entry-content img,
+.jd-page .entry-featured img {
+	border-radius: var(--jd-card-radius);
+}
+
+.jd-page .entry-featured img {
+	box-shadow: var(--jd-shadow-lift);
+}
+
+.is-site-page .jd-page .post-card {
+	padding: 16px;
+	border: 1px solid var(--jd-line);
+	border-radius: var(--jd-card-radius);
+	background: #ffffff;
+	box-shadow: var(--jd-card-shadow);
+	transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+}
+
+.is-site-page .jd-page .post-card:not(.has-thumb) {
+	padding: clamp(22px, 3vw, 30px);
+}
+
+.is-site-page .jd-page .post-card:hover {
+	transform: translateY(-4px);
+	border-color: color-mix(in srgb, var(--jd-blue) 42%, var(--jd-line));
+	box-shadow: var(--jd-shadow-lift);
+}
+
+.is-site-page .jd-page .post-card-thumb,
+.is-site-page .jd-page .post-card-thumb img {
+	border-radius: 16px;
+}
+
+.is-site-page .jd-page .post-card h2 {
+	font-size: clamp(1.25rem, 1.1rem + 0.4vw, 1.5rem);
+	line-height: 1.3;
+}
+
+.is-site-page .jd-page .post-card .meta .post-card-category {
+	color: var(--jd-red);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.is-site-page .jd-page .post-filters a.is-active,
+.is-site-page .jd-page .pagination .page-numbers.current {
+	background: var(--jd-blue);
+	border-color: var(--jd-blue);
+	color: #ffffff;
+}
+
+/* Header menu: dark links that turn red, as on the Daeduk header. */
+.is-landing:has(.jd-page) .lp-site-nav .lp-site-menu a {
+	color: var(--jd-ink);
+}
+
+.is-landing:has(.jd-page) .lp-site-nav .lp-site-menu a:hover,
+.is-landing:has(.jd-page) .lp-site-nav .lp-site-menu .current-menu-item > a {
+	color: var(--jd-red);
+}
+
+.is-landing:has(.jd-page) .lp-site-nav .lp-site-menu > li > a::after {
+	background: var(--jd-red);
+}
+
+/* The closing sign-up band becomes the Daeduk countdown card: navy to blue, rounded. */
+.is-landing:has(.jd-page) .lp-site-cta {
+	padding-block: 0 clamp(48px, 6vw, 96px);
+	background: transparent;
+}
+
+.is-landing:has(.jd-page) .lp-site-cta-inner {
+	padding: clamp(28px, 4vw, 48px);
+	border-radius: var(--jd-card-radius);
+	background: linear-gradient(135deg, var(--jd-navy), var(--jd-blue-deep));
+	box-shadow: var(--jd-shadow-lift);
+	color: rgba(255, 255, 255, 0.82);
+}
+
+.is-landing:has(.jd-page) .lp-site-cta h2 {
+	color: #ffffff;
+	font-family: var(--jd-serif);
+	font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+	line-height: 1.2;
+}
+
+.is-landing:has(.jd-page) .lp-site-cta .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--glass):not(.lp-button--block) {
+	background: var(--jd-red);
+	box-shadow: 0 16px 30px rgba(227, 30, 53, 0.3);
+}
+
+.is-landing:has(.jd-page) .lp-site-cta .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--glass):not(.lp-button--block):hover {
+	background: var(--jd-red-deep);
+}
+
+.is-landing:has(.jd-page) .lp-site-cta .lp-button--light,
+.is-landing:has(.jd-page) .lp-site-cta .lp-button--light:hover {
+	background: transparent;
+	box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.4);
+	color: #ffffff;
+}
+
+@media (max-width: 760px) {
+	.jd-page .lp-hero::before {
+		top: -80px;
+		right: -45%;
+		width: 110vw;
+		height: 110vw;
+	}
+
+	.jd-page .lp-hero-media {
+		padding: 16px 0 0 16px;
+	}
+
+	.jd-page .lp-hero-media img {
+		aspect-ratio: 4 / 3.4;
+		border-radius: 140px 140px 24px 24px;
+	}
+
+	.jd-page .lp-hero .lp-link::before {
+		width: 44px;
+		height: 44px;
+	}
+
+	.jd-page .lp-page-hero::before {
+		top: -120px;
+		right: -35%;
+		width: 80vw;
+		height: 80vw;
+	}
+
+	.jd-page .lp-facts-list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
+	}
+
+	.jd-page .lp-facts-list > li:nth-child(n) {
+		padding: 18px;
+		border-radius: 16px;
+	}
+}
+
+/* ================================================================
+ * Motion, after the Daeduk page: a staggered hero entrance and a drifting
+ * circle on load; below the fold each kind of block has its own entrance.
+ * site.js marks blocks with .lp-reveal and adds .is-in as they arrive;
+ * without the script, or with reduced motion, everything is simply shown.
+ * The keyframes (jd-rise, jd-zoom-in, jd-blob, jd-fact-in, jd-pop) live in daeduk.css.
+ * ================================================================ */
+@media (prefers-reduced-motion: no-preference) {
+	.jd-page .lp-hero-copy > *,
+	.jd-page .lp-page-hero .container > * {
+		animation: jd-rise 700ms var(--jd-ease-out) both;
+	}
+
+	.jd-page .lp-hero-copy > :nth-child(2),
+	.jd-page .lp-page-hero .container > :nth-child(2) { animation-delay: 90ms; }
+	.jd-page .lp-hero-copy > :nth-child(3) { animation-delay: 180ms; }
+	.jd-page .lp-hero-copy > :nth-child(4) { animation-delay: 270ms; }
+
+	.jd-page .lp-hero-media img {
+		animation: jd-zoom-in 900ms var(--jd-ease-out) 120ms both;
+	}
+
+	.jd-page .lp-hero::before,
+	.jd-page .lp-page-hero::before {
+		animation: jd-blob 14s ease-in-out infinite;
+	}
+
+	/* Highlights zoom up after the hero copy. */
+	.jd-page .lp-facts-list > li {
+		animation: jd-fact-in 600ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+	}
+
+	.jd-page .lp-facts-list > li:nth-child(1) { animation-delay: 450ms; }
+	.jd-page .lp-facts-list > li:nth-child(2) { animation-delay: 530ms; }
+	.jd-page .lp-facts-list > li:nth-child(3) { animation-delay: 610ms; }
+	.jd-page .lp-facts-list > li:nth-child(4) { animation-delay: 690ms; }
+
+	/* Section heads: the label slides in, the title wipes on, the intro follows. */
+	.jd-page .lp-reveal.section-heading .eyebrow,
+	.jd-page .lp-reveal .eyebrow {
+		opacity: 0;
+		transform: translateX(-24px);
+		transition: opacity 450ms ease, transform 450ms ease;
+	}
+
+	.jd-page .lp-reveal.section-heading h2 {
+		clip-path: inset(-0.4em 100% -0.4em -0.1em);
+		transition: clip-path 750ms cubic-bezier(0.65, 0, 0.35, 1) 120ms;
+	}
+
+	.jd-page .section:not(.study-benefits) .section-heading-center.lp-reveal:not(.is-in) h2,
+	.jd-page .study-scholarships .section-heading-center.lp-reveal:not(.is-in) h2 {
+		clip-path: inset(-0.4em 50% -0.4em 50%);
+	}
+
+	.jd-page .lp-reveal.section-heading > p {
+		opacity: 0;
+		transition: opacity 600ms ease 500ms;
+	}
+
+	.jd-page .lp-reveal.is-in.section-heading .eyebrow,
+	.jd-page .lp-reveal.is-in .eyebrow,
+	.jd-page .lp-reveal.is-in.section-heading > p {
+		opacity: 1;
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in.section-heading h2 {
+		clip-path: inset(-0.4em -0.1em -0.4em -0.1em);
+	}
+
+	/* Cards in a revealed grid rise in turn. */
+	.jd-page .lp-reveal:is(.study-benefit-grid, .lp-program-grid, .study-program-grid, .study-condition-list, .study-overview-facts, .study-cost-layout, .lp-ledger-wrap) > *,
+	.jd-page .lp-reveal :is(.study-program-grid, .study-partner-list, .study-condition-list) > * {
+		opacity: 0;
+		transform: translateY(18px);
+		transition: opacity 500ms ease, transform 500ms var(--jd-ease-out), box-shadow 250ms ease, border-color 250ms ease;
+	}
+
+	.jd-page .lp-reveal.is-in:is(.study-benefit-grid, .lp-program-grid, .study-program-grid, .study-condition-list, .study-overview-facts, .study-cost-layout, .lp-ledger-wrap) > *,
+	.jd-page .lp-reveal.is-in :is(.study-program-grid, .study-partner-list, .study-condition-list) > * {
+		opacity: 1;
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in:is(.study-benefit-grid, .lp-program-grid, .study-program-grid, .study-condition-list, .study-overview-facts) > :nth-child(2),
+	.jd-page .lp-reveal.is-in :is(.study-program-grid, .study-partner-list, .study-condition-list) > :nth-child(2) { transition-delay: 80ms, 80ms, 0s, 0s; }
+	.jd-page .lp-reveal.is-in:is(.study-benefit-grid, .lp-program-grid, .study-program-grid, .study-condition-list, .study-overview-facts) > :nth-child(3),
+	.jd-page .lp-reveal.is-in :is(.study-program-grid, .study-partner-list, .study-condition-list) > :nth-child(3) { transition-delay: 160ms, 160ms, 0s, 0s; }
+	.jd-page .lp-reveal.is-in:is(.study-benefit-grid, .lp-program-grid, .study-program-grid, .study-condition-list, .study-overview-facts) > :nth-child(4),
+	.jd-page .lp-reveal.is-in :is(.study-program-grid, .study-partner-list, .study-condition-list) > :nth-child(4) { transition-delay: 240ms, 240ms, 0s, 0s; }
+	.jd-page .lp-reveal.is-in:is(.study-benefit-grid, .lp-program-grid, .study-program-grid, .study-condition-list, .study-overview-facts) > :nth-child(5),
+	.jd-page .lp-reveal.is-in :is(.study-program-grid, .study-partner-list, .study-condition-list) > :nth-child(5) { transition-delay: 320ms, 320ms, 0s, 0s; }
+
+	/* Region cards come in from opposite sides. */
+	.jd-page .lp-reveal.study-region-grid > :nth-child(odd) {
+		transform: translateX(-48px);
+	}
+
+	.jd-page .lp-reveal.study-region-grid > :nth-child(even) {
+		transform: translateX(48px);
+	}
+
+	.jd-page .lp-reveal.study-region-grid > * {
+		opacity: 0;
+		transition: opacity 500ms ease, transform 700ms var(--jd-ease-out);
+	}
+
+	.jd-page .lp-reveal.is-in.study-region-grid > * {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* Steps pop up with a little overshoot; their numbers spin in after. */
+	.jd-page .lp-reveal.study-timeline > article {
+		opacity: 0;
+		transform: scale(0.85) translateY(12px);
+		transition: opacity 400ms ease, transform 600ms var(--jd-ease-pop), box-shadow 250ms ease, border-color 250ms ease;
+	}
+
+	.jd-page .lp-reveal.study-timeline > article > span {
+		transform: rotate(-120deg) scale(0);
+		transition: transform 600ms var(--jd-ease-pop) 250ms;
+	}
+
+	.jd-page .lp-reveal.is-in.study-timeline > article {
+		opacity: 1;
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in.study-timeline > article > span {
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(2),
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(2) > span { transition-delay: 100ms, 100ms, 0s, 0s; }
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(3),
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(3) > span { transition-delay: 200ms, 200ms, 0s, 0s; }
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(4),
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(4) > span { transition-delay: 300ms, 300ms, 0s, 0s; }
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(5),
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(5) > span { transition-delay: 400ms, 400ms, 0s, 0s; }
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(6),
+	.jd-page .lp-reveal.is-in.study-timeline > article:nth-child(6) > span { transition-delay: 500ms, 500ms, 0s, 0s; }
+
+	/* Quotes are dealt in with a small tilt. */
+	.jd-page .lp-reveal.lp-quote-grid > * {
+		opacity: 0;
+		transform: translateY(36px) rotate(-6deg);
+		transition: opacity 450ms ease, transform 650ms cubic-bezier(0.34, 1.3, 0.64, 1), box-shadow 250ms ease, border-color 250ms ease;
+	}
+
+	.jd-page .lp-reveal.is-in.lp-quote-grid > * {
+		opacity: 1;
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in.lp-quote-grid > :nth-child(2) { transition-delay: 90ms, 90ms, 0s, 0s; }
+	.jd-page .lp-reveal.is-in.lp-quote-grid > :nth-child(3) { transition-delay: 180ms, 180ms, 0s, 0s; }
+
+	/* FAQ questions slide in from the right. */
+	.jd-page .lp-reveal.study-accordion > details {
+		opacity: 0;
+		transform: translateX(48px);
+		transition: opacity 450ms ease, transform 550ms var(--jd-ease-out), box-shadow 250ms ease;
+	}
+
+	.jd-page .lp-reveal.is-in.study-accordion > details {
+		opacity: 1;
+		transform: none;
+	}
+
+	.jd-page .lp-reveal.is-in.study-accordion > :nth-child(2) { transition-delay: 90ms, 90ms, 0s; }
+	.jd-page .lp-reveal.is-in.study-accordion > :nth-child(3) { transition-delay: 180ms, 180ms, 0s; }
+	.jd-page .lp-reveal.is-in.study-accordion > :nth-child(4) { transition-delay: 270ms, 270ms, 0s; }
+	.jd-page .lp-reveal.is-in.study-accordion > :nth-child(5) { transition-delay: 360ms, 360ms, 0s; }
+
+	/* Major chips pop in one after another. */
+	.jd-page .lp-reveal.study-major-chips > li {
+		opacity: 0;
+		transform: scale(0.6);
+	}
+
+	.jd-page .lp-reveal.is-in.study-major-chips > li {
+		animation: jd-pop 500ms var(--jd-ease-out) both;
+	}
+
+	.jd-page .lp-reveal.is-in.study-major-chips > li:nth-child(n + 2) { animation-delay: 40ms; }
+	.jd-page .lp-reveal.is-in.study-major-chips > li:nth-child(n + 4) { animation-delay: 80ms; }
+	.jd-page .lp-reveal.is-in.study-major-chips > li:nth-child(n + 6) { animation-delay: 120ms; }
+	.jd-page .lp-reveal.is-in.study-major-chips > li:nth-child(n + 8) { animation-delay: 160ms; }
+	.jd-page .lp-reveal.is-in.study-major-chips > li:nth-child(n + 10) { animation-delay: 200ms; }
+
+	/* Regular pages: news cards rise, the closing band pops in. */
+	.is-site-page .jd-page .post-card.lp-reveal {
+		opacity: 0;
+		transform: translateY(24px);
+		transition: opacity 500ms ease, transform 600ms var(--jd-ease-out), box-shadow 250ms ease, border-color 250ms ease;
+	}
+
+	.is-site-page .jd-page .post-card.lp-reveal.is-in {
+		opacity: 1;
+		transform: none;
+	}
+
+	.is-landing:has(.jd-page) .lp-site-cta-inner.lp-reveal {
+		opacity: 0;
+		transform: scale(0.94);
+		transition: opacity 500ms ease, transform 650ms var(--jd-ease-out);
+	}
+
+	.is-landing:has(.jd-page) .lp-site-cta-inner.lp-reveal.is-in {
+		opacity: 1;
+		transform: none;
+	}
+}

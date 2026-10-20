@@ -9572,3 +9572,78 @@ body.is-landing:has(.dk-page),
 .dk-hero.lp-hero--cinema {
 	background: oklch(100% 0 0);
 }
+
+/* Back to top: a round white button, bottom right, shown once the reader is a screen down.
+   It sits above the Daeduk contact dock on wide screens and above the sign-up bar on phones. */
+.lp-to-top {
+	position: fixed;
+	z-index: 85;
+	right: var(--lp-24);
+	bottom: var(--lp-24);
+	display: grid;
+	width: 48px;
+	height: 48px;
+	place-items: center;
+	padding: 0;
+	border: 1px solid var(--jd-line, var(--lp-line));
+	border-radius: 50%;
+	background: oklch(100% 0 0);
+	color: var(--jd-ink, var(--lp-ink));
+	box-shadow: 0 12px 28px rgba(11, 42, 79, 0.14);
+	cursor: pointer;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(12px);
+	transition: opacity 250ms ease, transform 250ms ease, visibility 0s linear 250ms, color 200ms ease, border-color 200ms ease;
+}
+
+.lp-to-top.is-visible {
+	opacity: 1;
+	visibility: visible;
+	transform: none;
+	transition-delay: 0s;
+}
+
+.lp-to-top:hover {
+	color: var(--jd-blue, var(--study-accent));
+	border-color: currentColor;
+	transform: translateY(-2px);
+}
+
+.lp-to-top:active {
+	transform: translateY(1px);
+}
+
+.lp-to-top:focus-visible {
+	outline: 3px solid var(--jd-blue, oklch(50% 0.2 258));
+	outline-offset: 3px;
+}
+
+@media (min-width: 761px) {
+	/* Two 52px dock buttons, 12px apart, then the same 12px gap above them. */
+	body:has(.dk-dock) .lp-to-top {
+		right: calc(var(--lp-24) + 2px);
+		bottom: calc(var(--lp-24) + 52px * 2 + var(--lp-12) * 2);
+	}
+}
+
+@media (max-width: 760px) {
+	/* Above the fixed sign-up bar (12px from the bottom, 64px tall). */
+	.lp-to-top {
+		right: var(--lp-16);
+		bottom: calc(var(--lp-12) + 64px + var(--lp-12));
+	}
+
+	body.menu-is-open .lp-to-top {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.lp-to-top,
+	.lp-to-top:hover,
+	.lp-to-top:active {
+		transform: none;
+		transition: opacity 150ms ease, visibility 0s linear 150ms;
+	}
+}

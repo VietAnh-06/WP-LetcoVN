@@ -60,7 +60,7 @@ get_template_part(
 );
 ?>
 
-<div class="study-landing study-korea lp-home">
+<div class="study-landing study-korea lp-home jd-page">
 	<section class="lp-hero">
 		<div class="container lp-hero-grid">
 			<div class="lp-hero-copy">

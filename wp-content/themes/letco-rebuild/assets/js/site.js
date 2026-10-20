@@ -653,7 +653,8 @@ document.addEventListener('DOMContentLoaded', () => {
     landingHeader.addEventListener('focusin', () => landingHeader.classList.remove('is-tucked'));
   }
 
-  // The fixed sign-up bar steps aside near the hero action and while a form is on screen.
+  // The fixed sign-up bar steps aside near the hero action and while a form or the closing
+  // sign-up band (which carries the same buttons) is on screen.
   const mobileCta = document.querySelector('.lp-mobile-cta');
   if (mobileCta && 'IntersectionObserver' in window) {
     const visibleBlocks = new Set();
@@ -667,7 +668,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rootMargin: '0px 0px -12px 0px',
       threshold: 0.01,
     });
-    document.querySelectorAll('form, .lp-hero .lp-actions').forEach((target) => observer.observe(target));
+    document.querySelectorAll('form, .lp-hero .lp-actions, .lp-site-cta').forEach((target) => observer.observe(target));
   }
 
   // Landing pages: reveal content and count figures up as they scroll into view.
@@ -688,7 +689,12 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       requestAnimationFrame(tick);
     };
-    const revealTargets = document.querySelectorAll('.study-landing .section > .container > *, .lp-stats-list > div, .lp-bridge-figure');
+    const revealTargets = document.querySelectorAll([
+      '.study-landing .section > .container > *', '.lp-stats-list > div', '.lp-bridge-figure',
+      // Other pages: article blocks that carry structure, news cards, the closing sign-up band.
+      '.entry-content > :is(h2, h3, figure, table, ul, ol, .wp-block-table, .wp-block-image)',
+      '.post-list > .post-card', '.lp-site-cta-inner',
+    ].join(', '));
     const reveal = (target) => {
       if (target.classList.contains('is-in')) return;
       target.classList.add('is-in');
@@ -717,6 +723,20 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('hashchange', settleAbove);
     document.addEventListener('click', (event) => {
       if (event.target.closest('a[href^="#"]')) window.setTimeout(settleAbove, 50);
+    });
+  }
+
+  // Back to top: appears once the reader is a screen down; returns focus to the logo for keyboards.
+  const toTop = document.querySelector('[data-to-top]');
+  if (toTop) {
+    toTop.hidden = false;
+    const updateToTop = () => toTop.classList.toggle('is-visible', window.scrollY > window.innerHeight);
+    updateToTop();
+    window.addEventListener('scroll', updateToTop, { passive: true });
+    toTop.addEventListener('click', () => {
+      const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
+      document.querySelector('.lp-logo')?.focus({ preventScroll: true });
     });
   }
 });
