@@ -3674,3 +3674,185 @@
 	}
 }
 
+
+/* ---------- Daeduk only: page background ----------
+ * Light sakura pink on the left fading to light sky blue on the right; cards stay white. */
+.is-landing .study-daeduk.jd-page {
+	background: linear-gradient(90deg, #fdeef3 0%, #f4f2f9 50%, #e6f2fc 100%);
+}
+
+/* The FAQ's own white-to-grey fill would cut a band across the gradient. */
+.study-daeduk .jd-faq {
+	background: transparent;
+}
+
+/* ---------- Daeduk only: cherry blossom backdrop ----------
+ * A branch over the hero, petals drifting down every section to the sign-up
+ * form, and the same branch and petals in the corners of three sections.
+ * Pure decoration, kept behind the content so text and cards stay on top. */
+.study-daeduk .jd-hero > .container {
+	position: relative;
+	z-index: 1;
+}
+
+.study-daeduk .jd-hero::before,
+.study-daeduk :is(#he-dao-tao, #chi-phi, #hoi-dap)::before {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+/* The branch grows in from the left edge of the screen at every width, never floating mid-page. */
+.study-daeduk .jd-hero::before {
+	top: 0;
+	left: 0;
+	width: clamp(240px, 28vw, 500px);
+	aspect-ratio: 680 / 280;
+	background-image: url("../images/daeduk-sakura-branch.svg");
+	opacity: 0.85;
+}
+
+/* Falling petals: behind the hero's blue disc and behind the content of every section. */
+.study-daeduk .jd-hero::after,
+.study-daeduk .jd-section::after,
+.is-landing:has(.jd-page) .study-daeduk .study-lead-section::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	display: block;
+	background: url("../images/daeduk-sakura-petals.svg") 0 0 / 360px repeat;
+	opacity: 0.7;
+	pointer-events: none;
+}
+
+.study-daeduk :is(.jd-hero, .jd-section) {
+	isolation: isolate;
+}
+
+.study-daeduk .jd-hero::after {
+	z-index: -1;
+}
+
+/* Fade the top and bottom edges so petals do not stop at a hard line between sections. */
+.study-daeduk .jd-section::after {
+	z-index: -1;
+	mask-image: linear-gradient(transparent, #000 48px, #000 calc(100% - 48px), transparent);
+}
+
+/* Behind the form's gradient card, so petals only drift in the margins around it. */
+.study-daeduk .study-lead-section {
+	isolation: isolate;
+}
+
+.is-landing:has(.jd-page) .study-daeduk .study-lead-section::after {
+	z-index: -1;
+}
+
+.study-daeduk :is(#he-dao-tao, #chi-phi, #hoi-dap)::before {
+	z-index: -1;
+	aspect-ratio: 680 / 280;
+	background-image: url("../images/daeduk-sakura-branch.svg");
+	opacity: 0.6;
+}
+
+/* Branch reaching in from the top right, beside the left-aligned heading. */
+.study-daeduk #he-dao-tao::before {
+	top: 0;
+	right: -40px;
+	width: clamp(200px, 32vw, 440px);
+	transform: scaleX(-1);
+}
+
+/* A loose drift of petals in the lower left of the costs. */
+.study-daeduk #chi-phi::before {
+	bottom: 0;
+	left: 0;
+	width: clamp(180px, 24vw, 320px);
+	aspect-ratio: 1;
+	background-image: url("../images/daeduk-sakura-petals.svg");
+	opacity: 0.8;
+}
+
+/* Branch growing up from the bottom left of the FAQ, low enough to clear its intro text. */
+.study-daeduk #hoi-dap::before {
+	bottom: -48px;
+	left: -40px;
+	width: clamp(180px, 20vw, 300px);
+	transform: scaleY(-1);
+}
+
+/* Below desktop width the hero has no free space above its caption; the petals are enough. */
+@media (max-width: 1099px) {
+	.study-daeduk .jd-hero::before {
+		display: none;
+	}
+}
+
+@media (max-width: 639px) {
+	.study-daeduk :is(#he-dao-tao, #hoi-dap)::before {
+		opacity: 0.4;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.study-daeduk .jd-hero::after,
+	.study-daeduk .jd-section::after,
+	.is-landing:has(.jd-page) .study-daeduk .study-lead-section::after {
+		animation: jd-petals-fall 40s linear infinite;
+	}
+}
+
+@keyframes jd-petals-fall {
+	to {
+		background-position: 360px 360px;
+	}
+}
+
+/* Roadmap: heading and steps sit on a solid card, styled like the sign-up step cards,
+ * so the petals pass behind it, not behind the text. */
+.jd-roadmap-panel {
+	margin-bottom: 2rem;
+	padding: clamp(22px, 3vw, 40px) clamp(24px, 3vw, 40px);
+	border-radius: 20px;
+	background: #ffffff;
+	box-shadow: var(--jd-shadow);
+}
+
+.jd-roadmap-panel .jd-roadmap,
+.jd-roadmap-panel .jd-roadmap-layout {
+	margin-bottom: 0;
+}
+
+/* Roadmap: the steps on the left and an illustration of study in Korea filling the right on wide screens. */
+.jd-roadmap-art {
+	display: none;
+	margin: 0;
+}
+
+@media (min-width: 900px) {
+	.jd-roadmap-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+		gap: clamp(32px, 4vw, 64px);
+		align-items: center;
+		margin-bottom: 2rem;
+	}
+
+	.jd-roadmap-layout .jd-roadmap {
+		margin-bottom: 0;
+	}
+
+	.jd-roadmap-art {
+		display: block;
+	}
+
+	.jd-roadmap-art img {
+		display: block;
+		width: 100%;
+		max-width: 460px;
+		height: auto;
+		margin-inline: auto;
+	}
+}

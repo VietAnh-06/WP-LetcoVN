@@ -234,8 +234,11 @@ $refund     = $data['blocks']['hoan-phi'];
 	<?php // Roadmap steps front and center; cost line items, payment timetable and refunds stay folded. ?>
 	<section class="section jd-section jd-money" id="chi-phi">
 		<div class="container">
+			<?php // A solid panel keeps the falling petals and the corner petals out from behind the text. ?>
+			<div class="jd-roadmap-panel">
 			<?php $head( $money['roadmap_label'], $money['roadmap_title'], $money['roadmap_intro'], '', 'left' ); ?>
 			<?php if ( ! empty( $money['roadmap_steps'] ) ) : ?>
+			<div class="jd-roadmap-layout">
 			<ol class="jd-roadmap">
 				<?php foreach ( $money['roadmap_steps'] as $rindex => $rstep ) : ?>
 				<li class="jd-roadmap-step">
@@ -251,7 +254,10 @@ $refund     = $data['blocks']['hoan-phi'];
 				</li>
 				<?php endforeach; ?>
 			</ol>
+			<figure class="jd-roadmap-art" aria-hidden="true"><?php $image( 'daeduk-roadmap-illustration.png', '' ); ?></figure>
+			</div>
 			<?php endif; ?>
+			</div>
 			<p class="jd-callout"><?php echo esc_html( $money['summary'] ); ?></p>
 			<?php $signup( $dk['buttons']['chi-phi'] ); ?>
 		</div>
