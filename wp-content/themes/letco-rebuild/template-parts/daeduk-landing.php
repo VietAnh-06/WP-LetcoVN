@@ -231,83 +231,28 @@ $refund     = $data['blocks']['hoan-phi'];
 		</div>
 	</section>
 
-	<?php // Two sums up front; every line item, the payment timetable and refunds sit in one fold. ?>
+	<?php // Roadmap steps front and center; cost line items, payment timetable and refunds stay folded. ?>
 	<section class="section jd-section jd-money" id="chi-phi">
 		<div class="container">
-			<?php $head( $money['label'], $money['title'], $money['intro'], '', 'left' ); ?>
-			<div class="jd-totals">
-				<div class="jd-total is-vn">
-					<p class="jd-total-label"><?php echo esc_html( $money['total_label'] ); ?></p>
-					<p class="jd-total-value"><?php echo esc_html( $money['total'] ); ?></p>
-					<p><?php echo esc_html( $money['formula'] ); ?></p>
-				</div>
-				<span class="jd-totals-plus" aria-hidden="true">+</span>
-				<div class="jd-total is-school">
-					<p class="jd-total-label"><?php echo esc_html( $money['school_total'][0] ); ?></p>
-					<p class="jd-total-value"><?php echo esc_html( $money['school_total'][1] ); ?></p>
-					<p><?php echo esc_html( $money['school_total'][2] ); ?></p>
-				</div>
-			</div>
+			<?php $head( $money['roadmap_label'], $money['roadmap_title'], $money['roadmap_intro'], '', 'left' ); ?>
+			<?php if ( ! empty( $money['roadmap_steps'] ) ) : ?>
+			<ol class="jd-roadmap">
+				<?php foreach ( $money['roadmap_steps'] as $rindex => $rstep ) : ?>
+				<li class="jd-roadmap-step">
+					<span class="jd-roadmap-num" aria-hidden="true"><?php echo esc_html( (string) ( $rindex + 1 ) ); ?></span>
+					<div class="jd-roadmap-body">
+						<h3><?php echo esc_html( $rstep['title'] ); ?></h3>
+						<ul class="jd-ticks">
+							<?php foreach ( $rstep['items'] as $ritem ) : ?>
+							<li><?php echo esc_html( $ritem ); ?></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				</li>
+				<?php endforeach; ?>
+			</ol>
+			<?php endif; ?>
 			<p class="jd-callout"><?php echo esc_html( $money['summary'] ); ?></p>
-			<details class="jd-mini-details jd-mini-details--row" id="hoan-phi">
-				<summary><?php echo esc_html( $money['details_title'] ); ?></summary>
-				<div class="jd-payees">
-					<?php foreach ( $money['groups'] as $group ) : ?>
-						<article class="jd-payee is-<?php echo esc_attr( $group['payee'] ); ?>">
-							<p class="jd-payee-where"><?php echo esc_html( $group['where'] ); ?></p>
-							<h3><?php echo esc_html( $group['title'] ); ?></h3>
-							<p class="jd-payee-amount"><?php echo esc_html( $group['amount'] ); ?></p>
-							<ul>
-								<?php foreach ( $group['rows'] as $row ) : ?>
-									<li><span><?php echo esc_html( $row[0] ); ?><?php if ( ! empty( $row[2] ) ) : ?><small><?php echo esc_html( $row[2] ); ?></small><?php endif; ?></span><b><?php echo esc_html( $row[1] ); ?></b></li>
-								<?php endforeach; ?>
-							</ul>
-						</article>
-					<?php endforeach; ?>
-				</div>
-				<p class="jd-note"><?php echo esc_html( $money['convert'] ); ?> <a class="jd-src" href="<?php echo esc_url( $money['rate_source'][1] ); ?>" rel="noopener" target="_blank"><?php echo esc_html( $money['rate_source'][0] ); ?> <span aria-hidden="true">↗</span><span class="screen-reader-text"> (mở trong tab mới)</span></a></p>
-				<div class="lp-payments" id="lich-dong-tien">
-					<h3 class="jd-subtitle"><?php echo esc_html( $data['payments']['title'] ); ?></h3>
-					<ol class="lp-paytrack">
-						<?php foreach ( $data['payments']['stages'] as $index => $stage ) : ?>
-							<li>
-								<span class="lp-paytrack-step"><?php echo esc_html( (string) ( $index + 1 ) ); ?></span>
-								<p class="lp-paytrack-when"><?php echo esc_html( $stage['when'] ); ?></p>
-								<h4><?php echo esc_html( $stage['title'] ); ?></h4>
-								<ul>
-									<?php foreach ( $stage['items'] as $pay ) : ?>
-										<li class="is-<?php echo esc_attr( $pay[0] ); ?>"><span><?php echo esc_html( $pay[1] ); ?></span><strong><?php echo esc_html( $pay[2] ); ?></strong></li>
-									<?php endforeach; ?>
-								</ul>
-							</li>
-						<?php endforeach; ?>
-					</ol>
-					<p class="jd-note"><?php echo esc_html( $data['payments']['note'] ); ?></p>
-				</div>
-				<h3 class="jd-subtitle"><?php echo esc_html( $money['outside_title'] ); ?></h3>
-				<dl class="jd-terms jd-terms--stack">
-					<?php foreach ( $money['outside'] as $item ) : ?>
-						<div><dt><?php echo esc_html( $item[0] ); ?></dt><dd><?php echo esc_html( $item[1] ); ?></dd></div>
-					<?php endforeach; ?>
-					<div><dt><?php echo esc_html( $money['proof'][1] ); ?></dt><dd><?php echo esc_html( $money['proof'][2] ); ?></dd></div>
-				</dl>
-				<h3 class="jd-subtitle" id="hoc-bong"><?php echo esc_html( $money['scholar_title'] ); ?></h3>
-				<dl class="jd-terms jd-terms--stack">
-					<div><dt><?php echo esc_html( $data['scholarships'][0]['title'] ); ?></dt><dd><?php echo esc_html( $money['scholar_in'][1] ); ?></dd></div>
-					<?php foreach ( array_slice( $data['scholarships'], 1 ) as $scholarship ) : ?>
-						<div><dt><?php echo esc_html( $scholarship['title'] ); ?></dt><dd><?php echo esc_html( $scholarship['text'] ); ?></dd></div>
-					<?php endforeach; ?>
-				</dl>
-				<p class="jd-note"><?php echo esc_html( $money['scholar_note'] ); ?></p>
-				<h3 class="jd-subtitle"><?php echo esc_html( $money['refund_title'] ); ?></h3>
-				<dl class="jd-terms jd-terms--stack">
-					<?php foreach ( $refund['groups'] as $group ) : ?>
-						<div><dt><?php echo esc_html( $money['refund_school'] . ': ' . mb_strtolower( $group[0] ) ); ?></dt><dd><?php echo esc_html( $group[1] ); ?></dd></div>
-					<?php endforeach; ?>
-					<div><dt><?php echo esc_html( $money['refund_letco'] ); ?></dt><dd><?php echo esc_html( $refund['note'] ); ?></dd></div>
-				</dl>
-				<p class="jd-note"><?php echo esc_html( $money['rate_note'] ); ?></p>
-			</details>
 			<?php $signup( $dk['buttons']['chi-phi'] ); ?>
 		</div>
 	</section>

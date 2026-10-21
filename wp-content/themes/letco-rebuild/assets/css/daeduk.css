@@ -3557,3 +3557,120 @@
 		animation: jd-pulse 2.4s ease-in-out infinite;
 	}
 }
+
+/* ─── Lộ trình tham gia (Roadmap) ──────────────────────────────────────────── */
+
+.jd-roadmap {
+	list-style: none;
+	margin: 0 0 2rem;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.jd-roadmap-step {
+	display: grid;
+	grid-template-columns: 3rem 1fr;
+	gap: 0 1.25rem;
+	position: relative;
+}
+
+/* Vertical connecting line between steps */
+.jd-roadmap-step:not(:last-child)::before {
+	content: '';
+	position: absolute;
+	left: calc(1.5rem - 1px);
+	top: 3rem;
+	bottom: 0;
+	width: 2px;
+	background: linear-gradient(to bottom, var(--jd-blue, #1a3a6e) 0%, transparent 100%);
+	opacity: 0.18;
+}
+
+.jd-roadmap-num {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	background: var(--jd-blue, #1a3a6e);
+	color: #fff;
+	font-size: 1rem;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	position: relative;
+	z-index: 1;
+	box-shadow: 0 4px 12px rgba(26, 58, 110, 0.25);
+	margin-top: 0.125rem;
+}
+
+.jd-roadmap-body {
+	padding: 0 0 2rem;
+}
+
+.jd-roadmap-body h3 {
+	margin: 0 0 0.625rem;
+	font-size: 1.0625rem;
+	font-weight: 700;
+	color: var(--jd-navy, #0e2147);
+	line-height: 1.35;
+	padding-top: 0.5rem;
+}
+
+.jd-roadmap-body .jd-ticks {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.jd-roadmap-body .jd-ticks li {
+	position: relative;
+	padding-left: 1.375rem;
+	font-size: 0.9375rem;
+	color: var(--jd-body, #3d4a5a);
+	line-height: 1.5;
+}
+
+.jd-roadmap-body .jd-ticks li::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0.45em;
+	width: 0.75rem;
+	height: 0.75rem;
+	border-radius: 50%;
+	background: var(--jd-blue, #1a3a6e);
+	opacity: 0.25;
+}
+
+.jd-roadmap-step:last-child .jd-roadmap-body {
+	padding-bottom: 0;
+}
+
+@media (min-width: 640px) {
+	.jd-roadmap {
+		gap: 0;
+	}
+	.jd-roadmap-step {
+		grid-template-columns: 3.5rem 1fr;
+		gap: 0 1.5rem;
+	}
+	.jd-roadmap-num {
+		width: 3.5rem;
+		height: 3.5rem;
+		font-size: 1.125rem;
+	}
+	.jd-roadmap-step:not(:last-child)::before {
+		left: calc(1.75rem - 1px);
+		top: 3.5rem;
+	}
+	.jd-roadmap-body h3 {
+		font-size: 1.125rem;
+	}
+}
+

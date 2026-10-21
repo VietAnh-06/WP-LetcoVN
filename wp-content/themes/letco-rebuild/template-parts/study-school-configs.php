@@ -140,7 +140,7 @@ return array(
 				'closed'   => 'Đã hết hạn đăng ký kỳ tháng 3/2027. Liên hệ LETCO để biết kỳ tiếp theo.',
 			),
 			'buttons' => array( 'he-dao-tao' => 'Kiểm tra điều kiện hồ sơ', 'chi-phi' => 'Nhận dự toán theo hồ sơ', 'thuc-tap' => 'Đăng ký tư vấn miễn phí' ),
-			'nav'   => array( 'he-dao-tao' => 'Hệ D2-6', 'cac-buoc' => 'Đăng ký', 'chi-phi' => 'Chi phí', 'thuc-tap' => 'Thực tập', 'hoi-dap' => 'Hỏi đáp' ),
+			'nav'   => array( 'he-dao-tao' => 'Hệ D2-6', 'cac-buoc' => 'Đăng ký', 'chi-phi' => 'Lộ trình', 'thuc-tap' => 'Thực tập', 'hoi-dap' => 'Hỗ trợ' ),
 			'hero'  => array(
 				'badge'  => array( 'Tuyển sinh', 'Kỳ tháng 3/2027', 'Hạn đăng ký với LETCO', '29/11/2026' ),
 				'kicker' => array( 'Trao đổi sinh viên', 'Daejeon, Hàn Quốc' ),
@@ -188,10 +188,10 @@ return array(
 				'gap_note'        => 'Sinh viên Quản trị Kinh doanh và Ngôn ngữ Hàn Quốc cũng thực tập tại các doanh nghiệp trên, ở vị trí biên phiên dịch, xuất nhập khẩu, marketing và quản lý chất lượng; hoặc tại khách sạn – golf resort, cơ sở y tế đối tác của trường.',
 			),
 			'money' => array(
-				'label'         => 'Chi phí',
-				'title'         => 'Cần chuẩn bị bao nhiêu?',
-				'intro'         => 'Gói K-Tech Bridge, trước khi bay.',
-				'summary'       => 'Chưa gồm sinh hoạt phí khoảng 7 tháng đầu và học phí từ kỳ 3. Chứng minh tài chính 8.000.000 KRW là số dư, không phải khoản đóng.',
+				'label'         => 'Lộ trình tham gia',
+				'title'         => 'Lộ trình 5 bước tham gia chương trình',
+				'intro'         => 'Chương trình do Công ty LETCO – Đại học Công nghiệp Hà Nội phối hợp cùng Đại học Daeduk tổ chức tuyển chọn.',
+				'summary'       => 'Hạn đăng ký với LETCO: 29/11/2026. Liên hệ tư vấn viên để được hỗ trợ từng bước.',
 				'details_title' => 'Xem từng khoản, lịch đóng tiền và hoàn phí',
 				'rate_source'   => array( 'Xem tỷ giá Vietcombank', 'https://www.vietcombank.com.vn/vi-VN/KHCN/Cong-cu-Tien-ich/Ty-gia' ),
 				'total_label'   => 'Chi phí đóng tại Việt Nam',
@@ -254,17 +254,46 @@ return array(
 				'refund_title'  => 'Nếu kế hoạch không thuận lợi: hoàn phí',
 				'refund_school' => 'Khoản nộp cho trường',
 				'refund_letco'  => 'Khoản đóng cho LETCO',
+				// Lộ trình tham gia — 5 bước (hiển thị thay thế phần chi phí cũ).
+				'roadmap_label' => 'Lộ trình tham gia',
+				'roadmap_title' => 'Lộ trình 3 bước tham gia chương trình',
+				'roadmap_intro' => 'Chương trình do Công ty LETCO – Đại học Công nghiệp Hà Nội phối hợp cùng Đại học Daeduk tổ chức tuyển chọn.',
+				'roadmap_steps' => array(
+					array(
+						'title' => 'Học tiếng Hàn',
+						'items' => array(
+							'Tham gia khóa học tiếng Hàn theo lộ trình dành riêng của chương trình.',
+							'Rèn luyện kỹ năng giao tiếp, kỹ năng sống và lối sống lành mạnh theo tiêu chuẩn Hàn Quốc.',
+							'Bạn đạt TOPIK 2 trở lên sẽ được ưu tiên học phí 600.000 KRW kỳ 1.',
+						),
+					),
+					array(
+						'title' => 'Hồ sơ',
+						'items' => array(
+							'Nhận xét Hàn Quốc sẽ chấp nhận ứng viên đáp ứng các điều kiện phù hợp.',
+							'Làm quen và chuẩn bị đầy đủ hồ sơ học thuật, tài chính theo yêu cầu.',
+							'Tham gia chương trình định hướng giúp sinh viên hòa nhập môi trường học tập tại trường Hàn Quốc.',
+						),
+					),
+					array(
+						'title' => 'Thực tập',
+						'items' => array(
+							'Thực tập tại Doanh nghiệp hàng đầu Hàn Quốc.',
+							'Mức lương thực tập tối thiểu từ 2.156.880 KRW/tháng (~40 triệu đồng).',
+							'Kỹ thuật và kỹ năng làm việc trong môi trường sản xuất tiên tiến.',
+							'Nhiều phần lớn thực tập được ký kết và có cơ hội làm tại trường Hàn Quốc sau tốt nghiệp.',
+						),
+					),
+				),
 			),
 			'faq'   => array(
-				'label' => 'Hỏi đáp',
-				'title' => 'Câu hỏi thường gặp',
-				'intro' => 'Chưa thấy câu trả lời? Gọi hoặc nhắn Zalo 0989.086.386.',
+				'label' => 'Chính sách hỗ trợ',
+				'title' => 'LETCO hỗ trợ bạn như thế nào?',
+				'intro' => 'Đăng ký tư vấn ngay để được hỗ trợ toàn diện. Gọi hoặc nhắn Zalo 0989.086.386.',
 				'items' => array(
-					array( 'D2-6 khác K-Tech Bridge thế nào?', 'D2-6 là hệ trao đổi 1 – 2 học kỳ để tích lũy tín chỉ. K-Tech Bridge là gói của hệ D2-6, kéo dài 2 – 3 năm, có thực tập hưởng trợ cấp và bằng Cao đẳng.' ),
-					array( 'Chưa có TOPIK có đăng ký được không?', 'Được. Học phí kỳ 1 hệ trao đổi là 1.450.000 KRW, đã gồm học tiếng Hàn; có TOPIK 2 là 600.000 KRW.' ),
-					array( 'Khi nào có trợ cấp thực tập?', 'Với gói K-Tech Bridge: từ học kỳ 2 (dự kiến tháng 9/2027), khi đạt phỏng vấn của doanh nghiệp. Nên dự trù sinh hoạt phí khoảng 7 tháng đầu.' ),
-					array( 'Chứng minh tài chính có phải nộp tiền không?', 'Không. Chỉ cần số dư từ 8.000.000 KRW, kỳ hạn gửi còn ít nhất 3 tháng khi nộp hồ sơ.' ),
-					array( 'Trượt visa có được hoàn tiền không?', 'Trường hoàn học phí và ký túc xá, trừ phí đăng ký 100.000 KRW. Khoản đóng cho LETCO theo hợp đồng; đợt phí chưa đến mốc thì không thu.' ),
+					array( 'Hỗ trợ vay vốn ngân hàng', 'Sinh viên được hỗ trợ vay vốn ngân hàng khoảng 50.000.000 đồng để chuẩn bị kinh phí tham gia chương trình.' ),
+					array( 'Tư vấn chương trình miễn phí', 'Đối với sinh viên có nhu cầu, để lại thông tin liên lạc sẽ được đội ngũ tư vấn LETCO nhiệt tình hỗ trợ, giải đáp mọi thắc mắc.' ),
+					array( 'Cập nhật thông tin tại Hàn Quốc', 'LETCO chăm sóc, cập nhật, hỗ trợ thông tin khi sinh viên đã có mặt tại Hàn Quốc trong suốt quá trình học tập và thực tập.' ),
 				),
 			),
 		),
