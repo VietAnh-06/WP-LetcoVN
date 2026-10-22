@@ -34,7 +34,17 @@ $head = static function ( $label, $title, $intro = '', $mark = '', $align = 'cen
 };
 
 // Theme image with its intrinsic size, so the layout does not shift while it loads.
+// Accepts a local filename (resolved via letco_asset) or a full URL.
 $image = static function ( $file, $alt, $attributes = 'loading="lazy"' ) {
+	if ( strpos( $file, 'http' ) === 0 ) {
+		printf(
+			'<img src="%s" alt="%s" %s>',
+			esc_url( $file ),
+			esc_attr( $alt ),
+			$attributes // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- fixed attribute strings from this template.
+		);
+		return;
+	}
 	$size = getimagesize( get_template_directory() . '/assets/images/' . $file );
 	printf(
 		'<img src="%s" alt="%s" width="%d" height="%d" %s>',
@@ -128,7 +138,7 @@ $refund     = $data['blocks']['hoan-phi'];
 				<figcaption><?php echo esc_html( $hero['photo'][2] ); ?></figcaption>
 			</figure>
 		</div>
-		<div class="container">
+		<!-- <div class="container">
 			<dl class="jd-facts">
 				<?php foreach ( $hero['facts'] as $fact ) : ?>
 					<div<?php echo empty( $fact[2] ) ? '' : ' class="is-' . esc_attr( $fact[2] ) . '"'; ?>>
@@ -137,7 +147,7 @@ $refund     = $data['blocks']['hoan-phi'];
 					</div>
 				<?php endforeach; ?>
 			</dl>
-		</div>
+		</div> -->
 	</section>
 
 	<?php
@@ -198,36 +208,20 @@ $refund     = $data['blocks']['hoan-phi'];
 				<?php $step_icons = array( 'test', 'badge', 'plane' ); ?>
 				<?php foreach ( $steps['items'] as $index => $step ) : ?>
 					<div class="jd-step is-<?php echo esc_attr( (string) $index ); ?>">
-						<span class="jd-step-icon"><?php $icon( $step_icons[ $index ], 22 ); ?></span>
-						<div>
-							<h3><?php echo esc_html( $step[0] ); ?> <span class="jd-step-tag"><?php echo esc_html( $step[2] ); ?></span></h3>
-							<p><?php echo esc_html( $step[1] ); ?></p>
+						<?php if ( ! empty( $step[3] ) ) : ?>
+							<figure class="jd-step-media"><?php $image( $step[3], isset( $step[4] ) ? $step[4] : $step[0] ); ?></figure>
+						<?php endif; ?>
+						<div class="jd-step-content">
+							<span class="jd-step-icon"><?php $icon( $step_icons[ $index ], 22 ); ?></span>
+							<div>
+								<h3><?php echo esc_html( $step[0] ); ?> <span class="jd-step-tag"><?php echo esc_html( $step[2] ); ?></span></h3>
+								<p><?php echo esc_html( $step[1] ); ?></p>
+							</div>
 						</div>
 					</div>
 				<?php endforeach; ?>
 			</div>
-			<details class="jd-mini-details jd-mini-details--row" id="dieu-kien">
-				<summary><?php echo esc_html( $steps['conditions_title'] ); ?></summary>
-				<ul class="jd-ticks"><?php foreach ( $data['conditions'] as $condition ) : ?><li><?php echo esc_html( $condition ); ?></li><?php endforeach; ?></ul>
-				<p><strong>Hồ sơ cần chuẩn bị:</strong> <?php echo esc_html( implode( '; ', $data['documents'] ) ); ?>.</p>
-				<p><?php echo esc_html( $steps['topik_note'] ); ?></p>
-			</details>
-			<details class="jd-mini-details jd-mini-details--row" id="tuyen-sinh">
-				<summary><?php echo esc_html( $steps['schedule_title'] ); ?></summary>
-				<p><?php echo esc_html( $data['schedule']['intro'] ); ?></p>
-				<div class="lp-ledger-wrap lp-ledger-wrap--always">
-					<table class="lp-ledger lp-ledger--list">
-						<thead><tr><?php foreach ( $data['schedule']['head'] as $cell ) : ?><th scope="col"><?php echo esc_html( $cell ); ?></th><?php endforeach; ?></tr></thead>
-						<tbody>
-							<?php foreach ( $data['schedule']['rows'] as $row ) : ?>
-								<tr><th scope="row"><?php echo esc_html( $row[0] ); ?></th><td data-label="<?php echo esc_attr( $data['schedule']['head'][1] ); ?>"><?php echo esc_html( $row[1] ); ?></td><td data-label="<?php echo esc_attr( $data['schedule']['head'][2] ); ?>"><?php echo esc_html( $row[2] ); ?></td></tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
-				<ul class="jd-ticks"><?php foreach ( $data['schedule']['notes'] as $note ) : ?><li><?php echo esc_html( $note ); ?></li><?php endforeach; ?></ul>
-				<p class="jd-note"><?php $source( 'chương trình K-Tech Bridge', '', 'Tài liệu LETCO cung cấp' ); ?></p>
-			</details>
+
 		</div>
 	</section>
 
@@ -270,21 +264,16 @@ $refund     = $data['blocks']['hoan-phi'];
 			<ul class="jd-companies">
 				<?php foreach ( $data['companies']['list'] as $company ) : ?>
 					<li>
-						<h4><?php echo esc_html( $company[0] ); ?></h4>
-						<p class="jd-company-where"><?php $icon( 'pin', 14 ); ?> <?php echo esc_html( $company[1] ); ?></p>
+						<?php if ( ! empty( $company[3] ) ) : ?>
+							<figure><?php $image( $company[3], isset( $company[4] ) ? $company[4] : $company[0] ); ?></figure>
+						<?php endif; ?>
+						<div class="jd-company-copy">
+							<h4><?php echo esc_html( $company[0] ); ?></h4>
+							<p class="jd-company-where"><?php $icon( 'pin', 14 ); ?> <?php echo esc_html( $company[1] ); ?></p>
+						</div>
 					</li>
 				<?php endforeach; ?>
 			</ul>
-			<details class="jd-mini-details jd-mini-details--row" id="dieu-kien-thuc-tap">
-				<summary><?php echo esc_html( $work['terms_title'] ); ?></summary>
-				<dl class="jd-terms">
-					<?php foreach ( $work['terms'] as $term ) : ?>
-						<div<?php echo empty( $term[2] ) ? '' : ' class="is-key"'; ?>><dt><?php echo esc_html( $term[0] ); ?></dt><dd><?php echo esc_html( $term[1] ); ?></dd></div>
-					<?php endforeach; ?>
-				</dl>
-				<p><?php echo esc_html( $work['gap_note'] ); ?></p>
-				<p class="jd-note"><?php echo esc_html( $work['rate_note'] ); ?></p>
-			</details>
 			<?php $signup( $dk['buttons']['thuc-tap'] ); ?>
 		</div>
 	</section>

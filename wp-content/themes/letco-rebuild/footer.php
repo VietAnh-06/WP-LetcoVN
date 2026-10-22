@@ -3,15 +3,16 @@
 <?php
 $landing_page      = letco_is_landing();
 $landing_is_daeduk = is_page( 'dai-hoc-daeduk' );
-$landing_cta       = $landing_is_daeduk ? 'Kiểm tra điều kiện hồ sơ' : 'Đăng ký tư vấn';
+$landing_cta       = 'Đăng ký tư vấn';
 // Landings sign up in their own form; other pages send visitors to the contact page.
 $landing_cta_url   = $landing_page ? '#dang-ky' : home_url( '/lien-he/' );
 // Every page shows the same contact block; the Daeduk page overrides it from its config.
 $landing_contact   = array(
-	'label'     => 'Đơn vị tư vấn',
+	'label'     => 'Phòng thị trường Châu Á',
 	'partners'  => 'Trung tâm Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
-	'phones'    => array( '0989.086.386' ),
-	'addresses' => array( 'Tòa nhà A5, Đại học Công nghiệp Hà Nội, 298 Cầu Diễn, Tây Tựu, Hà Nội' ),
+	'phones'    => array( '0987882891', '0395662065' ),
+	'addresses' => array( 'Phòng 103 - Toà A5 Đại học Công nghiệp Hà Nội' ),
+	'website'   => 'https://letco.vn/',
 );
 $landing_zalo      = '0989086386';
 
@@ -53,7 +54,7 @@ if ( $landing_is_daeduk ) {
 		<?php endif; ?>
 		<?php if ( ! empty( $landing_contact ) ) : ?>
 			<div class="study-contact lp-footer-contact">
-				<p><strong><?php echo esc_html( isset( $landing_contact['label'] ) ? $landing_contact['label'] : 'Đơn vị tuyển sinh chính thức' ); ?>:</strong> <?php echo esc_html( $landing_contact['partners'] ); ?></p>
+				<p><?php echo esc_html( $landing_contact['partners'] ); ?></p>
 				<?php if ( ! empty( $landing_contact['phones'] ) ) : ?>
 					<p><strong>Hotline:</strong>
 						<?php foreach ( $landing_contact['phones'] as $index => $phone ) : ?>
@@ -68,7 +69,7 @@ if ( $landing_is_daeduk ) {
 				<?php if ( ! empty( $landing_contact['website'] ) ) : ?><p><strong>Website:</strong> <a href="<?php echo esc_url( $landing_contact['website'] ); ?>" rel="noopener"><?php echo esc_html( preg_replace( '#^https?://|/$#', '', $landing_contact['website'] ) ); ?></a></p><?php endif; ?>
 			</div>
 		<?php else : ?>
-			<p>Nhà A5, Đại học Công nghiệp Hà Nội, 298 Cầu Diễn, Tây Tựu, Hà Nội</p>
+			<p>Phòng 103 - Toà A5 Đại học Công nghiệp Hà Nội</p>
 		<?php endif; ?>
 	</div>
 	<div class="container lp-footer-bottom">

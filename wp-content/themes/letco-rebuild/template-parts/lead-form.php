@@ -38,7 +38,7 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 			<?php endif; ?>
 			<?php if ( ! empty( $contact ) && ! $contact_in_footer ) : ?>
 				<div class="study-contact">
-					<p><strong><?php echo esc_html( isset( $contact['label'] ) ? $contact['label'] : 'Đơn vị tuyển sinh chính thức' ); ?>:</strong> <?php echo esc_html( $contact['partners'] ); ?></p>
+					<p><?php echo esc_html( $contact['partners'] ); ?></p>
 					<p><strong><?php echo $zalo ? 'Hotline' : 'Hotline / Zalo'; ?>:</strong>
 						<?php foreach ( $contact['phones'] as $index => $phone ) : ?>
 							<?php echo $index ? ' / ' : ''; ?><a href="tel:<?php echo esc_attr( preg_replace( '/\D+/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a>

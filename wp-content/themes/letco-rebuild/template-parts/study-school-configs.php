@@ -14,7 +14,7 @@ return array(
 		'name'           => 'Đại học Daeduk',
 		'description'    => 'Dành cho sinh viên đang học tại trường Đại học, Cao đẳng đối tác: học 1 – 2 học kỳ tại Đại học Daeduk theo hệ trao đổi D2-6, tích lũy tín chỉ và trải nghiệm doanh nghiệp; gói K-Tech Bridge của hệ D2-6 gắn đào tạo với thực tập có trợ cấp.',
 		'layout'         => 'zones',
-		'primary_cta'    => 'Kiểm tra điều kiện hồ sơ',
+		'primary_cta'    => 'Đăng ký tư vấn',
 		'popup_delay'    => 1500,
 		'popup_buttons'  => true,
 		'seo'            => array(
@@ -66,11 +66,11 @@ return array(
 		'zalo'           => '0989086386',
 		'companies'      => array(
 			'list' => array(
-				array( 'IB Tech (아이비텍)', 'Cheongju & Gimhae', 'Kiểm tra bán dẫn PCB và FC-BGA, hơn 500 nhân viên' ),
-				array( 'Boeun Tech (보은테크)', 'Daegu', 'Kiểm tra linh kiện bán dẫn' ),
-				array( 'Geon Tech (건테크)', 'Gumi', 'Gia công gốm chính xác cho thiết bị bán dẫn và màn hình' ),
-				array( 'Seowon Industrial (서원산업)', 'Nonsan', 'Sản xuất nhôm công nghệ cao' ),
-				array( 'Ji In Company (지인)', 'Sejong', 'Sản xuất bảng mạch in PCB và MLB' ),
+				array( 'IB Tech (아이비텍)', 'Cheongju & Gimhae', 'Kiểm tra bán dẫn PCB và FC-BGA, hơn 500 nhân viên', 'daeduk-company-ibtech-site.jpg', 'Nhân viên kiểm tra bảng mạch tại IB Tech' ),
+				array( 'Boeun Tech (보은테크)', 'Daegu', 'Kiểm tra linh kiện bán dẫn', 'daeduk-company-boeun-site.jpg', 'Khu vực kiểm tra linh kiện bán dẫn tại Boeun Tech' ),
+				array( 'Geon Tech (건테크)', 'Gumi', 'Gia công gốm chính xác cho thiết bị bán dẫn và màn hình', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwQ0VGde4BsnW7_QEsvKpQRHLjsiZQSy3a0bVp4X42zLQjYogajNOTamI&s=10', 'Nhà máy Geon Tech tại Gumi' ),
+				array( 'Seowon Industrial (서원산업)', 'Nonsan', 'Sản xuất nhôm công nghệ cao', 'daeduk-company-seowon-site.jpg', 'Dây chuyền sản xuất tại Seowon Industrial' ),
+				array( 'Ji In Company (지인)', 'Sejong', 'Sản xuất bảng mạch in PCB và MLB', 'daeduk-company-jiin.jpg', 'Khu vực sản xuất bảng mạch in PCB' ),
 			),
 		),
 		'majors'         => array(
@@ -116,18 +116,16 @@ return array(
 			),
 		),
 		'lead'           => array(
-			'title'   => 'Kiểm tra điều kiện hồ sơ cùng LETCO – HaUI',
+			'title'   => 'Đăng ký tư vấn cùng LETCO – HaUI',
 			'intro'   => 'Để lại số điện thoại, tư vấn viên LETCO kiểm tra hồ sơ và gửi dự toán cho bạn. Không mất phí.',
 			'bullets' => array( 'Trường, năm học và ngành được tham gia hệ D2-6.', 'Mức học phí kỳ 1 theo trình độ tiếng Hàn.' ),
 		),
 		'lead_button'    => 'Gửi để kiểm tra điều kiện',
 		'contact'        => array(
-			'partners'  => 'Công ty TNHH Một thành viên Đào tạo và Cung ứng nhân lực – HaUI (LETCO), mã số doanh nghiệp 0101138244, trực thuộc Trường ĐH Công nghiệp Hà Nội. Đối tác điều phối chương trình: Hoàng Phát ICI',
+			'partners'  => 'Trung tâm Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
 			'phones'    => array( '0989.086.386' ),
 			'addresses' => array(
-				'LETCO – HaUI: Phòng 105, Tòa nhà A5, Trường Đại học Công nghiệp Hà Nội, Số 298 Đường Cầu Diễn, Phường Tây Tựu, Hà Nội',
-				'Hoàng Phát ICI: Ô C32 và C34, khu đất đấu giá 3 ha, Phúc Minh, Phú Diễn, Hà Nội; điện thoại 024.6652.7861',
-				'Đại học Daeduk: 68 Gajeongbuk-ro, Yuseong-gu, Daejeon 34111, Hàn Quốc (Global Center: phòng 101, Jeonggok-kwan)',
+				'Đại học Daeduk: 68 Gajeongbuk-ro, Yuseong-gu, Daejeon 34111, Hàn Quốc',
 			),
 		),
 		'dk'             => array(
@@ -139,7 +137,7 @@ return array(
 				'button'   => 'Đăng ký ngay',
 				'closed'   => 'Đã hết hạn đăng ký kỳ tháng 3/2027. Liên hệ LETCO để biết kỳ tiếp theo.',
 			),
-			'buttons' => array( 'he-dao-tao' => 'Kiểm tra điều kiện hồ sơ', 'chi-phi' => 'Nhận dự toán theo hồ sơ', 'thuc-tap' => 'Đăng ký tư vấn miễn phí' ),
+			'buttons' => array( 'he-dao-tao' => 'Đăng ký tư vấn', 'chi-phi' => 'Nhận dự toán theo hồ sơ', 'thuc-tap' => 'Đăng ký tư vấn miễn phí' ),
 			'nav'   => array( 'he-dao-tao' => 'Hệ D2-6', 'cac-buoc' => 'Đăng ký', 'chi-phi' => 'Lộ trình', 'thuc-tap' => 'Thực tập', 'hoi-dap' => 'Hỗ trợ' ),
 			'hero'  => array(
 				'badge'  => array( 'Tuyển sinh', 'Kỳ tháng 3/2027', 'Hạn đăng ký với LETCO', '29/11/2026' ),
@@ -160,12 +158,11 @@ return array(
 				'label'            => 'Đăng ký',
 				'title'            => 'Đăng ký trong 3 bước',
 				'items'            => array(
-					array( 'Kiểm tra hồ sơ', 'Tư vấn viên xác nhận trường, năm học và trình độ tiếng Hàn.', 'Hạn với LETCO 29/11/2026' ),
-					array( 'Nộp hồ sơ, phỏng vấn', 'Đợt sớm: nộp đến 25/11/2026, phỏng vấn 04/12/2026. Đợt chính thức: nộp 04/01 – 20/01/2027.', 'Kết quả 11/12/2026 hoặc 29/01/2027' ),
-					array( 'Đóng học phí, bay', 'Nộp tiền cho trường, nhận thư mời và mã code visa.', 'Bay trước 02/03/2027' ),
+					array( 'Kiểm tra hồ sơ', 'Tư vấn viên xác nhận trường, năm học và trình độ tiếng Hàn.', 'Hạn với LETCO 29/11/2026', 'news-passport-stamp.jpg', 'Hộ chiếu và dấu nhập cảnh trong bộ hồ sơ du học' ),
+					array( 'Nộp hồ sơ, phỏng vấn', 'Đợt sớm: nộp đến 25/11/2026, phỏng vấn 04/12/2026. Đợt chính thức: nộp 04/01 – 20/01/2027.', 'Kết quả 11/12/2026 hoặc 29/01/2027', 'daeduk-students-meeting.jpg', 'Sinh viên tham gia buổi phỏng vấn tuyển chọn tại LETCO' ),
+					array( 'Đóng học phí, bay', 'Nộp tiền cho trường, nhận thư mời và mã code visa.', 'Bay trước 02/03/2027', 'letco-korea-departure-2026-09.jpg', 'Học viên LETCO chuẩn bị khởi hành sang Hàn Quốc' ),
 				),
-				'conditions_title' => 'Xem điều kiện và hồ sơ',
-				'schedule_title'   => 'Xem lịch tuyển sinh đầy đủ',
+
 				'topik_note'       => 'Muốn hưởng học phí kỳ 1 hệ trao đổi 600.000 KRW, cần có kết quả TOPIK 2 khi nộp hồ sơ. Với kỳ tháng 3/2027, kỳ thi phù hợp là các kỳ tháng 10 – 11/2026; tư vấn viên xác nhận hạn nộp kết quả theo thông báo của trường.',
 			),
 			'work'  => array(
@@ -451,7 +448,7 @@ return array(
 			array( 'icon' => '차', 'title' => 'Chuyên sâu ngành ô tô', 'text' => 'Trường duy nhất tại Hàn Quốc đào tạo chuyên sâu trong lĩnh vực ô tô.' ),
 			array( 'icon' => 'EV', 'title' => 'Công nghệ thế hệ mới', 'text' => 'Chuyên đào tạo công nghệ ô tô Hybrid, EV, sửa chữa và thiết kế ô tô.' ),
 			array( 'icon' => '%', 'title' => 'Học bổng 30% – 100%', 'text' => 'Học bổng học phí từ 30% đến 100% cho hệ D2-1.' ),
-			array( 'icon' => '협', 'title' => 'Đối tác lâu năm của HaUI', 'text' => 'Hợp tác với Trường ĐH Công nghiệp Hà Nội từ năm 2016, đã tiếp nhận 67 học viên LETCO.' ),
+			array( 'icon' => '협', 'title' => 'Đối tác lâu năm của HaUI', 'text' => 'Hợp tác với ĐH Công nghiệp Hà Nội từ năm 2016, đã tiếp nhận 67 học viên LETCO.' ),
 		),
 		'programs_intro' => 'Vào thẳng hệ D2-1 khi có TOPIK 2, hoặc bắt đầu từ hệ tiếng D4-1.',
 		'programs'       => array(

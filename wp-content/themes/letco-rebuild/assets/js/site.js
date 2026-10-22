@@ -749,4 +749,20 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelector('.lp-logo')?.focus({ preventScroll: true });
     });
   }
+
+  // Header nav: scroll to section without leaving the hash fragment in the URL bar.
+  const headerNav = document.querySelector('.lp-header-nav');
+  if (headerNav) {
+    headerNav.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href^="#"]');
+      if (!link) return;
+      const id = link.getAttribute('href').slice(1);
+      const target = id && document.getElementById(id);
+      if (!target) return;
+      event.preventDefault();
+      const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    });
+  }
 });

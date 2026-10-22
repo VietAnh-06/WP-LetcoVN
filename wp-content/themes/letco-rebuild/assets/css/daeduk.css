@@ -2806,42 +2806,88 @@
  * ================================================================ */
 .jd-companies {
 	display: grid;
-	grid-template-columns: repeat(5, minmax(0, 1fr));
-	gap: 16px;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: 24px;
 	margin: 24px 0 0;
 	padding: 0;
 	list-style: none;
 }
 
+/* The reference uses a wide, three-card photo strip. Let this grid extend past
+   the reading column while keeping the section heading aligned with the page. */
+@media (min-width: 900px) {
+	.jd-companies {
+		--jd-company-grid-width: min(1500px, calc(100vw - 80px));
+		width: var(--jd-company-grid-width);
+		margin-inline: calc((100% - var(--jd-company-grid-width)) / 2);
+		gap: 30px;
+	}
+}
+
 .jd-companies li {
-	padding: 10px 10px 18px;
-	border-radius: 20px;
-	background: #ffffff;
+	position: relative;
+	isolation: isolate;
+	grid-column: span 2;
+	min-width: 0;
+	aspect-ratio: 7 / 5;
+	overflow: hidden;
+	border-radius: 12px;
+	background: var(--jd-navy);
 	box-shadow: var(--jd-shadow);
 }
 
+.jd-companies li:nth-last-child(2):nth-child(3n + 1) {
+	grid-column: 2 / span 2;
+}
+
+.jd-companies li:last-child:nth-child(3n + 1) {
+	grid-column: 3 / span 2;
+}
+
+.jd-companies li::after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(5, 15, 28, 0) 38%, rgba(5, 15, 28, 0.18) 56%, rgba(5, 15, 28, 0.9) 100%);
+	pointer-events: none;
+}
+
 .jd-companies figure {
-	margin: 0 0 14px;
+	position: absolute;
+	z-index: 0;
+	inset: 0;
+	margin: 0;
 }
 
 .jd-companies img {
 	display: block;
 	width: 100%;
-	height: auto;
-	aspect-ratio: 4 / 3;
+	height: 100%;
 	object-fit: cover;
-	border-radius: 14px;
+	transition: transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.jd-company-copy {
+	position: absolute;
+	z-index: 2;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 28px 30px 26px;
 }
 
 .jd-page .jd-companies h4 {
-	margin: 0 8px;
-	font-size: 1rem;
+	margin: 0;
+	color: #ffffff;
+	font-size: clamp(1.05rem, 1.5vw, 1.3rem);
 	font-weight: 800;
-	line-height: 1.35;
+	line-height: 1.3;
+	text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 }
 
 .jd-companies p {
-	margin: 6px 8px 0;
+	margin: 7px 0 0;
 	font-size: 0.875rem;
 	line-height: 1.5;
 }
@@ -2850,13 +2896,20 @@
 	display: flex;
 	gap: 6px;
 	align-items: center;
-	color: var(--jd-red);
+	color: rgba(255, 255, 255, 0.88);
 	font-size: 0.8125rem;
 	font-weight: 600;
+	text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
 }
 
 .jd-companies .jd-company-where svg {
 	flex: none;
+}
+
+@media (hover: hover) {
+	.jd-companies li:hover img {
+		transform: scale(1.045);
+	}
 }
 
 /* ================================================================
@@ -2934,44 +2987,26 @@
 		font-weight: 600;
 	}
 
-	/* One row per company: picture on the left, details on the right. */
+	/* The cards keep the photographic treatment on phones, one per row. */
 	.jd-companies {
 		grid-template-columns: minmax(0, 1fr);
-		gap: 12px;
+		gap: 14px;
 	}
 
-	.jd-companies li {
-		display: grid;
-		grid-template-columns: 112px minmax(0, 1fr);
-		column-gap: 14px;
-		align-content: center;
-		padding: 8px;
-		border-radius: 16px;
-	}
-
-	.jd-companies figure {
-		grid-row: 1 / span 3;
-		margin: 0;
-	}
-
-	.jd-companies img {
-		height: 100%;
-		min-height: 84px;
+	.jd-companies li,
+	.jd-companies li:nth-last-child(2):nth-child(3n + 1),
+	.jd-companies li:last-child:nth-child(3n + 1) {
+		grid-column: auto;
+		aspect-ratio: 16 / 10;
 		border-radius: 12px;
 	}
 
-	.jd-page .jd-companies h4,
-	.jd-companies p {
-		margin-inline: 0;
+	.jd-company-copy {
+		padding: 24px 22px 20px;
 	}
 
 	.jd-page .jd-companies h4 {
-		margin-top: 4px;
-		font-size: 0.9375rem;
-	}
-
-	.jd-companies p:last-child {
-		margin-bottom: 4px;
+		font-size: 1.05rem;
 	}
 }
 
@@ -2987,23 +3022,17 @@
 	scroll-margin-top: calc(var(--lp-header-h) + 16px);
 }
 
-/* Five partners on tablets: three on the first row, two wider ones on the second. */
+/* Two photographic cards per row on tablets. */
 @media (min-width: 640px) and (max-width: 899px) {
 	.jd-companies {
-		grid-template-columns: repeat(6, minmax(0, 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 18px;
 	}
 
-	.jd-companies li {
-		grid-column: span 2;
-	}
-
-	.jd-companies li:nth-child(n + 4) {
-		grid-column: span 3;
-	}
-
-	/* Cards in the second row are 1.5 times wider; a 2:1 picture keeps both rows the same height. */
-	.jd-companies li:nth-child(n + 4) img {
-		aspect-ratio: 2 / 1;
+	.jd-companies li,
+	.jd-companies li:nth-last-child(2):nth-child(3n + 1),
+	.jd-companies li:last-child:nth-child(3n + 1) {
+		grid-column: auto;
 	}
 }
 
@@ -3154,13 +3183,43 @@
 }
 
 .jd-page .jd-step {
-	grid-template-columns: 44px 1fr;
-	align-content: start;
-	gap: 14px;
-	padding: 22px 24px;
+	display: block;
+	padding: 0;
+	overflow: hidden;
 	border-radius: 20px;
 	background: #ffffff;
 	box-shadow: var(--jd-shadow);
+}
+
+.jd-step-media {
+	margin: 0;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: var(--jd-soft);
+}
+
+.jd-step-media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.jd-step.is-0 .jd-step-media img {
+	object-position: center 38%;
+}
+
+.jd-step.is-1 .jd-step-media img {
+	object-position: center 44%;
+}
+
+.jd-step-content {
+	display: grid;
+	grid-template-columns: 44px minmax(0, 1fr);
+	gap: 14px;
+	align-content: start;
+	padding: 22px 24px 24px;
 }
 
 .jd-page .jd-step-icon {
@@ -3179,8 +3238,14 @@
 	}
 
 	/* Three across, the icon sits above the text like the hero facts. */
-	.jd-page .jd-step {
+	.jd-page .jd-step-content {
 		grid-template-columns: 1fr;
+	}
+}
+
+@media (hover: hover) {
+	.jd-page .jd-step:hover .jd-step-media img {
+		transform: scale(1.045);
 	}
 }
 
