@@ -89,7 +89,7 @@ return array(
 		'documents'      => array( 'Đơn đăng ký và kế hoạch học tập', 'Giấy xác nhận sinh viên của trường đối tác đang học', 'Bằng tốt nghiệp và học bạ THPT 3 năm (hợp pháp hóa lãnh sự)', 'Giấy xác nhận số dư ngân hàng từ 8.000.000 KRW với hồ sơ nộp từ nước ngoài (16.000.000 KRW với hồ sơ trong Hàn Quốc); kỳ hạn gửi còn ít nhất 3 tháng tại thời điểm nộp hồ sơ', 'Hộ chiếu, căn cước của học sinh và bố mẹ', 'Giấy xác nhận quan hệ gia đình / hộ khẩu (dịch thuật công chứng)', 'Giấy khám sức khỏe, có xét nghiệm lao phổi', '3 ảnh hộ chiếu chụp trong 6 tháng', 'Bảng điểm TOPIK hoặc chứng chỉ ngoại ngữ (nếu có)' ),
 		'schedule'       => array(
 			'title' => 'Kỳ tuyển sinh và lịch trình',
-			'intro' => 'Lịch xét tuyển hệ D2-6 kỳ tháng 3/2027. Hạn 29/11/2026 ở đầu trang là hạn đăng ký với LETCO, khác hạn nộp hồ sơ vào trường của từng đợt; tư vấn viên xác nhận đợt phù hợp khi kiểm tra hồ sơ.',
+			'intro' => 'Lịch xét tuyển hệ D2-6 kỳ tháng 3/2027. Hạn 20/11/2026 ở đầu trang là hạn đăng ký với LETCO, khác hạn nộp hồ sơ vào trường của từng đợt; tư vấn viên xác nhận đợt phù hợp khi kiểm tra hồ sơ.',
 			'head'  => array( 'Mốc', 'Đợt xét tuyển sớm', 'Đợt chính thức' ),
 			'rows'  => array(
 				array( 'Nộp hồ sơ', '11/11 – 25/11/2026', '04/01 – 20/01/2027' ),
@@ -132,15 +132,15 @@ return array(
 			'countdown' => array(
 				'label'    => 'Kỳ tháng 3/2027',
 				'title'    => 'Thời gian tiếp nhận hồ sơ',
-				'intro'    => 'Hạn đăng ký với LETCO: 29/11/2026.',
-				'deadline' => '2026-11-29T23:59:59+07:00',
+				'intro'    => 'Hạn đăng ký với LETCO: 20/11/2026.',
+				'deadline' => '2026-11-20T23:59:59+07:00',
 				'button'   => 'Đăng ký ngay',
 				'closed'   => 'Đã hết hạn đăng ký kỳ tháng 3/2027. Liên hệ LETCO để biết kỳ tiếp theo.',
 			),
 			'buttons' => array( 'he-dao-tao' => 'Đăng ký tư vấn', 'chi-phi' => 'Nhận dự toán theo hồ sơ', 'thuc-tap' => 'Đăng ký tư vấn miễn phí' ),
 			'nav'   => array( 'he-dao-tao' => 'Hệ D2-6', 'cac-buoc' => 'Đăng ký', 'chi-phi' => 'Lộ trình', 'thuc-tap' => 'Thực tập', 'hoi-dap' => 'Hỗ trợ' ),
 			'hero'  => array(
-				'badge'  => array( 'Tuyển sinh', 'Kỳ tháng 3/2027', 'Hạn đăng ký với LETCO', '29/11/2026' ),
+				'badge'  => array( 'Tuyển sinh', 'Kỳ tháng 3/2027', 'Hạn đăng ký với LETCO', '20/11/2026' ),
 				'kicker' => array( 'Trao đổi sinh viên', 'Daejeon, Hàn Quốc' ),
 				'title'  => 'DU HỌC THỰC TẬP CÓ LƯƠNG TẠI HÀN QUỐC',
 				'accent' => 'Đại học Daeduk',
@@ -151,7 +151,7 @@ return array(
 				'facts'  => array(
 					array( 'Sinh viên trường đối tác', 'Ưu tiên năm cuối', '', '#he-dao-tao', 'Ai đăng ký được' ),
 					array( '600.000 KRW', 'Có TOPIK 2; chưa có: 1.450.000 KRW', '', '#chi-phi', 'Học phí kỳ 1' ),
-					array( '29/11/2026', 'Đăng ký với LETCO, kỳ tháng 3/2027', 'urgent', '#cac-buoc', 'Hạn đăng ký' ),
+					array( '20/11/2026', 'Đăng ký với LETCO, kỳ tháng 3/2027', 'urgent', '#cac-buoc', 'Hạn đăng ký' ),
 				),
 			),
 			'campus' => array(
@@ -171,7 +171,7 @@ return array(
 				'label'            => 'Đăng ký',
 				'title'            => 'Đăng ký trong 3 bước',
 				'items'            => array(
-					array( 'Kiểm tra hồ sơ', 'Tư vấn viên xác nhận trường, năm học và trình độ tiếng Hàn.', 'Hạn với LETCO 29/11/2026', 'news-passport-stamp.jpg', 'Hộ chiếu và dấu nhập cảnh trong bộ hồ sơ du học' ),
+					array( 'Kiểm tra hồ sơ', 'Tư vấn viên xác nhận trường, năm học và trình độ tiếng Hàn.', 'Hạn với LETCO 20/11/2026', 'news-passport-stamp.jpg', 'Hộ chiếu và dấu nhập cảnh trong bộ hồ sơ du học' ),
 					array( 'Nộp hồ sơ, phỏng vấn', 'Đợt sớm: nộp đến 25/11/2026, phỏng vấn 04/12/2026. Đợt chính thức: nộp 04/01 – 20/01/2027.', 'Kết quả 11/12/2026 hoặc 29/01/2027', 'daeduk-students-meeting.jpg', 'Sinh viên tham gia buổi phỏng vấn tuyển chọn tại LETCO' ),
 					array( 'Đóng học phí, bay', 'Nộp tiền cho trường, nhận thư mời và mã code visa.', 'Bay trước 02/03/2027', 'letco-korea-departure-2026-09.jpg', 'Học viên LETCO chuẩn bị khởi hành sang Hàn Quốc' ),
 				),
@@ -201,7 +201,7 @@ return array(
 				'label'         => 'Lộ trình tham gia',
 				'title'         => 'Lộ trình 5 bước tham gia chương trình',
 				'intro'         => 'Chương trình do Công ty LETCO – Đại học Công nghiệp Hà Nội phối hợp cùng Đại học Daeduk tổ chức tuyển chọn.',
-				'summary'       => 'Hạn đăng ký với LETCO: 29/11/2026. Liên hệ tư vấn viên để được hỗ trợ từng bước.',
+				'summary'       => 'Hạn đăng ký với LETCO: 20/11/2026. Liên hệ tư vấn viên để được hỗ trợ từng bước.',
 				'details_title' => 'Xem từng khoản, lịch đóng tiền và hoàn phí',
 				'rate_source'   => array( 'Xem tỷ giá Vietcombank', 'https://www.vietcombank.com.vn/vi-VN/KHCN/Cong-cu-Tien-ich/Ty-gia' ),
 				'total_label'   => 'Chi phí đóng tại Việt Nam',
