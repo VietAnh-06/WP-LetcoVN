@@ -624,6 +624,16 @@ document.addEventListener('DOMContentLoaded', () => {
   openTarget();
   window.addEventListener('hashchange', openTarget);
 
+  // The sign-up result is rendered from ?lead=; once shown, drop it from the address bar.
+  const leadUrl = new URL(window.location.href);
+  if (leadUrl.searchParams.has('lead')) {
+    window.addEventListener('load', () => {
+      leadUrl.searchParams.delete('lead');
+      if (leadUrl.hash === '#form-dang-ky') leadUrl.hash = '';
+      history.replaceState(history.state, '', leadUrl.pathname + leadUrl.search + leadUrl.hash);
+    });
+  }
+
   // On narrow screens the landing header tucks away while reading down and returns on scroll up.
   const landingHeader = document.querySelector('.lp-header');
   if (landingHeader) {

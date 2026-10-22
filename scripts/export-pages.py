@@ -36,8 +36,10 @@ VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
 
 
 class Exporter:
-    def __init__(self, source, output, public=''):
+    def __init__(self, source, output, public='', landing=None):
         self.source = source.rstrip('/')
+        # Single-page export: this page becomes / and links to other pages become #.
+        self.landing = landing
         self.public = public.rstrip('/')
         self.origin = urlsplit(self.source).netloc
         self.output = output
@@ -75,9 +77,15 @@ class Exporter:
         local = self.local(value, base)
         if local is None:
             return '#'
+        fragment = ('#' + full.fragment) if full.fragment else ''
+        if self.landing and Path(urlsplit(local).path).suffix.lower() not in ASSETS:
+            return '/' + fragment if local == self.landing else '#'
         if local not in self.seen:
             self.pending.append(local)
-        return urlsplit(local).path + (('#' + full.fragment) if full.fragment else '')
+        return urlsplit(local).path + fragment
+
+    def published(self, url):
+        return '/' if self.landing and url == self.landing else urlsplit(url).path or '/'
 
     def text(self, value, base):
         # JSON used by WordPress's emoji loader also contains asset URLs.
@@ -96,6 +104,9 @@ class Exporter:
             return response.read(), response.headers.get_content_type(), response.url
 
     def seed(self):
+        if self.landing:
+            self.pending.append(self.landing)
+            return
         self.pending.append(self.source + '/')
         # Include published pages/posts even if not linked from the main menu.
         for kind in ('pages', 'posts'):
@@ -120,7 +131,7 @@ class Exporter:
                 raise RuntimeError('Export exceeds Cloudflare Pages file limit.')
             self.seen.add(url)
             data, mime, final_url = self.fetch(url)
-            path = unquote(urlsplit(url).path).lstrip('/')
+            path = unquote(urlsplit(self.published(url)).path).lstrip('/')
             if mime == 'text/html':
                 if not path.endswith('.html'):
                     path = path.rstrip('/') + '/index.html'
@@ -182,7 +193,7 @@ class StaticHTML(HTMLParser):
             if attrs.get('name') in WORDPRESS_FIELDS:
                 return
             if attrs.get('name') == 'redirect_to':
-                attrs['value'] = urlsplit(self.base).path or '/'
+                attrs['value'] = self.exporter.published(self.base)
         for key in ('href', 'src', 'poster'):
             if key in attrs:
                 attrs[key] = self.exporter.url(attrs[key], self.base)
@@ -240,6 +251,9 @@ def main():
     parser.add_argument('--source', default='http://localhost:8081')
     parser.add_argument('--public', default='https://letco-rebuild.pages.dev',
                         help='public site origin used in social-share tags')
+    parser.add_argument('--page',
+                        help='export only this page path as a landing page at /, '
+                             'e.g. /du-hoc/du-hoc-han-quoc/dai-hoc-daeduk/')
     args = parser.parse_args()
     source = urlsplit(args.source)
     if source.scheme not in ('http', 'https') or source.path not in ('', '/') or source.query:
@@ -247,9 +261,20 @@ def main():
     dist = ROOT / 'dist'
     dist.mkdir(exist_ok=True)
     destination = dist / 'cloudflare'
+    archive = dist / 'letco-cloudflare-pages.zip'
+    landing = None
+    if args.page:
+        if not args.page.startswith('/'):
+            parser.error('--page must be a path on the site, e.g. /du-hoc/du-hoc-han-quoc/dai-hoc-daeduk/')
+        landing = Exporter(args.source, None).local(args.page, args.source + '/')
+        slug = Path(urlsplit(landing or '').path).name if landing else ''
+        if not slug or Path(slug).suffix.lower() in ASSETS:
+            parser.error('--page must be a public WordPress page path')
+        destination = dist / ('cloudflare-' + slug)
+        archive = dist / (slug + '-cloudflare-pages.zip')
     with tempfile.TemporaryDirectory(prefix='pages-export-', dir=dist) as temporary:
         output = Path(temporary)
-        exporter = Exporter(args.source, output, args.public)
+        exporter = Exporter(args.source, output, args.public, landing)
         exporter.run()
         (output / '404.html').write_text(
             '<!doctype html><html lang="vi"><meta charset="utf-8">'
@@ -267,7 +292,6 @@ def main():
         if destination.exists():
             shutil.rmtree(destination)
         shutil.copytree(output, destination)
-    archive = dist / 'letco-cloudflare-pages.zip'
     with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as bundle:
         for file in sorted(destination.rglob('*')):
             if file.is_file():

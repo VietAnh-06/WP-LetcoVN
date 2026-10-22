@@ -148,6 +148,24 @@ sign-up worker is included; dashboard drag-and-drop upload of
 `dist/letco-cloudflare-pages.zip` publishes only static files. Upload only the
 export folder or ZIP, never the WordPress checkout. Both outputs are ignored by Git.
 
+### Export a single page as a landing page
+
+`--page` exports only that page, served at `/`, with the assets it uses. Links to
+other pages of the site become `#`; in-page anchors, phone, Zalo, and the sign-up
+forms keep working. Output goes to `dist/cloudflare-<slug>/` and
+`dist/<slug>-cloudflare-pages.zip`, separate from the full-site export.
+
+```sh
+python3 scripts/export-pages.py --page /du-hoc/du-hoc-han-quoc/dai-hoc-daeduk/ \
+  --public https://daeduk-landing.pages.dev
+npx --yes wrangler@4.148.0 pages project create daeduk-landing --production-branch=main --force
+npx --yes wrangler@4.148.0 pages deploy dist/cloudflare-dai-hoc-daeduk \
+  --project-name=daeduk-landing --branch=main --commit-dirty=true
+```
+
+Set `--public` to the landing page's real domain (used in share tags). A new Pages
+project needs its own `SHEET_WEBHOOK_URL` and `SHEET_WEBHOOK_SECRET` secrets (below).
+
 ### Connect the sign-up forms to Google Sheets
 
 1. Create a Google Sheet, open **Extensions > Apps Script**, and replace the code
