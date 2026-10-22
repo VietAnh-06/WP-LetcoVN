@@ -3252,6 +3252,15 @@
 /* Sign-up button at the end of a section. */
 .jd-cta-row {
 	margin: clamp(20px, 3vw, 28px) 0 0;
+	text-align: center;
+}
+
+.jd-cta-hook {
+	margin: var(--lp-8) 0 0;
+	text-align: center;
+	font-size: var(--lp-step--1);
+	color: var(--lp-muted);
+	letter-spacing: 0.01em;
 }
 
 /* Application countdown under the hero: copy, four time boxes and a sign-up button. */
@@ -3739,6 +3748,140 @@
 	}
 }
 
+
+/* ---------- Daeduk campus gallery ---------- */
+.jd-campus-gallery {
+	display: grid;
+	grid-template-columns: repeat(14, minmax(0, 1fr));
+	grid-auto-rows: clamp(190px, 17vw, 240px);
+	gap: 18px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.jd-campus-gallery li {
+	grid-column: span 3;
+	min-width: 0;
+	overflow: hidden;
+	border-radius: 22px;
+	background: #dceaf4;
+	box-shadow: 0 18px 42px rgba(11, 42, 79, 0.12);
+}
+
+.jd-campus-gallery li:first-child {
+	grid-column: span 8;
+	grid-row: span 2;
+}
+
+.jd-campus-gallery figure {
+	position: relative;
+	height: 100%;
+	margin: 0;
+}
+
+.jd-campus-gallery figure::after {
+	content: "";
+	position: absolute;
+	inset: 38% 0 0;
+	background: linear-gradient(transparent, rgba(7, 26, 49, 0.82));
+	pointer-events: none;
+}
+
+.jd-campus-gallery img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 500ms ease;
+}
+
+.jd-campus-gallery li:hover img {
+	transform: scale(1.04);
+}
+
+.jd-campus-gallery figcaption {
+	position: absolute;
+	z-index: 1;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 18px 20px;
+	color: #ffffff;
+	font-size: 0.9375rem;
+	font-weight: 700;
+	line-height: 1.4;
+	text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+}
+
+.jd-campus-gallery li:first-child figcaption {
+	padding: 24px 26px;
+	font-size: 1.125rem;
+}
+
+.jd-campus-credit {
+	margin: 18px 0 0;
+	color: var(--jd-text);
+	font-size: 0.8125rem;
+	text-align: right;
+}
+
+@media (max-width: 899px) {
+	.jd-campus-gallery {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-auto-rows: 240px;
+	}
+
+	.jd-campus-gallery li,
+	.jd-campus-gallery li:first-child {
+		grid-column: auto;
+		grid-row: auto;
+	}
+
+	.jd-campus-gallery li:first-child {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (max-width: 639px) {
+	.jd-campus-gallery {
+		display: flex;
+		gap: 14px;
+		margin-inline: -20px;
+		padding: 4px 20px 22px;
+		overflow-x: auto;
+		scroll-padding-inline: 20px;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+	}
+
+	.jd-campus-gallery::-webkit-scrollbar {
+		display: none;
+	}
+
+	.jd-campus-gallery li,
+	.jd-campus-gallery li:first-child {
+		flex: 0 0 82%;
+		aspect-ratio: 4 / 3;
+		scroll-snap-align: start;
+	}
+
+	.jd-campus-gallery li:first-child figcaption {
+		padding: 18px 20px;
+		font-size: 0.9375rem;
+	}
+
+	.jd-campus-credit {
+		margin-top: 4px;
+		text-align: left;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.jd-campus-gallery img {
+		transition: none;
+	}
+}
 
 /* ---------- Daeduk only: page background ----------
  * Light sakura pink on the left fading to light sky blue on the right; cards stay white. */

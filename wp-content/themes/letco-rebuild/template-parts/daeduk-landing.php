@@ -57,8 +57,17 @@ $image = static function ( $file, $alt, $attributes = 'loading="lazy"' ) {
 };
 
 // Sign-up button closing a section; every one leads to the form at the bottom.
-$signup = static function ( $label ) {
+// $button may be a label string or array( label, optional persuasive line ).
+$signup = static function ( $button, $hook = '' ) {
+	if ( is_array( $button ) ) {
+		$hook   = isset( $button[1] ) ? $button[1] : $hook;
+		$button = isset( $button[0] ) ? $button[0] : '';
+	}
+	$label = (string) $button;
 	echo '<p class="jd-cta-row"><a class="jd-button" href="#dang-ky">' . esc_html( $label ) . '</a></p>';
+	if ( $hook ) {
+		echo '<p class="jd-cta-hook">' . esc_html( $hook ) . '</p>';
+	}
 };
 
 // Source line: what kind of source it is, its name, and a clearly styled link out.
@@ -105,6 +114,7 @@ get_template_part(
 
 $hero       = $dk['hero'];
 $title_html = str_replace( esc_html( $hero['accent'] ), '<em>' . esc_html( $hero['accent'] ) . '</em>', esc_html( $hero['title'] ) );
+$campus     = isset( $dk['campus'] ) ? $dk['campus'] : array();
 $steps      = $dk['steps'];
 $work       = $dk['work'];
 $money      = $dk['money'];
@@ -177,6 +187,27 @@ $refund     = $data['blocks']['hoan-phi'];
 			<p class="jd-countdown-closed"<?php echo $left ? ' hidden' : ''; ?>><?php echo esc_html( $countdown['closed'] ); ?></p>
 		</div>
 	</section>
+
+	<?php if ( ! empty( $campus['items'] ) ) : ?>
+	<section class="section jd-section jd-campus-zone" id="khuon-vien">
+		<div class="container">
+			<?php $head( $campus['label'], $campus['title'], $campus['intro'], '', 'left' ); ?>
+			<ul class="jd-campus-gallery" aria-label="Ảnh khuôn viên Đại học Daeduk">
+				<?php foreach ( $campus['items'] as $campus_photo ) : ?>
+					<li>
+						<figure>
+							<?php $image( $campus_photo[0], $campus_photo[2] ); ?>
+							<figcaption><?php echo esc_html( $campus_photo[1] ); ?></figcaption>
+						</figure>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+			<?php if ( ! empty( $campus['source'] ) ) : ?>
+				<p class="jd-campus-credit"><?php $source( $campus['source'][0], $campus['source'][1], 'Nguồn ảnh' ); ?></p>
+			<?php endif; ?>
+		</div>
+	</section>
+	<?php endif; ?>
 
 	<?php // The whole programme on one screen: the exchange itself and its K-Tech Bridge package. ?>
 	<section class="section jd-section jd-steps-zone" id="he-dao-tao">

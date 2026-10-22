@@ -74,7 +74,7 @@ if ( $landing_is_daeduk ) {
 	</div>
 	<div class="container lp-footer-bottom">
 		<p>© <?php echo esc_html( gmdate( 'Y' ) ); ?> LETCO – HaUI</p>
-		<a href="<?php echo esc_url( home_url( '/nguon-anh/' ) ); ?>">Nguồn ảnh</a>
+		<span>Nguồn ảnh được ghi tại từng nội dung</span>
 	</div>
 </footer>
 <div class="lp-mobile-cta">

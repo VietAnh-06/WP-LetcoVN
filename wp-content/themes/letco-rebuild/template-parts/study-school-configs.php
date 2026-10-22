@@ -142,9 +142,9 @@ return array(
 			'hero'  => array(
 				'badge'  => array( 'Tuyển sinh', 'Kỳ tháng 3/2027', 'Hạn đăng ký với LETCO', '29/11/2026' ),
 				'kicker' => array( 'Trao đổi sinh viên', 'Daejeon, Hàn Quốc' ),
-				'title'  => 'Du học D2-6 tại Đại học Daeduk',
+				'title'  => 'DU HỌC THỰC TẬP CÓ LƯƠNG TẠI HÀN QUỐC',
 				'accent' => 'Đại học Daeduk',
-				'sub'    => 'Học 1 – 2 học kỳ tại Hàn Quốc khi đang là sinh viên. Gói K-Tech Bridge có thực tập hưởng trợ cấp.',
+				'sub'    => 'Chương trình trao đổi sinh viên giữa Đại học Công nghiệp Hà Nội (HaUI) và Trường Đại học Daeduk, Hàn Quốc, mở ra cơ hội để sinh viên trải nghiệm môi trường giáo dục và doanh nghiệp tại Hàn Quốc thông qua chương trình học tập kết hợp thực tập chuyên ngành.',
 				'link'   => array( 'Xem D2-6 trong 30 giây', '#he-dao-tao' ),
 				'photo'  => array( 'daeduk-hero-campus.jpg', 'Tòa nhà chính và sân vận động của Đại học Daeduk mùa hoa nở', 'Khuôn viên Đại học Daeduk, Daejeon. Ảnh: vivaxan.com.vn' ),
 				'card'   => array( 'Đơn vị tuyển sinh', 'LETCO – HaUI', 'Tiếp nhận hồ sơ tại Hà Nội và các tỉnh phía Bắc; trực thuộc Đại học Công nghiệp Hà Nội.' ),
@@ -153,6 +153,19 @@ return array(
 					array( '600.000 KRW', 'Có TOPIK 2; chưa có: 1.450.000 KRW', '', '#chi-phi', 'Học phí kỳ 1' ),
 					array( '29/11/2026', 'Đăng ký với LETCO, kỳ tháng 3/2027', 'urgent', '#cac-buoc', 'Hạn đăng ký' ),
 				),
+			),
+			'campus' => array(
+				'label'  => 'Khám phá Daeduk',
+				'title'  => 'Một vòng khuôn viên Đại học Daeduk',
+				'intro'  => 'Không gian học tập, sinh hoạt và lưu trú trong khuôn viên trường tại Daejeon.',
+				'items'  => array(
+					array( 'daeduk-campus-business.jpg', 'Toàn cảnh khuôn viên Đại học Daeduk', 'Khuôn viên Đại học Daeduk nhìn qua sân trường và vườn hoa' ),
+					array( 'daeduk-facility-futsal.jpg', 'Sân bóng futsal', 'Sân bóng futsal trong khuôn viên Đại học Daeduk' ),
+					array( 'daeduk-campus-dorm-men.jpg', 'Ký túc xá', 'Ký túc xá (생활관) trong khuôn viên Đại học Daeduk' ),
+					array( 'daeduk-facility-student-cafeteria.jpg', 'Nhà ăn sinh viên', 'Nhà ăn sinh viên tại Đại học Daeduk' ),
+					array( 'daeduk-campus-student-hall.jpg', 'Hội trường sinh viên', 'Hội trường sinh viên (학생회관) Đại học Daeduk' ),
+				),
+				'source' => array( 'Đại học Daeduk', 'https://mipsi.ddu.ac.kr/msi/cntntsService.do?menuId=MNU_0000000000001137' ),
 			),
 			'steps' => array(
 				'label'            => 'Đăng ký',
@@ -168,7 +181,7 @@ return array(
 			'work'  => array(
 				'label'           => 'Thực tập',
 				'title'           => 'Thực tập ở đâu?',
-				'intro'           => 'Gói K-Tech Bridge, từ học kỳ 2, khi đạt phỏng vấn của doanh nghiệp.',
+				'intro'           => 'Thực tập có hưởng lương tại các doanh nghiệp',
 				'terms_title'     => 'Xem điều kiện thực tập',
 				'terms'           => array(
 					array( 'Thời điểm bắt đầu', 'Học kỳ 1 (tháng 3 – 6/2027) học tại trường: 2 – 3 tháng đầu học lý thuyết và tác phong, sau đó phỏng vấn tuyển chọn của doanh nghiệp. Thực tập và trợ cấp bắt đầu từ học kỳ 2 (dự kiến tháng 9/2027); ngày nhận trợ cấp đầu tiên theo lịch trả của doanh nghiệp, tư vấn viên xác nhận khi bố trí.' ),
@@ -261,24 +274,24 @@ return array(
 						'items' => array(
 							'Tham gia khóa học tiếng Hàn theo lộ trình dành riêng của chương trình.',
 							'Rèn luyện kỹ năng giao tiếp, kỹ năng sống và lối sống lành mạnh theo tiêu chuẩn Hàn Quốc.',
-							'Bạn đạt TOPIK 2 trở lên sẽ được ưu tiên học phí 600.000 KRW kỳ 1.',
+							'Sinh viên có TOPIK 2 hoặc Sejong 2B trước xuất cảnh',
 						),
 					),
 					array(
-						'title' => 'Hồ sơ',
+						'title' => 'Xuất cảnh',
 						'items' => array(
-							'Nhận xét Hàn Quốc sẽ chấp nhận ứng viên đáp ứng các điều kiện phù hợp.',
-							'Làm quen và chuẩn bị đầy đủ hồ sơ học thuật, tài chính theo yêu cầu.',
-							'Tham gia chương trình định hướng giúp sinh viên hòa nhập môi trường học tập tại trường Hàn Quốc.',
+							'Nhập cảnh Hàn Quốc sau khi đáp ứng các điều kiện và được cấp visa phù hợp.',
+							'Làm quen với môi trường sống, học tập và văn hóa bản địa.',
+							'Tham gia chương trình giao lưu văn hóa tại trường đại học Hàn Quốc.',
 						),
 					),
 					array(
 						'title' => 'Thực tập',
 						'items' => array(
 							'Thực tập tại Doanh nghiệp hàng đầu Hàn Quốc.',
-							'Mức lương thực tập tối thiểu từ 2.156.880 KRW/tháng (~40 triệu đồng).',
+							'Mức lương thực tập dự kiến: 2.700.000–3.000.000 won/tháng, tùy điều kiện áp dụng.',
 							'Kỹ thuật và kỹ năng làm việc trong môi trường sản xuất tiên tiến.',
-							'Nhiều phần lớn thực tập được ký kết và có cơ hội làm tại trường Hàn Quốc sau tốt nghiệp.',
+							'Kết thúc chương trình, sinh viên về nước hoặc tìm hiểu phương án học tiếp nếu đáp ứng các điều kiện liên quan.',
 						),
 					),
 				),
@@ -287,6 +300,8 @@ return array(
 				'label' => 'Chính sách hỗ trợ',
 				'title' => 'LETCO hỗ trợ bạn như thế nào?',
 				'intro' => 'Đăng ký tư vấn ngay để được hỗ trợ toàn diện. Gọi hoặc nhắn Zalo 0989.086.386.',
+				'image' => 'https://w.ladicdn.com/s700x650/5c7362c6c417ab07e5196b05/dvfawefaw3efaw3ef-20201010095544.png',
+				'image_alt' => 'LETCO hỗ trợ sinh viên du học',
 				'items' => array(
 					array( 'Hỗ trợ vay vốn ngân hàng', 'Sinh viên được hỗ trợ vay vốn ngân hàng khoảng 50.000.000 đồng để chuẩn bị kinh phí tham gia chương trình.' ),
 					array( 'Tư vấn chương trình miễn phí', 'Đối với sinh viên có nhu cầu, để lại thông tin liên lạc sẽ được đội ngũ tư vấn LETCO nhiệt tình hỗ trợ, giải đáp mọi thắc mắc.' ),
