@@ -280,7 +280,9 @@ def main():
             '<!doctype html><html lang="vi"><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width, initial-scale=1">'
             '<title>Không tìm thấy trang</title><h1>Không tìm thấy trang</h1>'
-            '<p><a href="/">Về trang chủ LETCO</a></p></html>', encoding='utf-8')
+            # A single-page export may be someone's own landing page, so it names no site.
+            '<p><a href="/">Về trang chủ' + ('' if landing else ' LETCO') + '</a></p></html>',
+            encoding='utf-8')
         # The worker receives sign-ups and sets the security headers on every response.
         shutil.copyfile(WORKER, output / '_worker.js')
         for file in output.rglob('*'):

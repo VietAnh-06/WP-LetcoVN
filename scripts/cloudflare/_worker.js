@@ -2,7 +2,8 @@
 // POST /api/lead checks a consultation sign-up the same way the theme's PHP handler does and
 // forwards it to the Google Apps Script web app that appends it to the leads sheet.
 // GET ?lead=<status> serves the copy of the page WordPress rendered for that status.
-// Settings (Pages secrets): SHEET_WEBHOOK_URL, SHEET_WEBHOOK_SECRET.
+// Settings (Pages secrets): SHEET_WEBHOOK_URL, SHEET_WEBHOOK_SECRET. A project whose page is not
+// LETCO's sets CONTACT_PHONE (and optionally CONTACT_EMAIL) for the sign-up failure page.
 
 const STATUSES = new Set(['success', 'error', 'phone']);
 const VARIANTS = '/_lead/';
@@ -67,7 +68,7 @@ async function submitLead(request, env, url) {
 
   if (!env.SHEET_WEBHOOK_URL || !env.SHEET_WEBHOOK_SECRET) {
     console.error('Lead not saved: SHEET_WEBHOOK_URL or SHEET_WEBHOOK_SECRET is not set.');
-    return failed();
+    return failed(env);
   }
   try {
     const response = await fetch(env.SHEET_WEBHOOK_URL, {
@@ -81,7 +82,7 @@ async function submitLead(request, env, url) {
     }
   } catch (error) {
     console.error('Lead not saved:', error.message);
-    return failed();
+    return failed(env);
   }
   return back('success');
 }
@@ -101,13 +102,18 @@ function pagePath(value) {
   return typeof value === 'string' && /^\/(?![\/\\])[^?#]*$/.test(value) ? value : '/';
 }
 
-function failed() {
+function failed(env) {
+  // Without CONTACT_PHONE the page offers the LETCO hotline and Zalo, as the company pages do.
+  const phone = text(env.CONTACT_PHONE, 20);
+  const email = text(env.CONTACT_EMAIL, 120);
+  const reach = phone
+    ? `gọi <a href="tel:${phone}">${phone}</a>` + (email ? ` hoặc gửi email tới <a href="mailto:${email}">${email}</a>` : '')
+    : 'gọi <a href="tel:0989086386">0989.086.386</a> hoặc <a href="https://zalo.me/0989086386" rel="noopener">nhắn Zalo</a>';
   return new Response(
     '<!doctype html><html lang="vi"><meta charset="utf-8">'
     + '<meta name="viewport" content="width=device-width, initial-scale=1">'
     + '<title>Chưa gửi được đăng ký</title><h1>Chưa gửi được đăng ký</h1>'
-    + '<p>Hệ thống đang gặp sự cố. Vui lòng gọi <a href="tel:0989086386">0989.086.386</a> '
-    + 'hoặc <a href="https://zalo.me/0989086386" rel="noopener">nhắn Zalo</a> để được tư vấn ngay.</p>'
+    + `<p>Hệ thống đang gặp sự cố. Vui lòng ${reach} để được tư vấn ngay.</p>`
     + '<p><a href="javascript:history.back()">Quay lại trang trước</a></p></html>',
     { status: 502, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } },
   );

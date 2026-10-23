@@ -165,6 +165,10 @@ npx --yes wrangler@4.148.0 pages deploy dist/cloudflare-dai-hoc-daeduk \
 
 Set `--public` to the landing page's real domain (used in share tags). A new Pages
 project needs its own `SHEET_WEBHOOK_URL` and `SHEET_WEBHOOK_SECRET` secrets (below).
+If the landing page is not LETCO's, also set `CONTACT_PHONE` (and optionally
+`CONTACT_EMAIL`) on that project the same way; the sign-up failure page then shows
+those details instead of the LETCO hotline and Zalo, and the export's 404 page names
+no company.
 
 ### Connect the sign-up forms to Google Sheets
 
