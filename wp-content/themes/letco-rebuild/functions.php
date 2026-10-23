@@ -22,7 +22,7 @@ add_action( 'after_setup_theme', 'letco_rebuild_setup' );
  * floating contact buttons, and get their own stylesheet.
  */
 function letco_is_landing() {
-	return is_front_page() || is_page( array( 'du-hoc-han-quoc', 'du-hoc-nhat-ban' ) ) || is_page_template( 'template-study-school.php' );
+	return is_front_page() || is_page( array( 'du-hoc-han-quoc', 'du-hoc-nhat-ban' ) ) || is_page_template( array( 'template-study-school.php', 'template-study-hub.php' ) );
 }
 
 /**
@@ -60,6 +60,9 @@ function letco_rebuild_assets() {
 	}
 	if ( ! is_page( 'dai-hoc-daeduk' ) ) {
 		wp_enqueue_style( 'letco-jd-skin', get_template_directory_uri() . '/assets/css/jd-skin.css', array( letco_is_landing() ? 'letco-daeduk' : 'letco-site-pages' ), letco_asset_version( 'assets/css/jd-skin.css' ) );
+	}
+	if ( is_page_template( 'template-study-hub.php' ) ) {
+		wp_enqueue_style( 'letco-study-hub', get_template_directory_uri() . '/assets/css/study-hub.css', array( 'letco-jd-skin' ), letco_asset_version( 'assets/css/study-hub.css' ) );
 	}
 	wp_enqueue_script(
 		'letco-rebuild',
@@ -106,6 +109,33 @@ function letco_fold_open( $title, $args = array() ) {
 function letco_fold_close() {
 	echo '</div></div>';
 }
+
+/**
+ * The six-step roadmap shown on study-abroad pages whose config sets no steps of its own.
+ */
+function letco_study_default_steps() {
+	return array(
+		array( 'Tư vấn', 'Đánh giá học lực, tài chính và mục tiêu.' ),
+		array( 'Chọn trường', 'Xây dựng danh sách trường và kỳ nhập học.' ),
+		array( 'Đào tạo tiếng', 'Học ngôn ngữ và kỹ năng hội nhập.' ),
+		array( 'Hoàn thiện hồ sơ', 'Chuẩn hóa giấy tờ, hồ sơ trường và visa.' ),
+		array( 'Phỏng vấn & visa', 'Luyện phỏng vấn và theo dõi kết quả.' ),
+		array( 'Xuất cảnh', 'Định hướng trước bay và hỗ trợ giai đoạn đầu.' ),
+	);
+}
+
+/**
+ * The study-and-work overview page is a personal page, so its browser title names the page
+ * owner instead of the company site.
+ */
+function letco_study_hub_title( $parts ) {
+	if ( is_page_template( 'template-study-hub.php' ) ) {
+		unset( $parts['tagline'] );
+		$parts['site'] = 'Cô Thanh Mai Du Học';
+	}
+	return $parts;
+}
+add_filter( 'document_title_parts', 'letco_study_hub_title' );
 
 /**
  * Description and social-share tags for landing pages that define 'seo' in their config.

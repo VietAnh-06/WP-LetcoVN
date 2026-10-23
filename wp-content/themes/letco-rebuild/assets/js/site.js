@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const value = input.value.trim();
       let text = '';
       if (value === '') text = 'Vui lòng nhập số điện thoại hoặc Zalo.';
-      else if (input.validity.patternMismatch) text = 'Số điện thoại chưa đúng. Nhập số Việt Nam gồm 10 chữ số, ví dụ 0989 086 386.';
+      else if (input.validity.patternMismatch) text = `Số điện thoại chưa đúng. Nhập số Việt Nam gồm 10 chữ số, ví dụ ${input.dataset.phone || '0989 086 386'}.`;
       message.textContent = text;
       message.hidden = !text;
       input.setAttribute('aria-invalid', text ? 'true' : 'false');
@@ -751,6 +751,56 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Header nav: scroll to section without leaving the hash fragment in the URL bar.
+  // Country tabs: one panel at a time, arrow keys move between tabs. Without this script the
+  // tab row stays hidden and every panel shows in turn. A link to a panel (the hero photos,
+  // or a shared #du-hoc-... address) opens that panel and scrolls to the tab row.
+  document.querySelectorAll('[data-tabs]').forEach((tabs) => {
+    const tablist = tabs.querySelector('[role="tablist"]');
+    const buttons = Array.from(tablist.querySelectorAll('[role="tab"]'));
+    const panels = buttons.map((button) => document.getElementById(button.getAttribute('aria-controls')));
+    const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const select = (index, focus) => {
+      buttons.forEach((button, i) => {
+        const active = i === index;
+        button.setAttribute('aria-selected', String(active));
+        button.tabIndex = active ? 0 : -1;
+        panels[i].hidden = !active;
+        // A panel shown by its tab is settled at once: the scroll reveal armed it while it
+        // was hidden and may not see it arrive, which left it faded on first open.
+        if (active) panels[i].classList.add('is-in');
+      });
+      if (focus) buttons[index].focus();
+    };
+    const indexOf = (id) => panels.findIndex((panel) => panel.id === id);
+
+    tablist.hidden = false;
+    buttons.forEach((button, index) => {
+      button.addEventListener('click', () => select(index, false));
+      button.addEventListener('keydown', (event) => {
+        const last = buttons.length - 1;
+        const target = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: last }[event.key];
+        if (target === undefined) return;
+        event.preventDefault();
+        select((target + buttons.length) % buttons.length, true);
+      });
+    });
+
+    document.querySelectorAll('a[href^="#du-hoc-"]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const index = indexOf(link.getAttribute('href').slice(1));
+        if (index < 0) return;
+        event.preventDefault();
+        select(index, false);
+        tablist.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+      });
+    });
+
+    const fromHash = indexOf(window.location.hash.slice(1));
+    select(fromHash < 0 ? 0 : fromHash, false);
+    if (fromHash >= 0) tablist.scrollIntoView({ block: 'start' });
+  });
+
   const headerNav = document.querySelector('.lp-header-nav');
   if (headerNav) {
     headerNav.addEventListener('click', (event) => {

@@ -1,0 +1,447 @@
+/*
+ * Study-abroad overview page. The hero, cards, costs, roadmap, FAQ and sign-up block
+ * reuse the landing and jd-skin styles; this file only lays out the blocks that are
+ * new here: the four-photo hero, the country tabs and what sits inside a tab.
+ * Values come from the --jd-* tokens in daeduk.css.
+ */
+
+/* ---------- Palette: a personal adviser's page, warmer than the company look ----------
+ * Same token names as daeduk.css, so every shared block follows: teal for actions,
+ * peach for small accents, warm ink and hairlines on a cream ground. */
+.is-landing:has(.study-hub) {
+	--jd-navy: #17393a;
+	--jd-ink: #1f2e2f;
+	--jd-text: #5b6564;
+	--jd-blue: #0f8478;
+	--jd-blue-deep: #0b675e;
+	--jd-blue-soft: #e2f3f0;
+	--jd-red: #e36d45;
+	--jd-red-deep: #b9512d;
+	--jd-red-soft: #fdebe2;
+	--jd-sky: #9fe0d6;
+	--jd-line: #eee6dc;
+	--jd-soft: #fbf6ef;
+	--jd-shadow: 0 24px 60px rgba(60, 44, 28, 0.08);
+	--jd-shadow-lift: 0 30px 70px rgba(60, 44, 28, 0.14);
+	--jd-card-shadow: 0 16px 42px rgba(60, 44, 28, 0.06);
+	--jd-card-radius: 28px;
+	--lp-bg: #fffaf4;
+	background: #fffaf4;
+}
+
+/* Older study-page tokens (question toggles, icons) follow the same palette. */
+.study-landing.study-hub {
+	--study-accent: var(--jd-blue);
+	--study-soft: var(--jd-blue-soft);
+}
+
+.is-landing:has(.study-hub) .lp-header {
+	background: rgba(255, 250, 244, 0.94);
+}
+
+.is-landing:has(.study-hub) .lp-button {
+	border-radius: 999px;
+	box-shadow: 0 14px 28px rgba(15, 132, 120, 0.24);
+}
+
+.is-landing:has(.study-hub) .lp-button:hover {
+	box-shadow: 0 18px 32px rgba(15, 132, 120, 0.32);
+}
+
+.is-landing:has(.study-hub) :is(.lp-button--light, .lp-button--ghost, .lp-button--small) {
+	box-shadow: none;
+}
+
+/* The alternate sections sit on cream; cards stay white so they lift off it. */
+.is-landing:has(.study-hub) .study-faq {
+	background: var(--jd-soft);
+}
+
+/* ---------- Sign-up: the adviser's photo beside the invitation ---------- */
+.study-lead-photo {
+	position: relative;
+	width: min(100%, 300px);
+	margin: 0 0 28px;
+}
+
+.study-lead-photo img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+	border-radius: 160px 160px 28px 28px;
+	box-shadow: var(--jd-shadow);
+}
+
+.study-lead-photo figcaption {
+	position: absolute;
+	right: -12px;
+	bottom: 20px;
+	padding: 8px 14px;
+	border-radius: 999px;
+	background: #ffffff;
+	color: var(--jd-ink);
+	font-weight: 700;
+	box-shadow: var(--jd-card-shadow);
+}
+
+.study-lead-photo figcaption::before {
+	content: "";
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	margin-right: 8px;
+	border-radius: 50%;
+	background: var(--jd-red);
+	vertical-align: middle;
+}
+
+/* ---------- Hero: one photo per country, each opens its tab ---------- */
+.study-hub-hero-media {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px;
+	align-self: center;
+}
+
+.study-hub-hero-media a {
+	position: relative;
+	display: block;
+	overflow: hidden;
+	border-radius: var(--jd-card-radius, 20px);
+	box-shadow: var(--jd-shadow);
+	aspect-ratio: 4 / 3;
+	transition: transform 250ms ease, box-shadow 250ms ease;
+}
+
+.study-hub-hero-media a:nth-child(even) {
+	transform: translateY(24px);
+}
+
+.study-hub-hero-media a:hover {
+	box-shadow: var(--jd-shadow-lift);
+}
+
+.study-hub-hero-media a:focus-visible {
+	outline: 3px solid var(--jd-blue);
+	outline-offset: 3px;
+}
+
+.study-hub-hero-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 400ms ease;
+}
+
+.study-hub-hero-media a:hover img {
+	transform: scale(1.05);
+}
+
+.study-hub-hero-media span {
+	position: absolute;
+	inset: auto 10px 10px;
+	padding: 6px 10px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.92);
+	color: var(--jd-ink);
+	font-weight: 700;
+	text-align: center;
+}
+
+/* ---------- Tabs ---------- */
+.study-hub-tablist {
+	position: sticky;
+	top: calc(var(--lp-header-h) + 8px);
+	z-index: 5;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px;
+	width: fit-content;
+	max-width: 100%;
+	margin: 0 auto 32px;
+	padding: 6px;
+	border: 1px solid var(--jd-line);
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.94);
+	box-shadow: var(--jd-card-shadow, var(--jd-shadow));
+	scroll-margin-top: calc(var(--lp-header-h) + 24px);
+	backdrop-filter: blur(8px);
+}
+
+.study-hub-tablist[hidden] {
+	display: none;
+}
+
+.study-hub-tablist button {
+	padding: 10px 20px;
+	border: 0;
+	border-radius: 999px;
+	background: transparent;
+	color: var(--jd-ink);
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background-color 200ms ease, color 200ms ease;
+}
+
+.study-hub-tablist button:hover {
+	background: var(--jd-blue-soft);
+}
+
+.study-hub-tablist button[aria-selected="true"] {
+	background: var(--jd-blue);
+	color: #ffffff;
+}
+
+.study-hub-tablist button:focus-visible {
+	outline: 3px solid var(--jd-blue);
+	outline-offset: 2px;
+}
+
+/* Without the script every panel shows; a hairline separates them. */
+.study-hub-panel + .study-hub-panel {
+	margin-top: 64px;
+	padding-top: 64px;
+	border-top: 1px solid var(--jd-line);
+}
+
+.study-hub-tablist:not([hidden]) ~ .study-hub-panel {
+	margin-top: 0;
+	padding-top: 0;
+	border-top: 0;
+}
+
+.study-hub-panel[hidden] {
+	display: none;
+}
+
+.study-hub-panel:not([hidden]) {
+	animation: study-hub-panel-in 300ms ease both;
+}
+
+@keyframes study-hub-panel-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+}
+
+/* ---------- Inside a tab ---------- */
+.study-hub-intro {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+	gap: clamp(24px, 4vw, 48px);
+	align-items: center;
+	padding: clamp(16px, 2vw, 20px);
+	border: 1px solid var(--jd-line);
+	border-radius: var(--jd-card-radius, 20px);
+	background: #ffffff;
+	box-shadow: var(--jd-card-shadow, var(--jd-shadow));
+}
+
+.study-hub-intro figure {
+	margin: 0;
+}
+
+.study-hub-intro img {
+	width: 100%;
+	aspect-ratio: 3 / 2;
+	object-fit: cover;
+	border-radius: calc(var(--jd-card-radius, 20px) - 8px);
+}
+
+.study-hub-intro figcaption {
+	margin-top: 6px;
+}
+
+.study-hub-intro > div {
+	display: grid;
+	gap: 14px;
+	justify-items: start;
+	padding-right: clamp(0px, 2vw, 20px);
+}
+
+.study-hub-intro h3 {
+	margin: 0;
+	font-family: var(--jd-serif);
+	font-size: var(--lp-step-3);
+	line-height: 1.15;
+	color: var(--jd-ink);
+}
+
+.study-hub-intro p {
+	margin: 0;
+	color: var(--jd-text);
+}
+
+.study-hub-subhead {
+	margin: 48px 0 16px;
+	font-family: var(--jd-serif);
+	font-size: var(--lp-step-2);
+	color: var(--jd-ink);
+}
+
+.study-hub-program-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 20px;
+}
+
+.study-hub-facts {
+	display: grid;
+	gap: 10px;
+	margin: 12px 0 0;
+}
+
+.study-hub-facts div {
+	padding-top: 10px;
+	border-top: 1px solid var(--jd-line);
+}
+
+.study-hub-facts dt {
+	color: var(--jd-text);
+	font-size: var(--lp-step--1);
+}
+
+.study-hub-facts dd {
+	margin: 2px 0 0;
+	color: var(--jd-ink);
+	font-weight: 600;
+}
+
+.study-hub-panel .study-cost-card {
+	max-width: none;
+}
+
+.study-hub-list {
+	display: grid;
+	gap: 12px;
+	margin: 0;
+}
+
+/* Work rules and scholarships sit two to a row on wide screens. */
+.study-hub-list--grid {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.study-hub-list div {
+	padding: 16px 20px;
+	border: 1px solid var(--jd-line);
+	border-left: 4px solid var(--jd-blue);
+	border-radius: 14px;
+	background: #ffffff;
+}
+
+.study-hub-list dt {
+	color: var(--jd-ink);
+	font-weight: 700;
+}
+
+.study-hub-list dd {
+	margin: 4px 0 0;
+	color: var(--jd-text);
+}
+
+.study-hub-sources {
+	margin-top: 32px;
+}
+
+.study-hub-brand {
+	display: inline-flex;
+	gap: 8px;
+	align-items: center;
+	color: var(--jd-ink);
+	font-family: var(--jd-serif);
+	font-size: 1.25rem;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.study-hub-footer-contact {
+	padding-block: 24px 0;
+}
+
+.study-hub-footer-contact a {
+	color: inherit;
+}
+
+.study-lead-form-head {
+	margin-bottom: 20px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid var(--jd-line);
+}
+
+.study-lead-form-head h3 {
+	margin: 0;
+	font-family: var(--jd-serif);
+	font-size: var(--lp-step-2);
+	color: var(--jd-ink);
+}
+
+.study-lead-form-head p {
+	margin: 6px 0 0;
+	color: var(--jd-text);
+	font-size: var(--lp-step--1);
+}
+
+.study-lead-form-head p::before {
+	content: "⏱ ";
+}
+
+@media (max-width: 1024px) {
+	.study-hub-program-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 760px) {
+	/* Phones sign up from the fixed bar at the bottom, so the header keeps just the name. */
+	.study-hub-brand {
+		gap: 6px;
+		font-size: 1.05rem;
+		white-space: nowrap;
+	}
+
+	.study-hub .lp-header .lp-button,
+	.lp-header:has(.study-hub-brand) .lp-button {
+		display: none;
+	}
+
+	.study-lead-photo {
+		width: min(100%, 240px);
+		margin: 0 auto;
+	}
+
+	.study-hub-intro,
+	.study-hub-program-grid,
+	.study-hub-list--grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.study-hub-hero-media a:nth-child(even) {
+		transform: none;
+	}
+
+	.study-hub-tablist {
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		width: auto;
+		overflow-x: auto;
+		border-radius: 16px;
+		scrollbar-width: none;
+	}
+
+	.study-hub-tablist button {
+		flex: none;
+		padding: 9px 14px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.study-hub-panel:not([hidden]) {
+		animation: none;
+	}
+}
