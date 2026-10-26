@@ -234,20 +234,21 @@ return array(
 
 	),
 	// Taiwan and Germany appear only on the overview page. Figures come from the sources
-	// listed with each country (checked 23/10/2026); amounts in VNĐ use the rate in the tip.
+	// listed with each country (checked 23/10/2026); 'estimate' is the adviser's own cost range.
 	'taiwan'  => array(
-		'flag'              => '🇹🇼',
-		'name'              => 'Đài Loan',
-		'eyebrow'           => 'Học tiếng Hoa · Đại học · Học bổng',
-		'description'       => 'Gần Việt Nam, chi phí vừa phải, học bằng tiếng Hoa hoặc tiếng Anh. Có học bổng của Bộ Giáo dục và em được làm thêm khi có giấy phép.',
-		'programs'          => array(
+		'flag'         => '🇹🇼',
+		'name'         => 'Đài Loan',
+		'eyebrow'      => 'Hệ 1+4 · Đại học · Đi làm',
+		'description'  => 'Gần Việt Nam, chi phí vừa phải. Học hệ 1+4, đại học, thạc sĩ hoặc sang làm việc.',
+		'estimate'     => '75 – 165 triệu VNĐ',
+		'programs'     => array(
 			array(
-				'tag'   => 'Hệ tiếng',
-				'title' => 'Học tiếng Hoa',
+				'tag'   => 'Hệ 1+4',
+				'title' => 'Vừa học vừa làm / dự bị đại học',
 				'facts' => array(
-					array( 'Mục tiêu', 'Học tại trung tâm tiếng Hoa được Bộ Giáo dục Đài Loan công nhận, làm nền tảng học lên đại học' ),
-					array( 'Học vấn', 'Tốt nghiệp THPT trở lên' ),
-					array( 'Làm thêm', 'Phải có giấy phép; nhiều trường chỉ cho xin sau một học kỳ' ),
+					array( 'Lộ trình', '1 năm học tiếng Hoa dự bị, sau đó 4 năm đại học' ),
+					array( 'Học vấn', 'Tốt nghiệp THPT' ),
+					array( 'Làm thêm', 'Theo quy định của trường, cần giấy phép lao động' ),
 				),
 			),
 			array(
@@ -255,8 +256,8 @@ return array(
 				'title' => 'Du học đại học',
 				'facts' => array(
 					array( 'Mục tiêu', 'Bằng cử nhân, học bằng tiếng Hoa hoặc tiếng Anh' ),
-					array( 'Ngoại ngữ', 'TOCFL cho chương trình tiếng Hoa; IELTS/TOEFL cho chương trình tiếng Anh, mức theo từng trường' ),
-					array( 'Làm thêm', 'Tối đa 20 giờ/tuần ngoài kỳ nghỉ đông và hè, cần giấy phép' ),
+					array( 'Ngoại ngữ', 'TOCFL (tiếng Hoa) hoặc IELTS/TOEFL (tiếng Anh)' ),
+					array( 'Làm thêm', 'Tối đa 20 giờ/tuần, cần giấy phép' ),
 				),
 			),
 			array(
@@ -264,106 +265,77 @@ return array(
 				'title' => 'Du học thạc sĩ',
 				'facts' => array(
 					array( 'Mục tiêu', 'Bằng thạc sĩ cho người đã tốt nghiệp đại học' ),
-					array( 'Làm thêm', 'Nhiều trường yêu cầu thêm thư đồng ý của giáo sư hướng dẫn' ),
+					array( 'Làm thêm', 'Thường cần thư đồng ý của giáo sư' ),
 					array( 'Học bổng', 'Có thể xin Học bổng Đài Loan của Bộ Giáo dục' ),
 				),
 			),
-		),
-		'costs'             => array(
-			'items_title' => 'Chi phí tham khảo năm đầu',
-			'items'       => array(
-				array( 'label' => 'Học phí đại học', 'amount' => '72 – 83 triệu VNĐ/năm', 'note' => '91.256 – 105.116 NT$/năm tại ĐH Khoa học và Công nghệ Quốc gia Cao Hùng (NKUST), năm học 2024–2025. Mỗi trường một mức.' ),
-				array( 'label' => 'Ký túc xá', 'amount' => '6,6 – 20 triệu VNĐ/học kỳ', 'note' => '8.300 – 25.500 NT$/học kỳ tại ĐH Văn hóa Trung Hoa (PCCU), tùy loại phòng.' ),
-				array( 'label' => 'Sinh hoạt phí', 'amount' => '4,7 – 7,9 triệu VNĐ/tháng', 'note' => '6.000 – 10.000 NT$/tháng theo ước tính của ĐH Quốc gia Đài Loan (NTU).' ),
+			array(
+				'tag'   => 'Đi làm',
+				'title' => 'Làm việc tại Đài Loan',
+				'facts' => array(
+					array( 'Hình thức', 'Hợp đồng với nhà máy, công ty' ),
+					array( 'Lương tối thiểu 2026', '29.500 NT$/tháng (~23 triệu VNĐ)' ),
+					array( 'Giấy phép', 'Công ty xin giấy phép cho em' ),
+				),
 			),
-			'total_label' => 'Tổng các khoản trên cho năm đầu (chưa gồm bảo hiểm, visa, vé máy bay)',
-			'total'       => '142 – 218 triệu VNĐ',
-			'tip'         => 'Tỷ giá quy đổi: 1 NT$ ≈ 790 VNĐ (23/10/2026). Học phí, ký túc xá và sinh hoạt phí khác nhau theo trường và thành phố.',
 		),
-		'scholarships'      => array(
-			array( 'title' => 'Học bổng Hoa ngữ (Huayu Enrichment Scholarship)', 'text' => 'Của Bộ Giáo dục Đài Loan: 28.000 NT$/tháng (~22 triệu VNĐ) để học tiếng Hoa từ 2 tháng đến 1 năm, học tối thiểu 15 giờ/tuần tại trung tâm được công nhận.' ),
-			array( 'title' => 'Học bổng Đài Loan (Taiwan Scholarship)', 'text' => 'Của Bộ Giáo dục Đài Loan cho bậc cử nhân, thạc sĩ, tiến sĩ: trợ cấp sinh hoạt hằng tháng và hỗ trợ học phí; mức và hạn nộp theo thông báo từng năm của TECO.' ),
-			array( 'title' => 'Học bổng của trường', 'text' => 'Cổng Study in Taiwan liệt kê học bổng riêng của nhiều trường đại học, xét theo thành tích và năng lực ngoại ngữ.' ),
+		'scholarships' => array(
+			array( 'title' => 'Học bổng Hoa ngữ', 'text' => '28.000 NT$/tháng (~22 triệu VNĐ) khi học tiếng Hoa 2 tháng đến 1 năm.' ),
+			array( 'title' => 'Học bổng Đài Loan', 'text' => 'Trợ cấp sinh hoạt và học phí cho cử nhân, thạc sĩ, tiến sĩ.' ),
+			array( 'title' => 'Học bổng của trường', 'text' => 'Xét theo thành tích và ngoại ngữ.' ),
 		),
-		'work'              => array(
+		'work'         => array(
 			'rules' => array(
-				array( 'Giờ làm thêm', 'Tối đa 20 giờ/tuần ngoài kỳ nghỉ đông và hè, phải có giấy phép làm việc (Luật Dịch vụ Việc làm, Điều 50).' ),
-				array( 'Lương tối thiểu 2026', '196 NT$/giờ (~155.000 VNĐ) hoặc 29.500 NT$/tháng.' ),
-				array( 'Làm không phép', 'Bị phạt 30.000 – 150.000 NT$ và buộc rời Đài Loan (Luật Dịch vụ Việc làm, Điều 68).' ),
-				array( 'Sau tốt nghiệp', 'Có thể xin ở lại tìm việc và làm việc theo hệ thống tính điểm dành cho người tốt nghiệp tại Đài Loan.' ),
+				array( 'Giờ làm thêm', 'Tối đa 20 giờ/tuần, cần giấy phép làm việc.' ),
+				array( 'Lương tối thiểu 2026', '196 NT$/giờ (~155.000 VNĐ).' ),
+				array( 'Làm không phép', 'Bị phạt và buộc rời Đài Loan.' ),
+				array( 'Sau tốt nghiệp', 'Được ở lại tìm việc theo hệ thống tính điểm.' ),
 			),
 		),
-		'sources'           => array(
+		'sources'      => array(
 			array( 'Luật Dịch vụ Việc làm Đài Loan', 'https://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?pcode=N0090001' ),
 			array( 'Học bổng Hoa ngữ 2026 (MOE)', 'https://www.roc-taiwan.org/uploads/sites/424/2026/05/HES-EN-Directions.pdf' ),
 			array( 'Study in Taiwan', 'https://www.studyintaiwan.org/how-to-apply/scholarship' ),
-			array( 'Học phí NKUST', 'https://oia.nkust.edu.tw/unit-12-304-22.html' ),
-			array( 'Ký túc xá PCCU', 'https://en.pccu.edu.tw/p/412-1257-18836.php' ),
 			array( 'Lương tối thiểu 2026', 'https://www.taiwannews.com.tw/news/6208495' ),
 		),
 	),
 	'germany' => array(
-		'flag'              => '🇩🇪',
-		'name'              => 'Đức',
-		'eyebrow'           => 'Đại học công lập · Du học nghề',
-		'description'       => 'Đại học công lập phần lớn không thu học phí, du học nghề (Ausbildung) có lương ngay khi học. Tốt nghiệp xong em được ở lại tìm việc đến 18 tháng.',
-		'programs'          => array(
-			array(
-				'tag'   => 'Dự bị',
-				'title' => 'Dự bị đại học (Studienkolleg)',
-				'facts' => array(
-					array( 'Mục tiêu', 'Chuẩn bị thi Feststellungsprüfung để vào đại học, thường 2 học kỳ' ),
-					array( 'Hồ sơ', 'Chứng chỉ APS của Đại sứ quán Đức; nộp qua trường đại học muốn học' ),
-					array( 'Tài chính', 'Tài khoản phong tỏa theo mức Đại sứ quán Đức quy định' ),
-				),
-			),
-			array(
-				'tag'   => 'Đại học',
-				'title' => 'Cử nhân & thạc sĩ',
-				'facts' => array(
-					array( 'Ngoại ngữ', 'TestDaF/DSH cho chương trình tiếng Đức; IELTS/TOEFL cho chương trình tiếng Anh' ),
-					array( 'Tài chính', 'Tài khoản phong tỏa 11.904 €/năm (992 €/tháng)' ),
-					array( 'Làm thêm', '140 ngày cả ngày hoặc 280 nửa ngày mỗi năm' ),
-				),
-			),
+		'flag'        => '🇩🇪',
+		'name'        => 'Đức',
+		'eyebrow'     => 'Du học nghề · Chuyển đổi bằng',
+		'description' => 'Hai hướng: du học nghề có lương ngay khi học, hoặc dùng bằng đã có để sang làm việc.',
+		'estimate'    => '165 – 265 triệu VNĐ',
+		'programs'    => array(
 			array(
 				'tag'   => 'Du học nghề',
 				'title' => 'Học nghề kép (Ausbildung)',
 				'facts' => array(
-					array( 'Mục tiêu', 'Học lý thuyết ở trường nghề, thực hành có lương tại doanh nghiệp' ),
-					array( 'Lương đào tạo', 'Tối thiểu 724 €/tháng năm đầu, 1.014 €/tháng năm thứ tư (2026)' ),
+					array( 'Mục tiêu', 'Học ở trường nghề, thực hành có lương' ),
+					array( 'Lương đào tạo', 'Từ 724 €/tháng năm đầu (2026)' ),
 					array( 'Sau tốt nghiệp', 'Chuyển sang visa lao động chuyên môn' ),
 				),
 			),
-		),
-		'costs'             => array(
-			'items_title' => 'Chi phí tham khảo năm đầu',
-			'items'       => array(
-				array( 'label' => 'Học phí', 'amount' => '0 – 45 triệu VNĐ/học kỳ', 'note' => 'Đa số trường công không thu; bang Baden-Württemberg thu 1.500 €/học kỳ với sinh viên ngoài EU.' ),
-				array( 'label' => 'Tài khoản phong tỏa (Sperrkonto)', 'amount' => '~355 triệu VNĐ/năm', 'note' => '11.904 €/năm, rút 992 €/tháng để chi ở và sinh hoạt. Đây là mức chứng minh tài chính cho visa.' ),
-				array( 'label' => 'Phí học kỳ (Semesterbeitrag)', 'amount' => 'Tùy trường', 'note' => 'Mọi sinh viên đều đóng, thường gồm vé giao thông công cộng.' ),
-				array( 'label' => 'Bảo hiểm y tế', 'amount' => 'Bắt buộc', 'note' => 'Phải có khi xin visa và trong suốt thời gian học.' ),
+			array(
+				'tag'   => 'Visa 18a / 18b',
+				'title' => 'Chuyển đổi bằng',
+				'facts' => array(
+					array( 'Đối tượng', 'Đã có bằng nghề hoặc đại học' ),
+					array( 'Điều kiện', 'Bằng được Đức công nhận, có hợp đồng đúng ngành' ),
+					array( 'Về lâu dài', 'Xin định cư sau 3 năm làm việc' ),
+				),
 			),
-			'total_label' => 'Học phí và tài khoản phong tỏa năm đầu (chưa gồm phí học kỳ, bảo hiểm, visa, vé máy bay)',
-			'total'       => '355 – 444 triệu VNĐ',
-			'tip'         => 'Tỷ giá quy đổi: 1 € ≈ 29.800 VNĐ (Vietcombank bán ra, 23/10/2026). Mức tài khoản phong tỏa cần được xác nhận lại với Đại sứ quán Đức tại Hà Nội trước khi nộp tiền.',
 		),
-		'scholarships'      => array(
-			array( 'title' => 'Học bổng DAAD', 'text' => 'Của Cơ quan Trao đổi Hàn lâm Đức cho bậc thạc sĩ, tiến sĩ: trợ cấp hằng tháng, bảo hiểm và chi phí đi lại. Hạn nộp thường trước kỳ nhập học khoảng một năm.' ),
-			array( 'title' => 'Đại học công lập không thu học phí', 'text' => 'Phần lớn bang không thu học phí ở trường công, kể cả với sinh viên quốc tế; khoản chính là chi phí sinh hoạt.' ),
-		),
-		'work'              => array(
+		'work'        => array(
 			'rules' => array(
-				array( 'Sinh viên', 'Làm thêm 140 ngày cả ngày hoặc 280 nửa ngày mỗi năm; việc trợ lý tại trường không tính vào giới hạn (§16b Luật Cư trú).' ),
-				array( 'Học nghề', 'Có lương đào tạo từ 724 €/tháng năm đầu (2026) và được làm thêm 20 giờ/tuần việc ngoài ngành (§16a Luật Cư trú).' ),
-				array( 'Lương tối thiểu 2026', '13,90 €/giờ (~414.000 VNĐ), lên 14,60 €/giờ từ năm 2027.' ),
-				array( 'Sau tốt nghiệp', 'Ở lại tìm việc tối đa 18 tháng (§20); xin định cư sau 2 năm làm việc chuyên môn nếu đã học tại Đức (§18c Luật Cư trú).' ),
+				array( 'Học nghề', 'Lương từ 724 €/tháng, làm thêm 20 giờ/tuần.' ),
+				array( 'Lương tối thiểu 2026', '13,90 €/giờ (~414.000 VNĐ).' ),
+				array( 'Học nghề xong', 'Chuyển visa lao động khi có việc đúng nghề.' ),
+				array( 'Định cư', 'Sau 2 năm làm việc đúng nghề.' ),
 			),
 		),
-		'sources'           => array(
-			array( 'Luật Cư trú §16a, §16b, §20, §18c', 'https://www.gesetze-im-internet.de/aufenthg_2004/__16b.html' ),
+		'sources'     => array(
+			array( 'Luật Cư trú §16a, §18a, §18b, §18c', 'https://www.gesetze-im-internet.de/aufenthg_2004/__18a.html' ),
 			array( 'Lương học nghề tối thiểu 2026 (BIBB)', 'https://www.bibb.de/de/pressemitteilung_212952.php' ),
-			array( 'Hướng dẫn Studienkolleg (LMU)', 'https://www.lmu.de/de/studium/internationale-vollzeit-studierende/studienbewerbung/bewerbungshilfen-und-faq/leitfaden-fuer-die-bewerbung-zum-studienkolleg/' ),
 			array( 'Đại sứ quán Đức tại Việt Nam', 'https://vietnam.diplo.de/' ),
 		),
 	),

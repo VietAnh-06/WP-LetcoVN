@@ -39,8 +39,8 @@ $contact = array(
 	</div>
 </footer>
 <div class="lp-mobile-cta">
-	<a class="lp-button" href="#dang-ky">Hỏi cô Mai</a>
-	<a class="lp-button lp-button--light" href="tel:<?php echo esc_attr( $contact['phone'] ); ?>">Gọi ngay</a>
+	<a class="lp-button" href="#dang-ky">Đăng ký tư vấn</a>
+	<a class="lp-button lp-button--light" href="tel:<?php echo esc_attr( $contact['phone'] ); ?>">Gọi cô Mai</a>
 </div>
 <button class="lp-to-top" type="button" data-to-top hidden>
 	<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>

@@ -47,7 +47,7 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 				<p class="study-lead-actions">
 					<a class="lp-button lp-button--light" href="tel:<?php echo esc_attr( preg_replace( '/\D+/', '', $args['quick_contact'] ) ); ?>">Gọi <?php echo esc_html( $args['quick_contact'] ); ?></a>
 					<?php if ( $zalo ) : ?><a class="lp-button lp-button--ghost" href="https://zalo.me/<?php echo esc_attr( $zalo ); ?>" rel="noopener" target="_blank">Nhắn Zalo</a><?php endif; ?>
-					<?php if ( ! empty( $args['email'] ) ) : ?><a class="lp-button lp-button--ghost" href="mailto:<?php echo esc_attr( $args['email'] ); ?>">Gửi email</a><?php endif; ?>
+					<?php if ( ! empty( $args['email'] ) ) : ?><a class="lp-button lp-button--ghost" href="mailto:<?php echo esc_attr( $args['email'] ); ?>">Gửi email hỏi thêm</a><?php endif; ?>
 				</p>
 			<?php endif; ?>
 			<?php if ( ! empty( $contact ) && ! $contact_in_footer ) : ?>

@@ -97,57 +97,189 @@
 	vertical-align: middle;
 }
 
-/* ---------- Hero: one photo per country, each opens its tab ---------- */
-.study-hub-hero-media {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 14px;
-	align-self: center;
+/* ---------- Hero: four flight routes from Hà Nội, one tall photo strip per country ----------
+ * The strip under the pointer (or keyboard focus) opens wide and shows its route; with
+ * nothing hovered the first strip stays open. Each strip opens its country tab. */
+@media (min-width: 1081px) {
+	.study-hub-hero .lp-hero-grid {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	}
 }
 
-.study-hub-hero-media a {
+.study-hub-routes {
+	--route-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--route-scrim: rgba(12, 38, 38, 0.86);
+	display: flex;
+	gap: 12px;
+	height: clamp(420px, 40vw, 540px);
+}
+
+.study-hub-route {
 	position: relative;
-	display: block;
+	flex: 1 1 0;
+	min-width: 0;
 	overflow: hidden;
-	border-radius: var(--jd-card-radius, 20px);
+	border-radius: var(--jd-card-radius, 24px);
+	background: var(--jd-navy);
 	box-shadow: var(--jd-shadow);
-	aspect-ratio: 4 / 3;
-	transition: transform 250ms ease, box-shadow 250ms ease;
+	color: #fffaf4;
+	text-decoration: none;
+	transition: flex-grow 600ms var(--route-ease), box-shadow 250ms var(--route-ease);
 }
 
-.study-hub-hero-media a:nth-child(even) {
-	transform: translateY(24px);
+.study-hub-route::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, var(--route-scrim) 0%, rgba(12, 38, 38, 0.32) 45%, rgba(12, 38, 38, 0) 70%);
+	pointer-events: none;
 }
 
-.study-hub-hero-media a:hover {
-	box-shadow: var(--jd-shadow-lift);
-}
-
-.study-hub-hero-media a:focus-visible {
-	outline: 3px solid var(--jd-blue);
-	outline-offset: 3px;
-}
-
-.study-hub-hero-media img {
+.study-hub-route img {
+	position: absolute;
+	inset: 0;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	transition: transform 400ms ease;
+	transition: transform 800ms var(--route-ease);
 }
 
-.study-hub-hero-media a:hover img {
-	transform: scale(1.05);
+/* Germany's portrait photo keeps the students in view. */
+.study-hub-route:last-child img {
+	object-position: center 80%;
 }
 
-.study-hub-hero-media span {
+.study-hub-route:focus-visible {
+	outline: 3px solid var(--jd-red);
+	outline-offset: 4px;
+}
+
+.study-hub-route:active {
+	transform: scale(0.99);
+}
+
+/* Open strip: the hovered or focused one, else the first. */
+.study-hub-routes:not(:hover, :focus-within) > .study-hub-route:first-child,
+.study-hub-route:is(:hover, :focus-visible) {
+	flex-grow: 4.5;
+	box-shadow: var(--jd-shadow-lift);
+}
+
+.study-hub-route:hover img {
+	transform: scale(1.04);
+}
+
+.study-hub-route-short,
+.study-hub-route-full {
 	position: absolute;
-	inset: auto 10px 10px;
-	padding: 6px 10px;
-	border-radius: 999px;
-	background: rgba(255, 255, 255, 0.92);
-	color: var(--jd-ink);
+	z-index: 1;
+	left: 0;
+	bottom: 0;
+	transition: opacity 300ms var(--route-ease), transform 500ms var(--route-ease);
+}
+
+.study-hub-route-short {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
+	padding-bottom: 24px;
+	font-size: 1.25rem;
+}
+
+.study-hub-route-vertical {
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+	font-family: var(--jd-serif);
+	font-size: 1.375rem;
 	font-weight: 700;
-	text-align: center;
+	white-space: nowrap;
+}
+
+.study-hub-route-full {
+	display: grid;
+	gap: 8px;
+	width: 100%;
+	padding: 24px;
+	opacity: 0;
+	transform: translateY(12px);
+}
+
+.study-hub-route-name {
+	font-family: var(--jd-serif);
+	font-size: clamp(1.5rem, 1rem + 1.2vw, 2rem);
+	font-weight: 700;
+	line-height: 1.15;
+}
+
+.study-hub-route-trip {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 1.125rem;
+	letter-spacing: 0.08em;
+}
+
+.study-hub-route-trip b {
+	font-weight: 800;
+}
+
+/* Dashed flight path with the plane halfway along. */
+.study-hub-route-line {
+	position: relative;
+	display: grid;
+	flex: 1;
+	place-items: center;
+	height: 24px;
+}
+
+.study-hub-route-line::before {
+	content: "";
+	position: absolute;
+	inset: 50% 0 auto;
+	border-top: 2px dashed rgba(255, 250, 244, 0.6);
+}
+
+.study-hub-route-line svg {
+	position: relative;
+	width: 20px;
+	height: 20px;
+	padding: 2px;
+	border-radius: 50%;
+	background: var(--jd-red);
+	fill: #fffaf4;
+	transform: rotate(90deg);
+	box-sizing: content-box;
+}
+
+.study-hub-route-note {
+	color: rgba(255, 250, 244, 0.86);
+	font-size: 0.9375rem;
+}
+
+.study-hub-routes:not(:hover, :focus-within) > .study-hub-route:first-child .study-hub-route-short,
+.study-hub-route:is(:hover, :focus-visible) .study-hub-route-short {
+	opacity: 0;
+	transform: translateY(12px);
+}
+
+.study-hub-routes:not(:hover, :focus-within) > .study-hub-route:first-child .study-hub-route-full,
+.study-hub-route:is(:hover, :focus-visible) .study-hub-route-full {
+	opacity: 1;
+	transform: none;
+	transition-delay: 150ms;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.study-hub-route {
+		animation: jd-rise 700ms var(--route-ease) both;
+	}
+
+	.study-hub-route:nth-child(2) { animation-delay: 160ms; }
+	.study-hub-route:nth-child(3) { animation-delay: 220ms; }
+	.study-hub-route:nth-child(4) { animation-delay: 280ms; }
+	.study-hub-route:nth-child(1) { animation-delay: 100ms; }
 }
 
 /* ---------- Tabs ---------- */
@@ -229,119 +361,382 @@
 	}
 }
 
-/* ---------- Inside a tab ---------- */
+/* ---------- Inside a tab ----------
+ * Each tab reads as a chapter: a photo opener, then hairline-headed blocks. The
+ * programmes are boarding-pass tickets (the hero's flight routes carry on), work
+ * rules sit on the page's one dark panel, costs lead with the total. */
 .study-hub-intro {
+	position: relative;
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-	gap: clamp(24px, 4vw, 48px);
-	align-items: center;
-	padding: clamp(16px, 2vw, 20px);
-	border: 1px solid var(--jd-line);
-	border-radius: var(--jd-card-radius, 20px);
-	background: #ffffff;
-	box-shadow: var(--jd-card-shadow, var(--jd-shadow));
+	min-height: clamp(360px, 36vw, 480px);
+	overflow: hidden;
+	border-radius: var(--jd-card-radius, 24px);
+	background: var(--jd-navy);
+	box-shadow: var(--jd-shadow);
+	isolation: isolate;
 }
 
 .study-hub-intro figure {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
 	margin: 0;
+}
+
+.study-hub-intro figure::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, rgba(12, 38, 38, 0.9) 0%, rgba(12, 38, 38, 0.66) 42%, rgba(12, 38, 38, 0.08) 75%);
 }
 
 .study-hub-intro img {
 	width: 100%;
-	aspect-ratio: 3 / 2;
+	height: 100%;
 	object-fit: cover;
-	border-radius: calc(var(--jd-card-radius, 20px) - 8px);
 }
 
 .study-hub-intro figcaption {
-	margin-top: 6px;
+	position: absolute;
+	z-index: 1;
+	right: 16px;
+	bottom: 12px;
+	margin: 0 !important;
+	color: rgba(255, 250, 244, 0.8);
+	font-size: 0.75rem;
 }
 
-.study-hub-intro > div {
+.study-hub .study-hub-intro figcaption a {
+	color: inherit;
+}
+
+.study-hub-intro-copy {
 	display: grid;
-	gap: 14px;
+	gap: 16px;
+	align-content: end;
 	justify-items: start;
-	padding-right: clamp(0px, 2vw, 20px);
+	max-width: 560px;
+	padding: clamp(24px, 4vw, 48px);
+	color: #fffaf4;
 }
 
 .study-hub-intro h3 {
 	margin: 0;
+	color: #fffaf4;
 	font-family: var(--jd-serif);
-	font-size: var(--lp-step-3);
-	line-height: 1.15;
-	color: var(--jd-ink);
+	font-size: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+	line-height: 1.05;
 }
 
 .study-hub-intro p {
 	margin: 0;
-	color: var(--jd-text);
+	color: rgba(255, 250, 244, 0.88);
+	font-size: 1.0625rem;
+	line-height: 1.65;
 }
 
+.study-hub-intro .lp-button {
+	margin-top: 8px;
+}
+
+/* Block headings: serif title with a hairline running to the edge. */
 .study-hub-subhead {
-	margin: 48px 0 16px;
+	display: flex;
+	gap: 24px;
+	align-items: center;
+	margin: 64px 0 24px;
 	font-family: var(--jd-serif);
 	font-size: var(--lp-step-2);
 	color: var(--jd-ink);
 }
 
-.study-hub-program-grid {
+.study-hub-subhead::after {
+	content: "";
+	flex: 1;
+	border-top: 1px solid var(--jd-line);
+}
+
+/* Real student photos stay compact in a horizontal, touch-friendly gallery. */
+.study-hub-gallery {
 	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 20px;
+	grid-auto-flow: column;
+	grid-auto-columns: minmax(260px, calc((100% - 32px) / 3));
+	gap: 16px;
+	margin: 0;
+	padding: 2px 0 16px;
+	overflow-x: auto;
+	overscroll-behavior-inline: contain;
+	scroll-padding-inline: 2px;
+	scroll-snap-type: inline mandatory;
+	scrollbar-color: var(--jd-blue) var(--jd-blue-soft);
+	scrollbar-width: thin;
+	list-style: none;
+}
+
+.study-hub-gallery li {
+	min-width: 0;
+	scroll-snap-align: start;
+}
+
+.study-hub-gallery figure {
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	border: 1px solid var(--jd-line);
+	border-radius: 18px;
+	background: #ffffff;
+	box-shadow: var(--jd-card-shadow, var(--jd-shadow));
+}
+
+.study-hub-gallery img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+}
+
+.study-hub-gallery figcaption {
+	padding: 12px 14px 14px;
+	color: var(--jd-text);
+	font-size: var(--lp-step--1);
+	font-weight: 600;
+	line-height: 1.45;
+}
+
+/* ---------- Programmes as tickets: a mint stub, a perforated edge, the facts ---------- */
+.study-hub .study-hub-program-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 16px;
+}
+
+.study-hub .study-hub-panel .study-hub-ticket {
+	--stub: clamp(220px, 26%, 300px);
+	position: relative;
+	display: grid;
+	grid-template-columns: var(--stub) minmax(0, 1fr);
+	min-height: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+/* Two notches cut where stub and body meet. */
+.study-hub-ticket::before,
+.study-hub-ticket::after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	left: calc(var(--stub) - 12px);
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: var(--lp-bg, #fffaf4);
+	box-shadow: inset 0 0 0 1px var(--jd-line);
+}
+
+.study-hub-ticket::before {
+	top: -13px;
+}
+
+.study-hub-ticket::after {
+	bottom: -13px;
+}
+
+.study-hub-ticket-stub {
+	display: grid;
+	gap: 12px;
+	align-content: center;
+	justify-items: start;
+	padding: 24px;
+	border-right: 2px dashed color-mix(in srgb, var(--jd-blue) 30%, transparent);
+	background: var(--jd-blue-soft);
+}
+
+.study-hub .study-hub-ticket-stub .study-program-tag {
+	margin: 0;
+	background: var(--jd-blue);
+	color: #fffaf4;
+}
+
+.study-hub .study-hub-ticket h3 {
+	margin: 0;
+	color: var(--jd-navy);
+	font-size: var(--lp-step-1);
+	text-wrap: balance;
+}
+
+.study-hub-ticket-body {
+	display: grid;
+	align-content: center;
+	padding: 24px 32px;
+}
+
+.study-hub-ticket-body p {
+	margin: 0;
+	color: var(--jd-text);
 }
 
 .study-hub-facts {
 	display: grid;
-	gap: 10px;
-	margin: 12px 0 0;
-}
-
-.study-hub-facts div {
-	padding-top: 10px;
-	border-top: 1px solid var(--jd-line);
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 16px 32px;
+	margin: 0;
 }
 
 .study-hub-facts dt {
 	color: var(--jd-text);
-	font-size: var(--lp-step--1);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
 }
 
 .study-hub-facts dd {
-	margin: 2px 0 0;
+	margin: 4px 0 0;
 	color: var(--jd-ink);
-	font-weight: 600;
+	font-weight: 700;
+	line-height: 1.45;
 }
 
-.study-hub-panel .study-cost-card {
+/* ---------- Costs: the total leads, the items follow ---------- */
+.study-hub .study-hub-panel .study-cost-card {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
 	max-width: none;
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid var(--jd-line);
+	border-radius: var(--jd-card-radius, 24px);
+	background: #ffffff;
+}
+
+.study-hub .study-hub-panel .study-cost-card ul {
+	margin: 0;
+	padding: 16px 32px;
+}
+
+.study-hub .study-hub-panel .study-cost-card li:last-child {
+	border-bottom: 0;
+}
+
+.study-hub .study-hub-panel .study-cost-card .study-cost-total,
+.study-hub .study-cost-total.study-hub-estimate {
+	order: -1;
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 12px;
+	justify-content: center;
+	align-items: flex-start;
+	margin: 0;
+	padding: clamp(24px, 3vw, 40px);
+	border: 0;
+	border-radius: 0;
+	background: var(--jd-red-soft);
+	color: var(--jd-ink);
+}
+
+.study-hub .study-hub-panel .study-cost-total strong {
+	color: var(--jd-red-deep);
+	font-family: var(--jd-serif);
+	font-size: clamp(2rem, 1.2rem + 1.6vw, 2.75rem);
+	font-variant-numeric: normal;
+	line-height: 1.1;
+	white-space: normal;
+	text-wrap: balance;
+}
+
+.study-hub .study-cost-total.study-hub-estimate {
+	width: fit-content;
+	min-width: min(100%, 360px);
+	border-radius: var(--jd-card-radius, 24px);
+}
+
+/* Germany's portrait photo: keep the students in the wide banner. */
+#du-hoc-germany .study-hub-intro img {
+	object-position: center 88%;
+}
+
+.study-hub .study-hub-panel .study-cost-tip {
+	margin-top: 16px;
+	border-radius: 16px;
 }
 
 .study-hub-list {
 	display: grid;
-	gap: 12px;
 	margin: 0;
 }
 
-/* Work rules and scholarships sit two to a row on wide screens. */
-.study-hub-list--grid {
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.study-hub-list div {
-	padding: 16px 20px;
-	border: 1px solid var(--jd-line);
-	border-left: 4px solid var(--jd-blue);
-	border-radius: 14px;
-	background: #ffffff;
-}
-
 .study-hub-list dt {
-	color: var(--jd-ink);
 	font-weight: 700;
 }
 
 .study-hub-list dd {
-	margin: 4px 0 0;
+	margin: 8px 0 0;
+}
+
+/* ---------- Work rules: the page's one dark panel, ruled in a 2-column grid ---------- */
+.study-hub-list--work {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	padding: 8px clamp(24px, 3vw, 40px);
+	border-radius: var(--jd-card-radius, 24px);
+	background: var(--jd-navy);
+	column-gap: clamp(24px, 4vw, 64px);
+}
+
+.study-hub-list--work div {
+	padding: 24px 0;
+	border-bottom: 1px solid rgba(255, 250, 244, 0.14);
+}
+
+/* The last row has no rule; an odd last item spans the row. */
+.study-hub-list--work div:last-child,
+.study-hub-list--work div:nth-last-child(2):nth-child(odd) {
+	border-bottom: 0;
+}
+
+.study-hub-list--work div:last-child:nth-child(odd) {
+	grid-column: 1 / -1;
+}
+
+.study-hub-list--work dt {
+	color: var(--jd-sky);
+}
+
+.study-hub-list--work dd {
+	color: rgba(255, 250, 244, 0.86);
+	line-height: 1.65;
+}
+
+/* ---------- Scholarships: one row; with three, the first (largest) is wider ---------- */
+.study-hub-list--scholarships {
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 16px;
+}
+
+.study-hub-list--scholarships:has(> div:nth-child(3)) {
+	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.study-hub-list--scholarships div {
+	padding: 24px;
+	border-radius: 16px;
+	background: #ffffff;
+	box-shadow: var(--jd-card-shadow);
+}
+
+.study-hub-list--scholarships div:first-child {
+	background: var(--jd-red-soft);
+	box-shadow: none;
+}
+
+.study-hub-list--scholarships dt {
+	color: var(--jd-ink);
+	font-family: var(--jd-serif);
+	font-size: var(--lp-step-1);
+	line-height: 1.25;
+}
+
+.study-hub-list--scholarships dd {
 	color: var(--jd-text);
 }
 
@@ -392,8 +787,8 @@
 }
 
 @media (max-width: 1024px) {
-	.study-hub-program-grid {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+	.study-hub-gallery {
+		grid-auto-columns: minmax(260px, calc((100% - 16px) / 2));
 	}
 }
 
@@ -415,14 +810,92 @@
 		margin: 0 auto;
 	}
 
-	.study-hub-intro,
-	.study-hub-program-grid,
-	.study-hub-list--grid {
+	.study-hub-intro-copy {
+		padding: 24px;
+	}
+
+	.study-hub-intro figure::after {
+		background: linear-gradient(0deg, rgba(12, 38, 38, 0.92) 0%, rgba(12, 38, 38, 0.6) 55%, rgba(12, 38, 38, 0.1) 100%);
+	}
+
+	.study-hub .study-hub-panel .study-hub-ticket,
+	.study-hub .study-hub-panel .study-cost-card,
+	.study-hub-list--work,
+	.study-hub-list--scholarships,
+	.study-hub-list--scholarships:has(> div:nth-child(3)) {
 		grid-template-columns: minmax(0, 1fr);
 	}
 
-	.study-hub-hero-media a:nth-child(even) {
+	/* Stacked ticket: the perforation turns horizontal. */
+	.study-hub-ticket::before,
+	.study-hub-ticket::after {
+		display: none;
+	}
+
+	.study-hub-ticket-stub {
+		border-right: 0;
+		border-bottom: 2px dashed color-mix(in srgb, var(--jd-blue) 30%, transparent);
+	}
+
+	.study-hub-ticket-body {
+		padding: 24px;
+	}
+
+	.study-hub .study-hub-panel .study-cost-card ul {
+		padding: 8px 24px;
+	}
+
+	.study-hub-list--work div:nth-last-child(2):nth-child(odd) {
+		border-bottom: 1px solid rgba(255, 250, 244, 0.14);
+	}
+
+	.study-hub-subhead {
+		margin-top: 48px;
+	}
+
+	.jd-page .study-hub-hero h1 {
+		font-size: 2.125rem;
+	}
+
+	/* Phones: a 2 x 2 grid of open strips, no hover needed. */
+	.study-hub-routes {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		height: auto;
+	}
+
+	.study-hub-route {
+		aspect-ratio: 3 / 4;
+	}
+
+	.study-hub-route-short {
+		display: none;
+	}
+
+	.study-hub-route .study-hub-route-full {
+		width: 100%;
+		gap: 4px;
+		padding: 16px;
+		opacity: 1;
 		transform: none;
+	}
+
+	.study-hub-route-name {
+		font-size: 1.25rem;
+	}
+
+	.study-hub-route-trip {
+		gap: 8px;
+		font-size: 0.875rem;
+	}
+
+	.study-hub-route-line svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	.study-hub-route-note {
+		font-size: 0.8125rem;
 	}
 
 	.study-hub-tablist {
@@ -438,9 +911,20 @@
 		flex: none;
 		padding: 9px 14px;
 	}
+
+	.study-hub-gallery {
+		grid-auto-columns: min(82vw, 340px);
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
+	.study-hub-route,
+	.study-hub-route img,
+	.study-hub-route-short,
+	.study-hub-route-full {
+		transition: none;
+	}
+
 	.study-hub-panel:not([hidden]) {
 		animation: none;
 	}
