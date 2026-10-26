@@ -5,28 +5,30 @@
  * Values come from the --jd-* tokens in daeduk.css.
  */
 
-/* ---------- Palette: a personal adviser's page, warmer than the company look ----------
- * Same token names as daeduk.css, so every shared block follows: teal for actions,
- * peach for small accents, warm ink and hairlines on a cream ground. */
+/* ---------- Palette: blue and orange, after the Hanoi University of Industry colours ----------
+ * Same token names as daeduk.css, so every shared block follows: blue for actions,
+ * orange for small accents, navy ink and cool hairlines on a light grey ground. */
 .is-landing:has(.study-hub) {
-	--jd-navy: #17393a;
-	--jd-ink: #1f2e2f;
-	--jd-text: #5b6564;
-	--jd-blue: #0f8478;
-	--jd-blue-deep: #0b675e;
-	--jd-blue-soft: #e2f3f0;
-	--jd-red: #e36d45;
-	--jd-red-deep: #b9512d;
-	--jd-red-soft: #fdebe2;
-	--jd-sky: #9fe0d6;
-	--jd-line: #eee6dc;
-	--jd-soft: #fbf6ef;
-	--jd-shadow: 0 24px 60px rgba(60, 44, 28, 0.08);
-	--jd-shadow-lift: 0 30px 70px rgba(60, 44, 28, 0.14);
-	--jd-card-shadow: 0 16px 42px rgba(60, 44, 28, 0.06);
+	--jd-navy: #0b2545;
+	--jd-ink: #0b2545;
+	--jd-text: #4f5d73;
+	--jd-blue: #0054a6;
+	--jd-blue-deep: #003f7f;
+	--jd-blue-soft: #e6effa;
+	--jd-red: #f37021;
+	--jd-red-deep: #d35a12;
+	--jd-red-soft: #fff0e5;
+	--jd-teal: #0054a6;
+	--jd-teal-soft: #e6effa;
+	--jd-sky: #ffb27a;
+	--jd-line: #e3e9f2;
+	--jd-soft: #eef3f9;
+	--jd-shadow: 0 24px 60px rgba(8, 30, 66, 0.08);
+	--jd-shadow-lift: 0 30px 70px rgba(8, 30, 66, 0.14);
+	--jd-card-shadow: 0 16px 42px rgba(8, 30, 66, 0.06);
 	--jd-card-radius: 28px;
-	--lp-bg: #fffaf4;
-	background: #fffaf4;
+	--lp-bg: #f7f9fc;
+	background: #f7f9fc;
 }
 
 /* Older study-page tokens (question toggles, icons) follow the same palette. */
@@ -36,23 +38,29 @@
 }
 
 .is-landing:has(.study-hub) .lp-header {
-	background: rgba(255, 250, 244, 0.94);
+	background: rgba(255, 255, 255, 0.94);
 }
 
 .is-landing:has(.study-hub) .lp-button {
 	border-radius: 999px;
-	box-shadow: 0 14px 28px rgba(15, 132, 120, 0.24);
+	box-shadow: 0 14px 28px rgba(0, 84, 166, 0.24);
 }
 
 .is-landing:has(.study-hub) .lp-button:hover {
-	box-shadow: 0 18px 32px rgba(15, 132, 120, 0.32);
+	box-shadow: 0 18px 32px rgba(0, 84, 166, 0.32);
+}
+
+/* Orange accents carry an orange glow; the shared skin hard-codes a red one. */
+.is-landing:has(.study-hub) .lp-hero .lp-link::before,
+.is-landing:has(.study-hub) .lp-site-cta .lp-button:not(.lp-button--light):not(.lp-button--ghost):not(.lp-button--glass):not(.lp-button--block) {
+	box-shadow: 0 14px 28px rgba(243, 112, 33, 0.3);
 }
 
 .is-landing:has(.study-hub) :is(.lp-button--light, .lp-button--ghost, .lp-button--small) {
 	box-shadow: none;
 }
 
-/* The alternate sections sit on cream; cards stay white so they lift off it. */
+/* The alternate sections sit on pale blue-grey; cards stay white so they lift off it. */
 .is-landing:has(.study-hub) .study-faq {
 	background: var(--jd-soft);
 }
@@ -108,7 +116,7 @@
 
 .study-hub-routes {
 	--route-ease: cubic-bezier(0.22, 1, 0.36, 1);
-	--route-scrim: rgba(12, 38, 38, 0.86);
+	--route-scrim: rgba(8, 30, 66, 0.86);
 	display: flex;
 	gap: 12px;
 	height: clamp(420px, 40vw, 540px);
@@ -122,7 +130,7 @@
 	border-radius: var(--jd-card-radius, 24px);
 	background: var(--jd-navy);
 	box-shadow: var(--jd-shadow);
-	color: #fffaf4;
+	color: #ffffff;
 	text-decoration: none;
 	transition: flex-grow 600ms var(--route-ease), box-shadow 250ms var(--route-ease);
 }
@@ -131,7 +139,7 @@
 	content: "";
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(to top, var(--route-scrim) 0%, rgba(12, 38, 38, 0.32) 45%, rgba(12, 38, 38, 0) 70%);
+	background: linear-gradient(to top, var(--route-scrim) 0%, rgba(8, 30, 66, 0.32) 45%, rgba(8, 30, 66, 0) 70%);
 	pointer-events: none;
 }
 
@@ -238,7 +246,7 @@
 	content: "";
 	position: absolute;
 	inset: 50% 0 auto;
-	border-top: 2px dashed rgba(255, 250, 244, 0.6);
+	border-top: 2px dashed rgba(255, 255, 255, 0.6);
 }
 
 .study-hub-route-line svg {
@@ -248,13 +256,13 @@
 	padding: 2px;
 	border-radius: 50%;
 	background: var(--jd-red);
-	fill: #fffaf4;
+	fill: #ffffff;
 	transform: rotate(90deg);
 	box-sizing: content-box;
 }
 
 .study-hub-route-note {
-	color: rgba(255, 250, 244, 0.86);
+	color: rgba(255, 255, 255, 0.86);
 	font-size: 0.9375rem;
 }
 
@@ -387,7 +395,7 @@
 	content: "";
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(90deg, rgba(12, 38, 38, 0.9) 0%, rgba(12, 38, 38, 0.66) 42%, rgba(12, 38, 38, 0.08) 75%);
+	background: linear-gradient(90deg, rgba(8, 30, 66, 0.9) 0%, rgba(8, 30, 66, 0.66) 42%, rgba(8, 30, 66, 0.08) 75%);
 }
 
 .study-hub-intro img {
@@ -402,7 +410,7 @@
 	right: 16px;
 	bottom: 12px;
 	margin: 0 !important;
-	color: rgba(255, 250, 244, 0.8);
+	color: rgba(255, 255, 255, 0.8);
 	font-size: 0.75rem;
 }
 
@@ -417,12 +425,12 @@
 	justify-items: start;
 	max-width: 560px;
 	padding: clamp(24px, 4vw, 48px);
-	color: #fffaf4;
+	color: #ffffff;
 }
 
 .study-hub-intro h3 {
 	margin: 0;
-	color: #fffaf4;
+	color: #ffffff;
 	font-family: var(--jd-serif);
 	font-size: clamp(2.5rem, 1.5rem + 3vw, 4rem);
 	line-height: 1.05;
@@ -430,7 +438,7 @@
 
 .study-hub-intro p {
 	margin: 0;
-	color: rgba(255, 250, 244, 0.88);
+	color: rgba(255, 255, 255, 0.88);
 	font-size: 1.0625rem;
 	line-height: 1.65;
 }
@@ -535,7 +543,7 @@
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	background: var(--lp-bg, #fffaf4);
+	background: var(--lp-bg, #f7f9fc);
 	box-shadow: inset 0 0 0 1px var(--jd-line);
 }
 
@@ -560,7 +568,7 @@
 .study-hub .study-hub-ticket-stub .study-program-tag {
 	margin: 0;
 	background: var(--jd-blue);
-	color: #fffaf4;
+	color: #ffffff;
 }
 
 .study-hub .study-hub-ticket h3 {
@@ -690,7 +698,7 @@
 
 .study-hub-list--work div {
 	padding: 24px 0;
-	border-bottom: 1px solid rgba(255, 250, 244, 0.14);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 /* The last row has no rule; an odd last item spans the row. */
@@ -708,7 +716,7 @@
 }
 
 .study-hub-list--work dd {
-	color: rgba(255, 250, 244, 0.86);
+	color: rgba(255, 255, 255, 0.86);
 	line-height: 1.65;
 }
 
@@ -820,7 +828,7 @@
 	}
 
 	.study-hub-intro figure::after {
-		background: linear-gradient(0deg, rgba(12, 38, 38, 0.92) 0%, rgba(12, 38, 38, 0.6) 55%, rgba(12, 38, 38, 0.1) 100%);
+		background: linear-gradient(0deg, rgba(8, 30, 66, 0.92) 0%, rgba(8, 30, 66, 0.6) 55%, rgba(8, 30, 66, 0.1) 100%);
 	}
 
 	.study-hub .study-hub-panel .study-hub-ticket,
@@ -851,7 +859,7 @@
 	}
 
 	.study-hub-list--work div:nth-last-child(2):nth-child(odd) {
-		border-bottom: 1px solid rgba(255, 250, 244, 0.14);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 	}
 
 	.study-hub-subhead {
