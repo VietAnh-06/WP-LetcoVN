@@ -510,6 +510,11 @@
 	gap: 16px;
 }
 
+/* The theme's tablet rule stretches the last programme card over two columns. */
+.study-hub .study-hub-program-grid > .study-hub-ticket {
+	grid-column: 1 / -1;
+}
+
 .study-hub .study-hub-panel .study-hub-ticket {
 	--stub: clamp(220px, 26%, 300px);
 	position: relative;
@@ -914,6 +919,67 @@
 
 	.study-hub-gallery {
 		grid-auto-columns: min(82vw, 340px);
+	}
+}
+
+/* Phones: all four tabs in one row, flag above the name, so no country hides off-screen. */
+@media (max-width: 560px) {
+	.study-hub-tablist {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 4px;
+		overflow: visible;
+	}
+
+	.study-hub-tablist button {
+		display: grid;
+		justify-items: center;
+		gap: 2px;
+		min-height: 52px;
+		padding: 6px 2px;
+		border-radius: 12px;
+		font-size: 0.8125rem;
+		line-height: 1.2;
+	}
+
+	.study-hub-footer-contact a {
+		display: inline-block;
+		padding-block: 12px;
+	}
+}
+
+/* Small phones: route cards keep the name and the airport codes, drop the long note. */
+@media (max-width: 420px) {
+	.study-hub-routes {
+		gap: 8px;
+	}
+
+	.study-hub-route {
+		aspect-ratio: 4 / 5;
+	}
+
+	.study-hub-route .study-hub-route-full {
+		padding: 12px;
+	}
+
+	.study-hub-route-name {
+		font-size: 1.0625rem;
+		white-space: nowrap;
+	}
+
+	.study-hub-route-trip {
+		gap: 4px;
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+	}
+
+	.study-hub-route-line svg {
+		width: 12px;
+		height: 12px;
+	}
+
+	.study-hub-route-note {
+		display: none;
 	}
 }
 
