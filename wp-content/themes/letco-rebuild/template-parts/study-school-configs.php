@@ -8,6 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Built in its own scope: study-landing.php requires this file next to its own $configs.
+return ( static function () {
 $configs = array(
 	'dai-hoc-daeduk' => array(
 		'class'          => 'study-korea study-school study-daeduk',
@@ -787,3 +789,4 @@ $configs = array(
 
 require __DIR__ . "/daeduk-route-configs.php";
 return $configs;
+} )();
