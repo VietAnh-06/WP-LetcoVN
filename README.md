@@ -190,6 +190,23 @@ header row. After editing the Apps Script code, use **Deploy > Manage deployment
 Edit > New version** so the URL stays the same. Sign-ups on the static site are
 not stored in WordPress.
 
+### Zalo alert for new sign-ups
+
+The Apps Script can also post each new row to Zalo through a Zalo Bot
+([Zalo Bot Platform](https://bot.zaloplatforms.com)). Without these settings it
+only writes to the sheet.
+
+1. Create a bot on Zalo Bot Platform and copy its token.
+2. In Apps Script **Project Settings > Script properties**, add `ZALO_BOT_TOKEN`.
+3. From each Zalo account that should get alerts, open the bot and send it any
+   message. Then run `listZaloChats` in the editor and copy the `chat.id` values
+   from the log.
+4. Add `ZALO_CHAT_IDS` with those IDs, separated by commas. Run `testZaloAlert`
+   to check, then **Deploy > Manage deployments > Edit > New version**.
+
+The alert holds the visitor's name, phone, and program, so send it only to staff
+chats. A failed alert is logged in Apps Script **Executions**; the row is still saved.
+
 ## Requirements
 
 - PHP 7.4 or newer
