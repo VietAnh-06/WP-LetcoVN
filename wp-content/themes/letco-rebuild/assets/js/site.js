@@ -1,4 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Measure the shared sticky header so route switching remains visible at every width.
+  const programBar = document.querySelector('[data-daeduk-switcher]');
+  if (programBar) {
+    const pageHeader = document.querySelector('.lp-header');
+    const syncProgramOffset = () => {
+      const height = pageHeader ? pageHeader.getBoundingClientRect().height : 72;
+      const top = pageHeader ? Number.parseFloat(getComputedStyle(pageHeader).top) || 0 : 0;
+      document.body.style.setProperty('--dd-header-offset', `${height + top}px`);
+      document.body.style.setProperty('--dd-switcher-height', `${programBar.getBoundingClientRect().height}px`);
+    };
+    syncProgramOffset();
+    if ('ResizeObserver' in window) {
+      const observer = new ResizeObserver(syncProgramOffset);
+      if (pageHeader) observer.observe(pageHeader);
+      observer.observe(programBar);
+    }
+    window.addEventListener('resize', syncProgramOffset, { passive: true });
+
+    // Slide the active pill toward the chosen visa. Browsers with cross-page view
+    // transitions animate the swap themselves; others get the pill slide before leaving.
+    const routeNav = programBar.querySelector('.jd-route-nav');
+    const indicator = routeNav.querySelector('.jd-route-indicator');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    routeNav.querySelectorAll('a[data-route-index]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (link.getAttribute('aria-current') === 'page') {
+          event.preventDefault();
+          return;
+        }
+        const from = indicator ? Number(getComputedStyle(routeNav).getPropertyValue('--dd-active')) : -1;
+        const to = Number(link.dataset.routeIndex);
+        try { sessionStorage.setItem('dd-route-slide', to < from ? 'prev' : 'next'); } catch (error) { /* storage blocked */ }
+        if (!indicator || reduceMotion || 'CSSViewTransitionRule' in window) return;
+        event.preventDefault();
+        routeNav.querySelector('[aria-current="page"]')?.removeAttribute('aria-current');
+        link.setAttribute('aria-current', 'page');
+        routeNav.style.setProperty('--dd-active', String(to));
+        window.setTimeout(() => { window.location.href = link.href; }, 260);
+      });
+    });
+  }
+
   const toggle = document.querySelector('[data-menu-toggle]');
   const panel = document.querySelector('[data-menu-panel]');
   const header = document.querySelector('[data-site-header]');
@@ -376,9 +419,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // A page with popup_delay opens the form on every visit, on every screen size.
+    // A page with popup_delay opens the form on every visit, on every screen size, but not over
+    // a popup that is already open or while the reader is typing in a form on the page.
     const isPhone = window.matchMedia('(max-width: 760px)').matches;
-    if (openDelay > 0) window.setTimeout(openConsultModal, openDelay);
+    if (openDelay > 0) {
+      window.setTimeout(() => {
+        if (!consultModal.hidden || document.activeElement?.closest('form')) return;
+        openConsultModal();
+      }, openDelay);
+    }
 
     // Interest trigger: open once per visit when the reader has read down to a chosen point,
     // unless they are already at the sign-up form.
@@ -634,9 +683,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // On narrow screens the landing header tucks away while reading down and returns on scroll up.
+  // Daeduk keeps both navigation rows visible; other landing headers tuck away on phones.
   const landingHeader = document.querySelector('.lp-header');
-  if (landingHeader) {
+  if (landingHeader && !programBar) {
     const narrowQuery = window.matchMedia('(max-width: 1080px)');
     let lastY = window.scrollY;
     let ticking = false;
@@ -723,6 +772,15 @@ document.addEventListener('DOMContentLoaded', () => {
       revealer.observe(target);
       armed.push(target);
     });
+    // Figures under a hero count up once they are in view, including when already on screen at load.
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.querySelectorAll('[data-countup]').forEach(countUp);
+        statsObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('.jd-stats').forEach((stats) => statsObserver.observe(stats));
     // An anchor jump skips the scroll in between: settle everything up to the destination.
     const settleAbove = () => {
       const limit = window.scrollY + window.innerHeight * 1.5;

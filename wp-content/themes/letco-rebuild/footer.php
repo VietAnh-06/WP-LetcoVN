@@ -2,14 +2,14 @@
 
 <?php
 $landing_page      = letco_is_landing();
-$landing_is_daeduk = is_page( 'dai-hoc-daeduk' );
+$landing_is_daeduk = letco_is_daeduk();
 $landing_cta       = 'Đăng ký tư vấn';
 // Landings sign up in their own form; other pages send visitors to the contact page.
 $landing_cta_url   = $landing_page ? '#dang-ky' : home_url( '/lien-he/' );
 // Every page shows the same contact block; the Daeduk page overrides it from its config.
 $landing_contact   = array(
 	'label'     => 'Phòng thị trường Châu Á',
-	'partners'  => 'Trung tâm Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
+	'partners'  => 'Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
 	'phones'    => array( '0987882891', '0395662065' ),
 	'addresses' => array( 'Phòng 103 - Toà A5 Đại học Công nghiệp Hà Nội' ),
 	'website'   => 'https://letco.vn/',

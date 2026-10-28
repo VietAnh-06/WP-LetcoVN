@@ -21,6 +21,26 @@ add_action( 'after_setup_theme', 'letco_rebuild_setup' );
  * Study-abroad landing pages render without the site menu, footer banner or
  * floating contact buttons, and get their own stylesheet.
  */
+/** Resolve visa pages only when they are direct children of the Daeduk page. */
+function letco_school_config_key() {
+	$page = get_queried_object();
+	if ( ! ( $page instanceof WP_Post ) ) { return ''; }
+	if ( in_array( $page->post_name, array( 'd2-6', 'd2-1', 'd4-1' ), true ) && 'dai-hoc-daeduk' === get_post_field( 'post_name', $page->post_parent ) ) {
+		return 'daeduk-' . $page->post_name;
+	}
+	return $page->post_name;
+}
+
+function letco_is_daeduk() {
+	return is_page() && in_array( letco_school_config_key(), array( 'dai-hoc-daeduk', 'daeduk-d2-6', 'daeduk-d2-1', 'daeduk-d4-1' ), true );
+}
+
+function letco_daeduk_url( $route = '' ) {
+	$page = get_page_by_path( 'du-hoc/du-hoc-han-quoc/dai-hoc-daeduk' );
+	$base = $page ? get_permalink( $page ) : home_url( '/du-hoc/du-hoc-han-quoc/dai-hoc-daeduk/' );
+	return $route ? trailingslashit( $base ) . $route . '/' : $base;
+}
+
 function letco_is_landing() {
 	return is_front_page() || is_page( array( 'du-hoc-han-quoc', 'du-hoc-nhat-ban' ) ) || is_page_template( array( 'template-study-school.php', 'template-study-hub.php' ) );
 }
@@ -32,6 +52,11 @@ function letco_is_landing() {
  */
 function letco_landing_body_class( $classes ) {
 	$classes[] = 'is-landing';
+	if ( letco_is_daeduk() ) {
+		$classes[] = 'daeduk-site';
+		$key       = letco_school_config_key();
+		if ( 'dai-hoc-daeduk' !== $key ) { $classes[] = 'daeduk-route-' . substr( $key, strlen( 'daeduk-' ) ); }
+	}
 	if ( ! letco_is_landing() ) {
 		$classes[] = 'is-site-page';
 	}
@@ -58,11 +83,14 @@ function letco_rebuild_assets() {
 	if ( ! letco_is_landing() ) {
 		wp_enqueue_style( 'letco-site-pages', get_template_directory_uri() . '/assets/css/site-pages.css', array( 'letco-daeduk' ), letco_asset_version( 'assets/css/site-pages.css' ) );
 	}
-	if ( ! is_page( 'dai-hoc-daeduk' ) ) {
+	if ( ! letco_is_daeduk() ) {
 		wp_enqueue_style( 'letco-jd-skin', get_template_directory_uri() . '/assets/css/jd-skin.css', array( letco_is_landing() ? 'letco-daeduk' : 'letco-site-pages' ), letco_asset_version( 'assets/css/jd-skin.css' ) );
 	}
 	if ( is_page_template( 'template-study-hub.php' ) ) {
 		wp_enqueue_style( 'letco-study-hub', get_template_directory_uri() . '/assets/css/study-hub.css', array( 'letco-jd-skin' ), letco_asset_version( 'assets/css/study-hub.css' ) );
+	}
+	if ( letco_is_daeduk() ) {
+		wp_enqueue_style( 'letco-daeduk-refresh', get_template_directory_uri() . '/assets/css/daeduk-refresh.css', array( 'letco-daeduk' ), letco_asset_version( 'assets/css/daeduk-refresh.css' ) );
 	}
 	wp_enqueue_script(
 		'letco-rebuild',
@@ -144,8 +172,8 @@ function letco_landing_meta() {
 	if ( ! is_page() ) {
 		return;
 	}
-	$slug    = get_post_field( 'post_name', get_queried_object_id() );
 	$configs = require get_template_directory() . '/template-parts/study-school-configs.php';
+	$slug    = letco_school_config_key();
 	if ( empty( $configs[ $slug ]['seo'] ) ) {
 		return;
 	}
@@ -169,6 +197,31 @@ function letco_landing_meta() {
 	printf( '<meta name="twitter:card" content="summary_large_image">' . "\n" );
 }
 add_action( 'wp_head', 'letco_landing_meta', 5 );
+
+/**
+ * Tags the cross-page view transition between Daeduk visa pages with a slide
+ * direction. pagereveal fires before first render, so this cannot wait for site.js.
+ */
+function letco_daeduk_transition_script() {
+	if ( ! letco_is_daeduk() ) {
+		return;
+	}
+	?>
+<script>
+(function () {
+	var key = 'dd-route-slide';
+	var tag = function (event, keep) {
+		var dir = null;
+		try { dir = sessionStorage.getItem(key); if (!keep) sessionStorage.removeItem(key); } catch (e) {}
+		if (dir && event.viewTransition) event.viewTransition.types.add('dd-slide-' + dir);
+	};
+	window.addEventListener('pageswap', function (event) { tag(event, true); });
+	window.addEventListener('pagereveal', function (event) { tag(event, false); });
+})();
+</script>
+	<?php
+}
+add_action( 'wp_head', 'letco_daeduk_transition_script', 1 );
 
 function letco_primary_menu_fallback( $args = array() ) {
 	$links = array(

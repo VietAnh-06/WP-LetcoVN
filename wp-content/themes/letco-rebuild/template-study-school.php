@@ -7,5 +7,5 @@
  */
 
 get_header();
-get_template_part( 'template-parts/study', 'landing', array( 'country' => get_post_field( 'post_name' ) ) );
+get_template_part( 'template-parts/study', 'landing', array( 'country' => letco_school_config_key() ) );
 get_footer();

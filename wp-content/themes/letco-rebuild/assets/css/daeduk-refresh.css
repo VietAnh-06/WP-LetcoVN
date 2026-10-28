@@ -1,0 +1,247 @@
+/* Daeduk overview + visa pages. Scoped so other school pages retain their palette. */
+body.daeduk-site.is-landing {
+  --dd-paper: #ffffff;
+  --dd-header-offset: var(--lp-header-h, 72px);
+  --dd-switcher-height: 72px;
+  background: var(--dd-paper);
+}
+body.daeduk-site.is-landing .jd-page { background: var(--dd-paper); }
+body.daeduk-site.is-landing .lp-header { background: #fffffff5; border-bottom-color: var(--jd-line); }
+body.daeduk-site.is-landing .lp-header-inner { height: 72px; }
+body.daeduk-site.is-landing .lp-header-nav a, body.daeduk-site.is-landing .lp-header-phone { color: var(--jd-ink); }
+body.daeduk-site.is-landing .jd-button,
+body.daeduk-site.is-landing .lp-button:not(.lp-button--light):not(.lp-button--ghost) { background: var(--jd-blue); box-shadow: 0 5px 14px rgb(8 120 197 / 12%); }
+body.daeduk-site.is-landing .jd-button:hover,
+body.daeduk-site.is-landing .lp-button:not(.lp-button--light):not(.lp-button--ghost):hover { background: var(--jd-blue-deep); }
+body.daeduk-site.is-landing :is(a, button, summary, input, textarea):focus-visible { outline: 3px solid var(--jd-red); outline-offset: 4px; }
+body.daeduk-site.is-landing .jd-page :is(section[id], div[id]) { scroll-margin-top: calc(var(--dd-header-offset) + var(--dd-switcher-height) + 20px); }
+
+/* A second sticky row is outside the content/reveal containers. No transformed ancestor. */
+body.daeduk-site.is-landing .jd-program-bar {
+  position: sticky;
+  top: var(--dd-header-offset);
+  z-index: 90;
+  background: #fffffff5;
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--jd-line);
+  box-shadow: 0 6px 18px rgb(11 42 79 / 5%);
+}
+body.daeduk-site.is-landing .jd-route-nav { --dd-nav-gap: 6px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--dd-nav-gap); padding-top: 9px; padding-bottom: 9px; }
+body.daeduk-site.is-landing .jd-route-nav a { position: relative; z-index: 1; grid-row: 1; grid-column: 1; display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 48px; padding: 8px 12px; color: var(--jd-text); border: 1px solid transparent; border-radius: 10px; line-height: 1.4; transition: background .18s, color .18s; }
+body.daeduk-site.is-landing .jd-route-nav strong { font-size: .95rem; color: var(--jd-ink); transition: color .18s; }
+body.daeduk-site.is-landing .jd-route-nav span { font-size: .82rem; font-weight: 500; }
+body.daeduk-site.is-landing .jd-route-nav a:hover { background: var(--jd-blue-soft); color: var(--jd-ink); }
+body.daeduk-site.is-landing .jd-route-nav a[aria-current="page"] { background: transparent; color: #fff; }
+body.daeduk-site.is-landing .jd-route-nav a[aria-current="page"] strong { color: #fff; }
+body.daeduk-site.is-landing .jd-route-nav a:nth-of-type(2) { grid-column: 2; }
+body.daeduk-site.is-landing .jd-route-nav a:nth-of-type(3) { grid-column: 3; }
+/* One pill sits in the first column and slides by whole columns to the active visa. */
+body.daeduk-site.is-landing .jd-route-indicator {
+  grid-area: 1 / 1;
+  border-radius: 10px;
+  background: var(--dd-pill, var(--jd-navy));
+  box-shadow: 0 3px 8px #0b2a4f1a;
+  transform: translateX(calc(var(--dd-active, 0) * (100% + var(--dd-nav-gap))));
+  transition: transform .26s cubic-bezier(.65, 0, .35, 1), background .26s;
+  view-transition-name: dd-route-indicator;
+}
+
+/* Each visa keeps the Daeduk blue–red palette, shifted slightly so the three read apart. */
+body.daeduk-site.is-landing.daeduk-route-d2-6 { --dd-pill: #0b2a4f; --dd-hero-end: #e6f2fc; }
+body.daeduk-site.is-landing.daeduk-route-d2-1 { --jd-blue: #3d5fc4; --jd-blue-deep: #2c479c; --jd-blue-soft: #ebeefb; --dd-pill: #1c2a5c; --dd-hero-end: #e9ecfb; }
+body.daeduk-site.is-landing.daeduk-route-d4-1 { --jd-blue: #0b7f98; --jd-blue-deep: #08657a; --jd-blue-soft: #e2f3f6; --dd-pill: #0b3442; --dd-hero-end: #e1f3f4; }
+
+/* Switching visa slides the page content sideways while header and switcher stay put. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+body.daeduk-site.is-landing .lp-header { view-transition-name: dd-header; }
+body.daeduk-site.is-landing .jd-program-bar { view-transition-name: dd-switcher; }
+body.daeduk-site.is-landing .jd-page { view-transition-name: dd-route-content; }
+/* Labels get their own layers so they stay above the sliding pill. */
+body.daeduk-site.is-landing .jd-route-nav a:nth-of-type(1) { view-transition-name: dd-route-link-1; }
+body.daeduk-site.is-landing .jd-route-nav a:nth-of-type(2) { view-transition-name: dd-route-link-2; }
+body.daeduk-site.is-landing .jd-route-nav a:nth-of-type(3) { view-transition-name: dd-route-link-3; }
+::view-transition-group(dd-route-indicator) { animation-duration: .32s; animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
+::view-transition-group(dd-route-content) { overflow: clip; }
+/* The header is the same on every visa page; swap it at once instead of ghosting. */
+::view-transition-old(dd-header), ::view-transition-old(dd-switcher) { display: none; }
+::view-transition-new(dd-header), ::view-transition-new(dd-switcher) { animation: none; }
+html:active-view-transition-type(dd-slide-next)::view-transition-old(dd-route-content) { animation: .32s cubic-bezier(.65, 0, .35, 1) both dd-slide-out-left; }
+html:active-view-transition-type(dd-slide-next)::view-transition-new(dd-route-content) { animation: .32s cubic-bezier(.65, 0, .35, 1) both dd-slide-in-right; }
+html:active-view-transition-type(dd-slide-prev)::view-transition-old(dd-route-content) { animation: .32s cubic-bezier(.65, 0, .35, 1) both dd-slide-out-right; }
+html:active-view-transition-type(dd-slide-prev)::view-transition-new(dd-route-content) { animation: .32s cubic-bezier(.65, 0, .35, 1) both dd-slide-in-left; }
+@keyframes dd-slide-out-left { to { transform: translateX(-12%); opacity: 0; } }
+@keyframes dd-slide-out-right { to { transform: translateX(12%); opacity: 0; } }
+@keyframes dd-slide-in-right { from { transform: translateX(12%); opacity: 0; } }
+@keyframes dd-slide-in-left { from { transform: translateX(-12%); opacity: 0; } }
+
+/* Spacious editorial hero with documentary imagery. */
+body.daeduk-site.is-landing .jd-hero { padding: 58px 0 64px; background: transparent; }
+body.daeduk-site.is-landing .jd-hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); }
+body.daeduk-site.is-landing .jd-hero h1 { max-width: 720px; font-size: clamp(2.2rem, 3.5vw, 3.65rem); line-height: 1.18; letter-spacing: -.035em; }
+body.daeduk-site.is-landing .jd-hero h1 em { white-space: normal; color: var(--jd-blue); }
+body.daeduk-site.is-landing .jd-hero h1 em::after { display: none; }
+body.daeduk-site.is-landing .jd-hero-eyebrow { color: var(--jd-red); font-size: .75rem; line-height: 1.8; letter-spacing: .11em; }
+body.daeduk-site.is-landing .jd-hero-sub { max-width: 620px; font-size: 1rem; font-weight: 400; line-height: 1.85; color: var(--jd-text); }
+body.daeduk-site.is-landing .jd-hero-media { padding: 0; margin: 0; transform: none; }
+body.daeduk-site.is-landing .jd-hero-media > img { width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 22px 22px 70px 22px; box-shadow: var(--jd-shadow-lift); }
+body.daeduk-site.is-landing .jd-overview-page .jd-hero-media > img { aspect-ratio: 5 / 4; }
+body.daeduk-site.is-landing .jd-hero-media::before, body.daeduk-site.is-landing .jd-hero-media::after,
+body.daeduk-site.is-landing .jd-hero-blob, body.daeduk-site.is-landing .jd-plane { display: none; }
+body.daeduk-site.is-landing .jd-hero-media figcaption { position: static; max-width: none; margin: 14px 8px 0; padding: 0; color: var(--jd-text); font-size: .74rem; line-height: 1.7; background: none; box-shadow: none; transform: none; }
+body.daeduk-site.is-landing .jd-float-tag { bottom: -14px; left: 20px; border: 1px solid var(--jd-line); background: var(--dd-paper); color: var(--jd-ink); border-radius: 10px; box-shadow: var(--jd-shadow); }
+body.daeduk-site.is-landing .jd-play { color: var(--jd-ink); font-size: .9rem; }
+body.daeduk-site.is-landing .jd-play-dot { background: var(--jd-red); box-shadow: none; }
+body.daeduk-site.is-landing .jd-route-highlights { display: flex; gap: 30px; padding-top: 26px; margin: 30px 0 0; border-top: 1px solid var(--jd-line); }
+body.daeduk-site.is-landing .jd-route-highlights > div { display: flex; flex-direction: column-reverse; gap: 6px; }
+body.daeduk-site.is-landing .jd-route-highlights dt { font-size: .72rem; color: var(--jd-text); }
+body.daeduk-site.is-landing .jd-route-highlights dd { margin: 0; font-size: 1.12rem; color: var(--jd-ink); font-weight: 700; }
+body.daeduk-site.is-landing .jd-stats { margin-top: 48px; border-color: var(--jd-line); background: transparent; box-shadow: none; }
+body.daeduk-site.is-landing .jd-stats dd { color: var(--jd-blue); }
+/* Daeduk figures are short phrases, not one headline number: equal cells, one size, words wrap with normal spacing. */
+@media (min-width: 900px) { body.daeduk-site.is-landing .jd-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+body.daeduk-site.is-landing .jd-stats dd, body.daeduk-site.is-landing .jd-stats > div:first-child dd, body.daeduk-site.is-landing .jd-stats > .is-text dd { font-size: clamp(1.4rem, 1rem + 1vw, 2rem); line-height: 1.2; white-space: normal; font-variant-numeric: normal; text-wrap: balance; }
+
+/* Overview programme cards and shared sections. */
+body.daeduk-site.is-landing .jd-section { padding-top: clamp(48px, 6vw, 80px); padding-bottom: clamp(48px, 6vw, 80px); }
+body.daeduk-site.is-landing .jd-head { margin-bottom: 32px; }
+body.daeduk-site.is-landing .jd-head h2 { font-size: clamp(1.8rem, 2.7vw, 2.6rem); line-height: 1.25; letter-spacing: -.025em; }
+body.daeduk-site.is-landing .jd-eyebrow { color: var(--jd-red); letter-spacing: .12em; font-size: .74rem; }
+body.daeduk-site.is-landing .jd-steps-zone, body.daeduk-site.is-landing .jd-ecosystem-zone { background: var(--jd-blue-soft); }
+body.daeduk-site.is-landing .jd-campus-zone, body.daeduk-site.is-landing .jd-students-zone { background: var(--dd-paper); }
+body.daeduk-site.is-landing .jd-pathway-card { position: relative; padding: 28px; border: 1px solid var(--jd-line); border-radius: 18px; background: #ffffff; box-shadow: none; }
+body.daeduk-site.is-landing .jd-pathway-card.is-featured { border-color: #9fd3ff; background: #ffffff; box-shadow: none; }
+body.daeduk-site.is-landing .jd-pathway-card::before, body.daeduk-site.is-landing .jd-pathway-card::after { display: none; }
+body.daeduk-site.is-landing .jd-pathway-tag { background: var(--jd-blue-soft); color: var(--jd-blue-deep); border: 0; border-radius: 6px; }
+body.daeduk-site.is-landing .jd-pathway-card h3 { color: var(--jd-ink); font-size: 1.35rem; }
+body.daeduk-site.is-landing .jd-pathway-facts > div { border-color: var(--jd-line); }
+body.daeduk-site.is-landing .jd-pathway-facts dt { color: var(--jd-blue-deep); }
+body.daeduk-site.is-landing .jd-pathway-photo { margin: -28px -28px 24px; overflow: hidden; border-radius: 17px 17px 0 0; }
+body.daeduk-site.is-landing .jd-pathway-photo img { display: block; width: 100%; height: 210px; object-fit: cover; transition: transform .35s ease; }
+body.daeduk-site.is-landing .jd-pathway-card:hover .jd-pathway-photo img { transform: scale(1.035); }
+/* On a visa page the single visa card sits beside the conditions list, so its photo can stand taller. */
+body.daeduk-site.is-landing .jd-route-columns .jd-pathway-photo img { height: 240px; }
+body.daeduk-site.is-landing .jd-pathway-card > .jd-button { font-size: .86rem; padding: 14px 18px; }
+body.daeduk-site.is-landing .jd-ecosystem > li { border: 1px solid var(--jd-line); box-shadow: none; background: #ffffff; border-radius: 16px; }
+body.daeduk-site.is-landing .jd-benefit-icon { background: var(--jd-blue-soft); color: var(--jd-blue); }
+body.daeduk-site.is-landing .jd-campus-gallery figure { border-radius: 16px; overflow: hidden; }
+
+/* One journey, with generous rhythm between text and photographs. */
+body.daeduk-site.is-landing .jd-route-columns { gap: 56px; }
+body.daeduk-site.is-landing .jd-route-list { list-style: none; padding: 0; }
+body.daeduk-site.is-landing .jd-route-list > li { position: relative; padding: 0 0 18px 26px; margin: 0 0 18px; border-bottom: 1px solid var(--jd-line); font-size: .95rem; line-height: 1.85; }
+body.daeduk-site.is-landing .jd-route-list > li:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
+body.daeduk-site.is-landing .jd-route-list > li::before { content: ''; position: absolute; top: .65em; left: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--jd-red); }
+body.daeduk-site.is-landing #chuong-trinh .jd-route-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 48px; }
+body.daeduk-site.is-landing #chuong-trinh .jd-route-list > li { margin: 0; }
+body.daeduk-site.is-landing .jd-experience { background: var(--dd-paper); }
+body.daeduk-site.is-landing .jd-experience-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+body.daeduk-site.is-landing .jd-experience-grid figure { margin: 0; }
+body.daeduk-site.is-landing .jd-experience-grid img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 16px; }
+body.daeduk-site.is-landing .jd-experience-grid figcaption { padding: 18px 2px 0; }
+body.daeduk-site.is-landing .jd-experience-grid strong { display: block; color: var(--jd-ink); font-size: 1rem; margin-bottom: 7px; }
+body.daeduk-site.is-landing .jd-experience-grid span { display: block; font-size: .8rem; line-height: 1.7; color: var(--jd-text); }
+/* Campus photos past the first five fill a closing row of two wide frames. */
+@media (min-width: 900px) {
+  body.daeduk-site.is-landing .jd-campus-gallery li:nth-child(n+6) { grid-column: span 7; }
+}
+body.daeduk-site.is-landing .jd-route-steps { gap: 28px; margin-bottom: 40px; }
+body.daeduk-site.is-landing .jd-route-steps > li { position: relative; padding: 24px 20px; border: 1px solid var(--jd-line); border-radius: 14px; background: #ffffff; }
+/* Each step opens with a full-bleed photo; the number badge overlaps its lower edge. */
+body.daeduk-site.is-landing .jd-route-steps { container-type: inline-size; }
+body.daeduk-site.is-landing .jd-route-steps > li { padding-top: 0; overflow: visible; }
+body.daeduk-site.is-landing .jd-route-step-photo { margin: 0 -20px; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 13px 13px 0 0; background: var(--jd-blue-soft); }
+body.daeduk-site.is-landing .jd-route-step-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+body.daeduk-site.is-landing .jd-route-steps > li > .jd-visa-map-num { position: relative; margin-top: -19px; box-shadow: 0 0 0 4px #ffffff; }
+/* Arrows sit level with the middle of the photos: five columns, 16px gaps, 4:3 frames. */
+body.daeduk-site.is-landing .jd-route-steps > li + li::before { content: '→'; position: absolute; top: calc((100cqw - 112px) / 5 * .375 - 10px); left: -24px; width: 20px; height: 20px; line-height: 20px; border-radius: 50%; background: #ffffff; text-align: center; color: var(--jd-blue); z-index: 2; }
+body.daeduk-site.is-landing .jd-visa-map-num { width: 38px; height: 38px; margin: 0; border-radius: 10px; color: #fff; background: var(--jd-blue); font-family: var(--jd-sans); font-size: .95rem; }
+body.daeduk-site.is-landing .jd-route-steps h3 { font-size: 1rem; line-height: 1.5; margin: 18px 0 10px; }
+/* Two-line title slot keeps the descriptions on one baseline across the row. */
+@media (min-width: 1001px) { body.daeduk-site.is-landing .jd-route-steps h3 { min-height: 3em; } }
+body.daeduk-site.is-landing .jd-route-steps p { font-size: .82rem; line-height: 1.8; margin-bottom: 0; }
+body.daeduk-site.is-landing #ho-so { background: #ffffff; }
+body.daeduk-site.is-landing .jd-faq { background: #f0f2ea; }
+body.daeduk-site.is-landing .jd-faq details { border-color: var(--jd-line); background: #ffffff; border-radius: 12px; }
+body.daeduk-site.is-landing .jd-faq summary { color: var(--jd-ink); }
+body.daeduk-site.is-landing .study-lead-form-wrap { border-radius: 20px; background: #ffffff; box-shadow: none; }
+
+@media (max-width: 1000px) {
+  body.daeduk-site.is-landing .jd-hero-grid { gap: 30px; }
+  body.daeduk-site.is-landing .jd-hero h1 { font-size: 2.45rem; }
+  body.daeduk-site.is-landing .jd-route-columns { gap: 28px; }
+  body.daeduk-site.is-landing .jd-route-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.daeduk-site.is-landing .jd-route-steps > li + li::before { display: none; }
+  body.daeduk-site.is-landing .jd-experience-grid { gap: 16px; }
+}
+@media (max-width: 760px) {
+  body.daeduk-site.is-landing .jd-route-nav { --dd-nav-gap: 4px; padding-top: 7px; padding-bottom: 7px; }
+  body.daeduk-site.is-landing .jd-route-indicator { border-radius: 8px; }
+  /* One-line switcher: header plus switcher should not eat a sixth of a phone screen. */
+  body.daeduk-site.is-landing .jd-route-nav { padding-top: 6px; padding-bottom: 6px; }
+  body.daeduk-site.is-landing .jd-route-nav a { gap: 5px; padding: 6px 4px; min-height: 38px; border-radius: 8px; }
+  body.daeduk-site.is-landing .jd-route-nav strong { font-size: .8rem; }
+  body.daeduk-site.is-landing .jd-route-nav span { font-size: .68rem; }
+  /* Worded stats ("Năm 2, 3, 4") wrap instead of running into the next cell. */
+  body.daeduk-site.is-landing .jd-stats dd, body.daeduk-site.is-landing .jd-stats > div:first-child dd, body.daeduk-site.is-landing .jd-stats > .is-text dd { font-size: 1.45rem; white-space: normal; font-variant-numeric: normal; }
+  body.daeduk-site.is-landing .jd-stats dt { font-size: .82rem; }
+  body.daeduk-site.is-landing .jd-stats > div:nth-child(odd) { padding-right: 14px; }
+  body.daeduk-site.is-landing .jd-faq-stack summary { padding: 16px 18px; font-size: 1rem; line-height: 1.5; }
+  body.daeduk-site.is-landing .jd-faq-stack details > p { padding: 0 18px 18px; font-size: .9rem; }
+  body.daeduk-site.is-landing .jd-hero { padding: 34px 0 44px; }
+  body.daeduk-site.is-landing .jd-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+  body.daeduk-site.is-landing .jd-hero h1 { font-size: clamp(2rem, 7vw, 2.8rem); line-height: 1.2; }
+  body.daeduk-site.is-landing .jd-hero-eyebrow { font-size: .68rem; margin-bottom: 14px; }
+  body.daeduk-site.is-landing .jd-hero-sub { margin-top: 18px; font-size: .93rem; }
+  body.daeduk-site.is-landing .jd-hero-actions { gap: 18px; margin-top: 24px; }
+  body.daeduk-site.is-landing .jd-hero-media > img { aspect-ratio: 4 / 3; border-radius: 16px 16px 48px 16px; }
+  body.daeduk-site.is-landing .jd-route-highlights { margin-top: 24px; padding-top: 22px; gap: 24px; }
+  body.daeduk-site.is-landing .jd-route-highlights dd { font-size: 1rem; }
+  body.daeduk-site.is-landing .jd-stats { margin-top: 38px; }
+  body.daeduk-site.is-landing .jd-route-columns, body.daeduk-site.is-landing #chuong-trinh .jd-route-list { grid-template-columns: minmax(0, 1fr); }
+  /* Six photos stay two abreast on phones; the full description remains in each image's alt text. */
+  body.daeduk-site.is-landing .jd-experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 12px; }
+  body.daeduk-site.is-landing .jd-experience-grid img { aspect-ratio: 1; border-radius: 12px; }
+  body.daeduk-site.is-landing .jd-experience-grid figcaption { padding-top: 10px; }
+  body.daeduk-site.is-landing .jd-experience-grid strong { font-size: .86rem; margin-bottom: 0; }
+  body.daeduk-site.is-landing .jd-experience-grid span { display: none; }
+  body.daeduk-site.is-landing .jd-route-steps { grid-template-columns: minmax(0, 1fr); gap: 0; border-left: 1px solid #bdd8ec; margin-left: 18px; }
+  body.daeduk-site.is-landing .jd-route-steps > li { margin: 0 0 20px 26px; padding: 0 22px 22px; }
+  body.daeduk-site.is-landing .jd-route-step-photo { margin: 0 -22px; aspect-ratio: 16 / 9; }
+  body.daeduk-site.is-landing .jd-route-steps > li > .jd-visa-map-num { position: absolute; top: 18px; left: -45px; margin: 0; border: 5px solid var(--jd-blue-soft); width: 38px; height: 38px; box-sizing: content-box; box-shadow: none; }
+  body.daeduk-site.is-landing .jd-route-steps h3 { margin-top: 18px; }
+}
+/* Narrowest phones keep just the visa codes in the switcher. */
+@media (max-width: 359px) {
+  body.daeduk-site.is-landing .jd-route-nav span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.daeduk-site.is-landing .jd-route-nav a, body.daeduk-site.is-landing .jd-route-indicator, body.daeduk-site.is-landing .jd-pathway-photo img { transition: none; }
+  body.daeduk-site.is-landing .jd-pathway-card:hover .jd-pathway-photo img { transform: none; }
+}
+
+/* Keep the original Daeduk pink-to-blue background and blossom animation. */
+body.daeduk-site.is-landing .study-daeduk.jd-page { background: linear-gradient(90deg, #fdeef3 0%, #f4f2f9 50%, var(--dd-hero-end, #e6f2fc) 100%); }
+body.daeduk-site.is-landing .jd-float-tag { position: static; max-width: none; width: fit-content; margin: 16px 0 0; padding: 10px 16px; }
+body.daeduk-site.is-landing .jd-float-tag strong { display: inline; margin-right: 8px; color: var(--jd-red); }
+body.daeduk-site.is-landing .jd-stats > div:first-child dd { color: var(--jd-blue); }
+body.daeduk-site.is-landing .jd-nowrap { white-space: nowrap; }
+/* Narrow screens keep the in-page links as a second header row; site.js re-measures the header for the sticky visa bar. */
+@media (max-width: 1080px) {
+  body.daeduk-site.is-landing .lp-header-inner { flex-wrap: wrap; height: auto; min-height: 0; column-gap: 12px; row-gap: 0; padding-top: 8px; }
+  body.daeduk-site.is-landing .lp-header-nav { display: flex; order: 3; flex: 1 0 100%; justify-content: space-between; gap: 4px; margin: 6px 0 0; border-top: 1px solid var(--jd-line); overflow-x: auto; scrollbar-width: none; }
+  body.daeduk-site.is-landing .lp-header-nav::-webkit-scrollbar { display: none; }
+  body.daeduk-site.is-landing .lp-header-nav a { flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 40px; padding: 0 6px; font-size: .86rem; white-space: nowrap; }
+}
+@media (max-width: 760px) {
+  body.daeduk-site.is-landing .lp-header-inner { column-gap: 12px; }
+  body.daeduk-site.is-landing .lp-logo img { width: 112px; height: auto; }
+  body.daeduk-site.is-landing .lp-header .lp-button { font-size: .7rem; padding: 11px 12px; margin-left: auto; }
+  body.daeduk-site.is-landing .lp-header-phone { display: none; }
+}
+@media (max-width: 359px) {
+  body.daeduk-site.is-landing .lp-header-nav a { padding: 0 2px; font-size: .78rem; }
+}
+
+body.daeduk-site.is-landing :is(.jd-steps-zone, .jd-ecosystem-zone, .jd-campus-zone, .jd-students-zone, .jd-experience, .jd-faq, #ho-so) { background: transparent; }

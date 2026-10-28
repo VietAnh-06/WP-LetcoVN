@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400">
+	<defs>
+		<path id="p" d="M0-12Q-4-15-7-10C-10-2-6 8 0 12C6 8 10-2 7-10Q4-15 0-12Z"/>
+	</defs>
+	<g fill="#f6b3c8" opacity="0.85">
+		<use xlink:href="#p" transform="translate(48 40) rotate(20)"/>
+		<use xlink:href="#p" transform="translate(212 72) scale(0.8) rotate(-35)"/>
+		<use xlink:href="#p" transform="translate(338 128) scale(1.1) rotate(70)"/>
+		<use xlink:href="#p" transform="translate(120 196) scale(0.7) rotate(130)"/>
+		<use xlink:href="#p" transform="translate(278 262) rotate(-80)"/>
+		<use xlink:href="#p" transform="translate(64 332) scale(0.9) rotate(45)"/>
+		<use xlink:href="#p" transform="translate(356 352) scale(0.75) rotate(160)"/>
+	</g>
+	<g fill="#fbd5e1" opacity="0.9">
+		<use xlink:href="#p" transform="translate(152 112) scale(0.6) rotate(-60)"/>
+		<use xlink:href="#p" transform="translate(30 236) scale(0.65) rotate(100)"/>
+		<use xlink:href="#p" transform="translate(212 334) scale(0.6) rotate(10)"/>
+	</g>
+</svg>

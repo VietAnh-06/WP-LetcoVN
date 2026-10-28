@@ -10,6 +10,10 @@ $configs     = require __DIR__ . '/study-country-configs.php';
 $configs     += require __DIR__ . '/study-school-configs.php';
 $data        = isset( $configs[ $country ] ) ? $configs[ $country ] : $configs['korea'];
 $lead_status = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lead'] ) ) : '';
+if ( isset( $data['layout'] ) && 'daeduk-route' === $data['layout'] ) {
+	get_template_part( 'template-parts/daeduk', 'route', array( 'data' => $data, 'lead_status' => $lead_status ) );
+	return;
+}
 // Pages with their own zoned layout render it in full and skip the generic sections.
 if ( isset( $data['layout'] ) && 'zones' === $data['layout'] ) {
 	get_template_part( 'template-parts/daeduk', 'landing', array( 'data' => $data, 'lead_status' => $lead_status ) );

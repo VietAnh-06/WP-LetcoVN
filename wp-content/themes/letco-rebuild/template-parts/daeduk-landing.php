@@ -1,9 +1,7 @@
 <?php
 /**
- * Daeduk D2-6 landing page, kept short for students who skim: a hero with three facts,
- * the programme on one screen, three sign-up steps, two cost totals, the internship
- * companies and a short FAQ. Details (conditions, timetable, line items, refunds,
- * internship terms) stay folded. Styles live in assets/css/daeduk.css.
+ * Daeduk K-Tech Bridge landing page, ordered so a visitor first sees the HaUI – Daeduk
+ * partnership, the three linked visa routes, the campus and a general consultation form. Styles live in assets/css/daeduk.css.
  * $args: data (page config from study-school-configs.php),
  * lead_status (result of a form submission, for the consultation popup).
  */
@@ -102,11 +100,17 @@ $icon = static function ( $name, $size = 24 ) use ( $icons ) {
 	);
 };
 
+$voices = isset( $dk['voices'] ) ? $dk['voices'] : array();
+$nav    = array( 'he-dao-tao' => 'Chương trình', 'doi-tac' => 'Đối tác', 'khuon-vien' => 'Daeduk', 'hoi-dap' => 'Hỏi đáp' );
+if ( ! empty( $voices['items'] ) ) {
+	$nav['cam-nhan'] = 'Cảm nhận';
+}
+
 get_template_part(
 	'template-parts/landing',
 	'header',
 	array(
-		'links'   => $dk['nav'],
+		'links'   => $nav,
 		'hotline' => $hotline,
 		'button'  => $cta,
 	)
@@ -117,14 +121,22 @@ $title_html = str_replace( esc_html( $hero['accent'] ), '<em>' . esc_html( $hero
 $campus     = isset( $dk['campus'] ) ? $dk['campus'] : array();
 $steps      = $dk['steps'];
 $work       = $dk['work'];
-$money      = $dk['money'];
-$faq        = $dk['faq'];
-$refund     = $data['blocks']['hoan-phi'];
+$benefits   = $dk['benefits'];
+$students   = isset( $dk['students'] ) ? $dk['students'] : array();
+$faq = array(
+	'label' => 'Chọn chương trình', 'title' => 'Bạn nên bắt đầu từ đâu?', 'intro' => 'Mỗi diện có điều kiện và lịch tuyển sinh riêng. Xem trang chương trình hoặc đăng ký tư vấn để chọn lộ trình phù hợp.',
+	'items' => array(
+		array( 'Ba chương trình khác nhau thế nào?', 'D2-6 dành cho sinh viên trường đối tác đi trao đổi 6 – 12 tháng. D2-1 là hệ Cao đẳng chuyên ngành 2 – 3 năm. D4-1 là giai đoạn học tiếng Hàn để chuẩn bị học tiếp.' ),
+		array( 'Chưa xác định được diện phù hợp thì làm gì?', 'Bạn có thể gửi form bên dưới với trường đang học hoặc năm tốt nghiệp. LETCO đối chiếu học lực, tiếng Hàn và mục tiêu để tư vấn chương trình phù hợp.' ),
+		array( 'Có thể dùng chung chi phí và lịch tuyển sinh không?', 'Không. Mỗi chương trình có lộ trình riêng; LETCO tư vấn ngân sách theo hồ sơ. D4-1 không áp dụng trợ cấp thực tập của D2-6.' ),
+	),
+);
 ?>
 
-<div class="study-landing <?php echo esc_attr( $data['class'] ); ?> jd-page">
+<?php get_template_part( 'template-parts/daeduk', 'route-nav' ); ?>
+<div class="study-landing <?php echo esc_attr( $data['class'] ); ?> jd-page jd-overview-page">
 
-	<section class="jd-hero">
+	<section class="jd-hero" id="hop-tac">
 		<span class="jd-hero-blob" aria-hidden="true"></span>
 		<div class="container jd-hero-grid">
 			<div class="jd-hero-copy">
@@ -140,51 +152,77 @@ $refund     = $data['blocks']['hoan-phi'];
 				<span class="jd-plane jd-plane--a" aria-hidden="true"><?php $icon( 'plane', 32 ); ?></span>
 				<span class="jd-plane jd-plane--b" aria-hidden="true"><?php $icon( 'plane', 24 ); ?></span>
 				<?php $image( $hero['photo'][0], $hero['photo'][1], 'fetchpriority="high"' ); ?>
-				<a class="jd-float-card" href="#cac-buoc">
-					<span class="jd-float-icon"><?php $icon( 'calendar', 20 ); ?></span>
-					<span><small><?php echo esc_html( $hero['badge'][0] . ' · ' . $hero['badge'][1] ); ?></small><strong><?php echo esc_html( $hero['badge'][2] . ' ' . $hero['badge'][3] ); ?></strong></span>
-				</a>
-				<p class="jd-float-tag"><strong><?php echo esc_html( $hero['card'][1] ); ?></strong> <?php echo esc_html( mb_strtolower( $hero['card'][0] ) ); ?></p>
-				<figcaption><?php echo esc_html( $hero['photo'][2] ); ?></figcaption>
+
+				<p class="jd-float-tag"><strong><?php echo esc_html( $hero['card'][1] ); ?></strong> <?php echo esc_html( $hero['card'][0] ); ?></p>
 			</figure>
 		</div>
-		<!-- <div class="container">
-			<dl class="jd-facts">
-				<?php foreach ( $hero['facts'] as $fact ) : ?>
-					<div<?php echo empty( $fact[2] ) ? '' : ' class="is-' . esc_attr( $fact[2] ) . '"'; ?>>
-						<dt><span><?php echo esc_html( $fact[4] ); ?></span><?php echo esc_html( $fact[0] ); ?></dt>
-						<dd><?php echo esc_html( $fact[1] ); ?> <a href="<?php echo esc_attr( $fact[3] ); ?>">Xem chi tiết<span class="screen-reader-text"> về <?php echo esc_html( mb_strtolower( $fact[4] ) ); ?></span> <span aria-hidden="true">→</span></a></dd>
+		<?php if ( ! empty( $hero['stats'] ) ) : ?>
+		<div class="container">
+			<dl class="jd-stats">
+				<?php foreach ( $hero['stats'] as $stat ) : ?>
+					<div<?php echo empty( $stat[3] ) ? '' : ' class="is-' . esc_attr( $stat[3] ) . '"'; ?>>
+						<dt><?php echo esc_html( $stat[1] ); ?></dt>
+						<dd<?php echo empty( $stat[2] ) ? '' : ' data-countup'; ?>><?php echo esc_html( $stat[0] ); ?></dd>
 					</div>
 				<?php endforeach; ?>
 			</dl>
-		</div> -->
+		</div>
+		<?php endif; ?>
 	</section>
 
-	<?php
-	// Time left until the LETCO deadline; the server fills the first values and site.js ticks them.
-	$countdown = $dk['countdown'];
-	$left      = max( 0, strtotime( $countdown['deadline'] ) - time() );
-	$units     = array(
-		'days'    => array( 'Ngày', intdiv( $left, 86400 ) ),
-		'hours'   => array( 'Giờ', intdiv( $left % 86400, 3600 ) ),
-		'minutes' => array( 'Phút', intdiv( $left % 3600, 60 ) ),
-		'seconds' => array( 'Giây', $left % 60 ),
-	);
-	?>
-	<section class="section jd-section jd-countdown" id="dem-nguoc" data-countdown="<?php echo esc_attr( $countdown['deadline'] ); ?>">
-		<div class="container jd-countdown-inner">
-			<div class="jd-countdown-copy">
-				<p class="jd-eyebrow"><?php echo esc_html( $countdown['label'] ); ?></p>
-				<h2><?php echo esc_html( $countdown['title'] ); ?></h2>
-				<p><?php echo esc_html( $countdown['intro'] ); ?></p>
-			</div>
-			<ol class="jd-countdown-clock" role="timer" aria-label="<?php echo esc_attr( 'Thời gian còn lại đến ' . $countdown['intro'] ); ?>"<?php echo $left ? '' : ' hidden'; ?>>
-				<?php foreach ( $units as $unit => $part ) : ?>
-					<li><span data-countdown-unit="<?php echo esc_attr( $unit ); ?>"><?php echo esc_html( str_pad( (string) $part[1], 2, '0', STR_PAD_LEFT ) ); ?></span><small><?php echo esc_html( $part[0] ); ?></small></li>
+	<?php get_template_part( 'template-parts/daeduk', 'countdown', array( 'countdown' => $dk['countdown'] ) ); ?>
+
+	<?php if ( ! empty( $dk['proof'] ) ) : ?>
+	<?php // Full-bleed ceremony photo: the programme is an official agreement between the two universities. ?>
+	<section class="jd-proof" aria-labelledby="jd-proof-title">
+		<?php $image( $dk['proof']['photo'][0], $dk['proof']['photo'][1], 'loading="lazy" class="jd-proof-photo"' ); ?>
+		<div class="container jd-proof-copy">
+			<h2 id="jd-proof-title"><?php echo esc_html( $dk['proof']['title'] ); ?></h2>
+			<p><?php echo esc_html( $dk['proof']['text'] ); ?></p>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $dk['ecosystem'] ) ) : ?>
+	<?php // The parties behind the programme, so visitors see it is not a visa sale. ?>
+	<section class="section jd-section jd-ecosystem-zone" id="doi-tac">
+		<div class="container">
+			<?php $head( 'Hợp tác HaUI – Daeduk', 'Hệ sinh thái đào tạo và tuyển dụng', 'Đơn vị điều phối, trường Việt Nam, Đại học Daeduk và doanh nghiệp phối hợp từ tuyển chọn, đào tạo đến đánh giá và tuyển dụng.', '', 'left' ); ?>
+			<ol class="jd-ecosystem">
+				<?php foreach ( $dk['ecosystem'] as $party ) : ?>
+					<li>
+						<span class="jd-benefit-icon"><?php $icon( $party[0], 24 ); ?></span>
+						<h3><?php echo esc_html( $party[1] ); ?></h3>
+						<p><?php echo esc_html( $party[2] ); ?></p>
+					</li>
 				<?php endforeach; ?>
 			</ol>
-			<a class="jd-button" href="#dang-ky"<?php echo $left ? '' : ' hidden'; ?>><?php echo esc_html( $countdown['button'] ); ?></a>
-			<p class="jd-countdown-closed"<?php echo $left ? ' hidden' : ''; ?>><?php echo esc_html( $countdown['closed'] ); ?></p>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php // The three ways in: D2-6 exchange, D2-1 college degree, D4-1 Korean first. ?>
+	<section class="section jd-section jd-steps-zone" id="he-dao-tao">
+		<div class="container">
+			<?php $head( 'Diện tham gia', $data['visas_title'], $data['visas_intro'], '', 'left' ); ?>
+			<div class="jd-pathway-grid jd-pathway-grid--<?php echo (int) count( $data['visas'] ); ?>">
+				<?php foreach ( $data['visas'] as $visa_index => $visa ) : ?>
+					<article class="jd-pathway-card<?php echo empty( $visa['featured'] ) ? '' : ' is-featured'; ?>">
+                        <?php $route_photo = array( array( 'daeduk-mou-speech.jpg', 'Phát biểu tại lễ ký kết thỏa thuận hợp tác HaUI – Daeduk ở Hà Nội' ), array( 'daeduk-campus-techno.jpg', 'Một tòa nhà trong khuôn viên Đại học Daeduk' ), array( 'daeduk-life-intl-welcome.jpg', 'Buổi chào mừng du học sinh quốc tế nhập học tại Đại học Daeduk' ) )[ $visa_index ]; ?>
+						<figure class="jd-pathway-photo"><?php $image( $route_photo[0], $route_photo[1] ); ?></figure>
+						<span class="jd-pathway-tag"><?php echo esc_html( $visa['tag'] ); ?></span>
+						<h3><?php echo esc_html( $visa['title'] ); ?></h3>
+						<dl class="jd-pathway-facts">
+							<?php foreach ( $visa['rows'] as $row ) : ?>
+								<div><dt><?php echo esc_html( $row[0] ); ?></dt><dd><?php echo esc_html( $row[1] ); ?></dd></div>
+							<?php endforeach; ?>
+						</dl>
+						<a class="jd-button" href="<?php echo esc_url( letco_daeduk_url( array( 'd2-6', 'd2-1', 'd4-1' )[ $visa_index ] ) ); ?>">Xem chương trình <?php echo esc_html( $visa['tag'] ); ?></a>
+					</article>
+				<?php endforeach; ?>
+			</div>
+			<p class="jd-note"><?php echo esc_html( $data['visas_note'] ); ?></p>
+			<?php $signup( $dk['buttons']['he-dao-tao'] ); ?>
 		</div>
 	</section>
 
@@ -192,6 +230,13 @@ $refund     = $data['blocks']['hoan-phi'];
 	<section class="section jd-section jd-campus-zone" id="khuon-vien">
 		<div class="container">
 			<?php $head( $campus['label'], $campus['title'], $campus['intro'], '', 'left' ); ?>
+			<?php if ( ! empty( $campus['points'] ) ) : ?>
+				<ul class="jd-campus-points">
+					<?php foreach ( $campus['points'] as $point ) : ?>
+						<li><?php echo esc_html( $point ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
 			<ul class="jd-campus-gallery" aria-label="Ảnh khuôn viên Đại học Daeduk">
 				<?php foreach ( $campus['items'] as $campus_photo ) : ?>
 					<li>
@@ -209,110 +254,54 @@ $refund     = $data['blocks']['hoan-phi'];
 	</section>
 	<?php endif; ?>
 
-	<?php // The whole programme on one screen: the exchange itself and its K-Tech Bridge package. ?>
-	<section class="section jd-section jd-steps-zone" id="he-dao-tao">
+	<?php if ( ! empty( $voices['items'] ) ) : ?>
+	<?php // Quotes from students who took part; only real, attributed quotes go in the config. ?>
+	<section class="section jd-section jd-voices-zone" id="cam-nhan">
 		<div class="container">
-			<?php $head( 'Hệ D2-6', $data['visas_title'], $data['visas_intro'], '', 'left' ); ?>
-			<div class="jd-pathway-grid">
-				<?php foreach ( $data['visas'] as $visa ) : ?>
-					<article class="jd-pathway-card<?php echo empty( $visa['featured'] ) ? '' : ' is-featured'; ?>">
-						<span class="jd-pathway-tag"><?php echo esc_html( $visa['tag'] ); ?></span>
-						<h3><?php echo esc_html( $visa['title'] ); ?></h3>
-						<dl class="jd-pathway-facts">
-							<?php foreach ( $visa['rows'] as $row ) : ?>
-								<div><dt><?php echo esc_html( $row[0] ); ?></dt><dd><?php echo esc_html( $row[1] ); ?></dd></div>
-							<?php endforeach; ?>
-						</dl>
-					</article>
-				<?php endforeach; ?>
-			</div>
-			<p class="jd-note"><?php echo esc_html( $data['visas_note'] ); ?></p>
-			<?php $signup( $dk['buttons']['he-dao-tao'] ); ?>
-		</div>
-	</section>
-
-	<?php // Three steps with their dates; conditions and the full timetable stay folded. ?>
-	<section class="section jd-section" id="cac-buoc">
-		<div class="container">
-			<?php $head( $steps['label'], $steps['title'], '', '', 'left' ); ?>
-			<div class="jd-steps">
-				<?php $step_icons = array( 'test', 'badge', 'plane' ); ?>
-				<?php foreach ( $steps['items'] as $index => $step ) : ?>
-					<div class="jd-step is-<?php echo esc_attr( (string) $index ); ?>">
-						<?php if ( ! empty( $step[3] ) ) : ?>
-							<figure class="jd-step-media"><?php $image( $step[3], isset( $step[4] ) ? $step[4] : $step[0] ); ?></figure>
-						<?php endif; ?>
-						<div class="jd-step-content">
-							<span class="jd-step-icon"><?php $icon( $step_icons[ $index ], 22 ); ?></span>
-							<div>
-								<h3><?php echo esc_html( $step[0] ); ?> <span class="jd-step-tag"><?php echo esc_html( $step[2] ); ?></span></h3>
-								<p><?php echo esc_html( $step[1] ); ?></p>
-							</div>
-						</div>
-					</div>
-				<?php endforeach; ?>
-			</div>
-
-		</div>
-	</section>
-
-	<?php // Roadmap steps front and center; cost line items, payment timetable and refunds stay folded. ?>
-	<section class="section jd-section jd-money" id="chi-phi">
-		<div class="container">
-			<?php // A solid panel keeps the falling petals and the corner petals out from behind the text. ?>
-			<div class="jd-roadmap-panel">
-			<?php $head( $money['roadmap_label'], $money['roadmap_title'], $money['roadmap_intro'], '', 'left' ); ?>
-			<?php if ( ! empty( $money['roadmap_steps'] ) ) : ?>
-			<div class="jd-roadmap-layout">
-			<ol class="jd-roadmap">
-				<?php foreach ( $money['roadmap_steps'] as $rindex => $rstep ) : ?>
-				<li class="jd-roadmap-step">
-					<span class="jd-roadmap-num" aria-hidden="true"><?php echo esc_html( (string) ( $rindex + 1 ) ); ?></span>
-					<div class="jd-roadmap-body">
-						<h3><?php echo esc_html( $rstep['title'] ); ?></h3>
-						<ul class="jd-ticks">
-							<?php foreach ( $rstep['items'] as $ritem ) : ?>
-							<li><?php echo esc_html( $ritem ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				</li>
-				<?php endforeach; ?>
-			</ol>
-			<figure class="jd-roadmap-art" aria-hidden="true"><?php $image( 'daeduk-roadmap-illustration.png', '' ); ?></figure>
-			</div>
-			<?php endif; ?>
-			</div>
-			<p class="jd-callout"><?php echo esc_html( $money['summary'] ); ?></p>
-			<?php $signup( $dk['buttons']['chi-phi'] ); ?>
-		</div>
-	</section>
-
-	<?php // Where the internship happens; the conditions behind the allowance stay folded. ?>
-	<section class="section jd-section" id="thuc-tap">
-		<div class="container">
-			<?php $head( $work['label'], $work['title'], $work['intro'], '', 'left' ); ?>
-			<ul class="jd-companies">
-				<?php foreach ( $data['companies']['list'] as $company ) : ?>
+			<?php $head( $voices['label'], $voices['title'], $voices['intro'], '', 'left' ); ?>
+			<ul class="jd-voice-grid">
+				<?php foreach ( $voices['items'] as $voice ) : ?>
 					<li>
-						<?php if ( ! empty( $company[3] ) ) : ?>
-							<figure><?php $image( $company[3], isset( $company[4] ) ? $company[4] : $company[0] ); ?></figure>
-						<?php endif; ?>
-						<div class="jd-company-copy">
-							<h4><?php echo esc_html( $company[0] ); ?></h4>
-							<p class="jd-company-where"><?php $icon( 'pin', 14 ); ?> <?php echo esc_html( $company[1] ); ?></p>
-						</div>
+						<figure class="jd-voice">
+							<blockquote><p><?php echo esc_html( $voice[0] ); ?></p></blockquote>
+							<figcaption>
+								<?php if ( ! empty( $voice[3] ) ) : ?>
+									<?php $image( $voice[3], $voice[1], 'loading="lazy" class="jd-voice-photo"' ); ?>
+								<?php endif; ?>
+								<span><strong><?php echo esc_html( $voice[1] ); ?></strong><?php echo empty( $voice[2] ) ? '' : esc_html( $voice[2] ); ?></span>
+							</figcaption>
+						</figure>
 					</li>
 				<?php endforeach; ?>
 			</ul>
-			<?php $signup( $dk['buttons']['thuc-tap'] ); ?>
 		</div>
 	</section>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $students['facts'] ) ) : ?>
+	<?php // Checked facts about students already selected; quotes are added to 'voices' only when real. ?>
+	<section class="section jd-section jd-students-zone" id="sinh-vien">
+		<div class="container jd-students">
+			<figure class="jd-students-photo">
+				<?php $image( $students['photo'][0], $students['photo'][1] ); ?>
+			</figure>
+			<div>
+				<?php $head( $students['label'], $students['title'], '', '', 'left' ); ?>
+				<dl class="jd-students-facts">
+					<?php foreach ( $students['facts'] as $fact ) : ?>
+						<div><dt><?php echo esc_html( $fact[0] ); ?></dt><dd><?php echo esc_html( $fact[1] ); ?></dd></div>
+					<?php endforeach; ?>
+				</dl>
+			</div>
+		</div>
+	</section>
+	<?php endif; ?>
 
 	<section class="section jd-section jd-faq" id="hoi-dap">
 		<div class="container jd-faq-grid">
 			<?php $head( $faq['label'], $faq['title'], $faq['intro'], '', 'left' ); ?>
 			<div class="jd-faq-stack study-accordion">
+				<p class="jd-note">Tham khảo quy định chung về việc làm và chuyển diện cư trú tại <a href="https://www.studyinkorea.go.kr/ko/work/aboutForeignerEmploymentSystem.do" target="_blank" rel="noopener">Study in Korea</a>; điều kiện của từng hồ sơ cần được xác nhận riêng.</p>
 				<?php foreach ( $faq['items'] as $item ) : ?>
 					<details><summary><?php echo esc_html( $item[0] ); ?><span aria-hidden="true"></span></summary><p><?php echo esc_html( $item[1] ); ?></p></details>
 				<?php endforeach; ?>
@@ -332,9 +321,10 @@ $refund     = $data['blocks']['hoan-phi'];
 			'compact'           => true,
 			'button'            => $data['lead_button'],
 			'lead_extra'        => true,
-			'study_status'      => true,
+			'school_summary'    => true,
 			'program'           => 'Du học ' . $data['name'],
-			'major_choices'     => wp_list_pluck( $data['majors'], 'name' ),
+			'form_note'         => 'Chưa có TOPIK vẫn có thể đăng ký để lên kế hoạch học tiếng.',
+			'form_title'        => 'Gửi thông tin nhận tư vấn',
 			'quick_contact'     => $hotline,
 		)
 	);

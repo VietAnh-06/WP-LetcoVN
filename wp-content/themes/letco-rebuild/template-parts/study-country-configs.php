@@ -225,7 +225,7 @@ return array(
 		),
 		'contact'            => array(
 			'label'     => 'Đơn vị tư vấn',
-			'partners'  => 'Trung tâm Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
+			'partners'  => 'Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
 			'phones'    => array( '0989.086.386' ),
 			'addresses' => array( 'Tòa nhà A5, Số 298 Đường Cầu Diễn, Phường Tây Tựu, Quận Bắc Từ Liêm, Hà Nội' ),
 			'website'   => 'https://duhoc-hanquoc.edu.vn/',

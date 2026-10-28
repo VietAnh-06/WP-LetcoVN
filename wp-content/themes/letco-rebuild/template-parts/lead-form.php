@@ -85,6 +85,9 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 				<label>Họ và tên <span>*</span><input type="text" name="full_name" required autocomplete="name" placeholder="Nguyễn Văn A"></label>
 				<?php if ( $compact ) : ?>
 					<label>Số điện thoại / Zalo <span>*</span><input type="tel" name="phone" required pattern="[\s.\-]*(\+?84|0)[\s.\-]*[35789]([\s.\-]*\d){8}[\s.\-]*" title="Số điện thoại Việt Nam gồm 10 chữ số, ví dụ <?php echo esc_attr( $phone_example ); ?>" data-phone="<?php echo esc_attr( $phone_example ); ?>" autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
+					<?php if ( ! empty( $args['school_summary'] ) ) : ?>
+						<label>Trường đang học / Năm tốt nghiệp <span class="field-optional">(không bắt buộc)</span><input type="text" name="school_name" maxlength="120" placeholder="Ví dụ: ĐH Công nghiệp Hà Nội / 2027"></label>
+					<?php endif; ?>
 					<?php if ( $study_status ) : ?>
 						<div class="form-row">
 							<label>Tình trạng học hiện tại <span class="field-optional">(không bắt buộc)</span>
