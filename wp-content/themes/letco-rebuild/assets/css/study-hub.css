@@ -511,6 +511,28 @@
 	line-height: 1.45;
 }
 
+/* Landmark photos name their author and licence under the caption. */
+.study-hub-credit {
+	display: block;
+	margin-top: 4px;
+	color: var(--jd-text);
+	font-size: 0.75rem;
+	font-weight: 400;
+}
+
+.study-hub-credit a {
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+/* Sits above the hero's decorative circle, which is positioned. */
+.study-hub-route-credits {
+	position: relative;
+	margin-top: 12px;
+	text-align: right;
+}
+
 /* ---------- Programmes as tickets: a mint stub, a perforated edge, the facts ---------- */
 .study-hub .study-hub-program-grid {
 	display: grid;

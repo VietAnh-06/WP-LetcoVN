@@ -17,13 +17,14 @@ $countries = require __DIR__ . '/study-country-configs.php';
 $contact   = $args['contact'];
 
 // Photo, short introduction and photo credit for each tab, in tab order. Korea and Japan
-// replace the country pages' introductions, which present the company.
+// replace the country pages' introductions, which present the company. Scenery photos
+// show each country's landmarks; they come from Wikimedia Commons and carry their credit.
 // Hero strips: the usual direct flight from Nội Bài (HAN), its rough flight time, and a
-// portrait photo where the tab photo is a poor fit for a tall strip.
+// photo of its own, so no photo shows twice on the page.
 $hero_routes = array(
-	'korea'   => array( 'code' => 'ICN', 'city' => 'Seoul', 'hours' => '4,5' ),
-	'japan'   => array( 'code' => 'NRT', 'city' => 'Tokyo', 'hours' => '5' ),
-	'taiwan'  => array( 'code' => 'TPE', 'city' => 'Đài Bắc', 'hours' => '3' ),
+	'korea'   => array( 'code' => 'ICN', 'city' => 'Seoul', 'hours' => '4,5', 'image' => 'study-korea-hyangwonjeong.jpg', 'credit' => array( 'Basile Morin, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Water_reflection_of_Hyangwonjeong_Pavilion_at_Gyeongbokgung_Palace_in_Seoul.jpg' ) ),
+	'japan'   => array( 'code' => 'NRT', 'city' => 'Tokyo', 'hours' => '5', 'image' => 'study-japan-kiyomizu-dera.jpg', 'credit' => array( 'Martin Falbisoner, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Kiyomizu-dera,_Kyoto,_November_2016_-07.jpg' ) ),
+	'taiwan'  => array( 'code' => 'TPE', 'city' => 'Đài Bắc', 'hours' => '3', 'image' => 'study-taiwan-alishan-railway.jpg', 'credit' => array( 'CEphoto, Uwe Aranas, CC BY-SA 3.0', 'https://commons.wikimedia.org/wiki/File:Alishan_Taiwan_Alishan-Forest-Railway-01.jpg' ) ),
 	'germany' => array( 'code' => 'FRA', 'city' => 'Frankfurt', 'hours' => '12', 'image' => 'study-germany-liebherr-students.jpg' ),
 );
 
@@ -52,6 +53,12 @@ $tab_meta = array(
 			array( 'daeduk-letco-class-visit.jpg', 'Đoàn Đại học Daeduk thăm lớp học viên LETCO', 1200, 898 ),
 			array( 'home-daeduk-class.jpg', 'Lớp học viên chuẩn bị du học Hàn Quốc', 1000, 629 ),
 		),
+		'scenery'     => array(
+			array( 'study-korea-gamcheon-village.jpg', 'Làng văn hóa Gamcheon rực rỡ sắc màu, Busan', 1440, 900, array( 'Basile Morin, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Colorful_houses_in_Gamcheon_Culture_Village_at_sunset_in_Busan_South_Korea.jpg' ) ),
+			array( 'study-korea-gyeonghoeru.jpg', 'Lầu Gyeonghoeru trong cung Gyeongbokgung, Seoul', 1440, 960, array( 'Frank Schulenburg, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Gyeonghoeru_(Royal_Banquet_Hall)_at_Gyeongbokgung_Palace,_Seoul.jpg' ) ),
+			array( 'study-korea-hanbok.jpg', 'Thiếu nữ mặc hanbok dạo cung điện', 1440, 1058, array( 'IssamBarhoumi, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Female_Hanbok_From_South_Korea.jpg' ) ),
+			array( 'study-korea-bukchon-hanok.jpg', 'Phố nhà cổ hanok ở làng Bukchon, Seoul', 1440, 960, array( 'Basile Morin, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Bukchon-ro_11-gil_street_with_hanok_houses_at_blue_hour_in_Bukchon_Hanok_Village_Seoul.jpg' ) ),
+		),
 	),
 	// Japan lists the adviser's own three routes instead of the company page's programmes.
 	'japan'   => array(
@@ -70,6 +77,12 @@ $tab_meta = array(
 			array( 'study-japan-family-farewell.jpg', 'Gia đình tiễn học viên trước giờ xuất cảnh', 1440, 850 ),
 			array( 'study-japan-student-family.jpg', 'Khoảnh khắc cùng gia đình tại sân bay', 1440, 960 ),
 		),
+		'scenery'     => array(
+			array( 'study-japan-mount-fuji.jpg', 'Núi Phú Sĩ lúc hoàng hôn', 1440, 960, array( 'Romain Guy, CC0', 'https://commons.wikimedia.org/wiki/File:Mount_Fuji_at_sunset,_March_2025.jpg' ) ),
+			array( 'study-japan-fushimi-inari.jpg', 'Con đường ngàn cổng torii ở đền Fushimi Inari, Kyoto', 1440, 960, array( 'Basile Morin, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine,_Kyoto,_Japan.jpg' ) ),
+			array( 'study-japan-shibuya-crossing.jpg', 'Ngã tư Shibuya sáng đèn, Tokyo', 1440, 960, array( 'Benh LIEU SONG, CC BY-SA 2.0', 'https://commons.wikimedia.org/wiki/File:Tokyo_Shibuya_Scramble_Crossing_2018-10-09.jpg' ) ),
+			array( 'study-japan-dotonbori.jpg', 'Phố đêm Dotonbori bên kênh, Osaka', 1440, 1080, array( 'Martin Falbisoner, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Dotonbori,_Osaka,_at_night,_November_2016.jpg' ) ),
+		),
 	),
 	'taiwan'  => array(
 		'image'   => 'home-taiwan-taipei.jpg',
@@ -85,15 +98,26 @@ $tab_meta = array(
 			array( 'study-taiwan-ncku-student-center.jpg', 'Hội trường và trung tâm sinh viên Đại học Thành Công, Đài Nam', 1440, 960 ),
 			array( 'study-taiwan-shilin-night-market.jpg', 'Quầy đồ ăn ở chợ đêm Sĩ Lâm, Đài Bắc', 1440, 1080 ),
 		),
+		'scenery' => array(
+			array( 'study-taiwan-jiufen.jpg', 'Phố cổ Cửu Phần với những chiếc đèn lồng đỏ', 1440, 1080, array( 'Another Believer, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:A-Mei_Tea_House,_Jiufen,_2024.jpg' ) ),
+			array( 'study-taiwan-longshan-temple.jpg', 'Chùa Long Sơn, Đài Bắc', 1440, 1050, array( 'CEphoto, Uwe Aranas, CC BY-SA 3.0', 'https://commons.wikimedia.org/wiki/File:Taipei_Taiwan_Mengjia-Longshan-Temple-00.jpg' ) ),
+			array( 'study-taiwan-kaohsiung-lantern-festival.jpg', 'Lễ hội đèn lồng Đài Loan 2022 tại Cao Hùng', 1440, 944, array( 'Tiouraren (Y.-C. Tsai), CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Kaohsiung_Music_Center_and_Great_Tiger_Bridge_during_2022_Taiwan_Lantern_Festival.jpg' ) ),
+		),
 	),
 	'germany' => array(
-		'image'   => 'study-germany-liebherr-students.jpg',
+		'image'   => 'study-germany-cologne-cathedral.jpg',
+		'credit'  => array( 'Jörg Braukmann, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Dom_(Deutzer_Br%C3%BCcke).jpg' ),
 		'gallery' => array(
 			array( 'study-germany-reichstag-flag.jpg', 'Hình ảnh nước Đức', 592, 508 ),
-			array( 'study-germany-liebherr-students.jpg', 'Học viên tại nhà máy Liebherr, Đức', 960, 1280, 'bottom' ),
 			array( 'study-germany-liebherr-cranes.jpg', 'Môi trường làm việc kỹ thuật tại Đức', 958, 1276 ),
 			array( 'study-germany-language-class.jpg', 'Lớp tiếng Đức và hội nhập', 1280, 960 ),
 			array( 'study-germany-students.jpg', 'Học viên tại Đức', 1280, 960 ),
+		),
+		'scenery' => array(
+			array( 'study-germany-neuschwanstein.jpg', 'Lâu đài Neuschwanstein, bang Bayern', 1440, 960, array( 'Wilfredor, CC0', 'https://commons.wikimedia.org/wiki/File:Neuschwanstein_Castle_2024.jpg' ) ),
+			array( 'study-germany-brandenburg-gate.jpg', 'Cổng Brandenburg lên đèn, Berlin', 1440, 960, array( 'Thomas Wolf, www.foto-tw.de, CC BY-SA 3.0', 'https://commons.wikimedia.org/wiki/File:Brandenburger_Tor_abends.jpg' ) ),
+			array( 'study-germany-rothenburg.jpg', 'Góc phố cổ Plönlein ở Rothenburg ob der Tauber', 1440, 960, array( 'Diego Delso, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Pl%C3%B6nlein,_Rothenburg_ob_der_Tauber,_Alemania,_2023-06-17,_DD_36.jpg' ) ),
+			array( 'study-germany-speicherstadt.jpg', 'Khu phố kho Speicherstadt về đêm, Hamburg', 1440, 960, array( 'Frank Schulenburg, CC BY-SA 4.0', 'https://commons.wikimedia.org/wiki/File:Hamburg%E2%80%99s_Speicherstadt_at_night.jpg' ) ),
 		),
 	),
 );
@@ -184,7 +208,7 @@ $faq = array(
 				<?php foreach ( $tabs as $key => $tab ) : ?>
 					<?php $route = $hero_routes[ $key ]; ?>
 					<a class="study-hub-route" href="#du-hoc-<?php echo esc_attr( $key ); ?>">
-						<img src="<?php echo letco_asset( isset( $route['image'] ) ? $route['image'] : $tab['image'] ); ?>" alt="" fetchpriority="high">
+						<img src="<?php echo letco_asset( $route['image'] ); ?>" alt="" fetchpriority="high">
 						<span class="study-hub-route-short" aria-hidden="true">
 							<span><?php echo esc_html( $tab['flag'] ); ?></span>
 							<span class="study-hub-route-vertical"><?php echo esc_html( $tab['name'] ); ?></span>
@@ -202,6 +226,11 @@ $faq = array(
 				<?php endforeach; ?>
 			</nav>
 		</div>
+		<p class="container study-hub-credit study-hub-route-credits">Ảnh:
+			<?php foreach ( array_column( $hero_routes, 'credit' ) as $i => $credit ) : ?>
+				<?php echo $i ? ' · ' : ''; ?><a href="<?php echo esc_url( $credit[1] ); ?>" rel="noopener" target="_blank"><?php echo esc_html( $credit[0] ); ?></a>
+			<?php endforeach; ?>
+		</p>
 	</section>
 
 	<section class="section study-hub-countries" id="quoc-gia" data-tabs>
@@ -244,6 +273,23 @@ $faq = array(
 									<figure>
 										<img src="<?php echo letco_asset( $photo[0] ); ?>" alt="<?php echo esc_attr( $photo[1] ); ?>" width="<?php echo esc_attr( $photo[2] ); ?>" height="<?php echo esc_attr( $photo[3] ); ?>" loading="lazy"<?php echo ! empty( $photo[4] ) ? ' style="object-position: ' . esc_attr( $photo[4] ) . '"' : ''; ?>>
 										<figcaption><?php echo esc_html( $photo[1] ); ?></figcaption>
+									</figure>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
+
+					<?php if ( ! empty( $tab['scenery'] ) ) : ?>
+						<h4 class="study-hub-subhead">Nét đặc trưng <?php echo esc_html( $tab['name'] ); ?></h4>
+						<ul class="study-hub-gallery study-hub-scenery" aria-label="Hình ảnh đặc trưng của <?php echo esc_attr( $tab['name'] ); ?>">
+							<?php foreach ( $tab['scenery'] as $photo ) : ?>
+								<li>
+									<figure>
+										<img src="<?php echo letco_asset( $photo[0] ); ?>" alt="<?php echo esc_attr( $photo[1] ); ?>" width="<?php echo esc_attr( $photo[2] ); ?>" height="<?php echo esc_attr( $photo[3] ); ?>" loading="lazy">
+										<figcaption>
+											<?php echo esc_html( $photo[1] ); ?>
+											<span class="study-hub-credit">Ảnh: <a href="<?php echo esc_url( $photo[4][1] ); ?>" rel="noopener" target="_blank"><?php echo esc_html( $photo[4][0] ); ?></a></span>
+										</figcaption>
 									</figure>
 								</li>
 							<?php endforeach; ?>
