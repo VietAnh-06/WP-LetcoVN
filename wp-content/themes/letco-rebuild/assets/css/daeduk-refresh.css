@@ -185,7 +185,7 @@ body.daeduk-site.is-landing .study-lead-form-wrap { border-radius: 20px; backgro
   body.daeduk-site.is-landing .jd-route-nav a { gap: 5px; padding: 6px 4px; min-height: 38px; border-radius: 8px; }
   body.daeduk-site.is-landing .jd-route-nav strong { font-size: .8rem; }
   body.daeduk-site.is-landing .jd-route-nav span { font-size: .68rem; }
-  /* Worded stats ("Năm 2, 3, 4") wrap instead of running into the next cell. */
+  /* Worded stats ("2,15–2,7 triệu KRW") wrap instead of running into the next cell. */
   body.daeduk-site.is-landing .jd-stats dd, body.daeduk-site.is-landing .jd-stats > div:first-child dd, body.daeduk-site.is-landing .jd-stats > .is-text dd { font-size: 1.45rem; white-space: normal; font-variant-numeric: normal; }
   body.daeduk-site.is-landing .jd-stats dt { font-size: .82rem; }
   body.daeduk-site.is-landing .jd-stats > div:nth-child(odd) { padding-right: 14px; }

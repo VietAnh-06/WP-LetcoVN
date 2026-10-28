@@ -129,15 +129,15 @@ $configs = array(
 				'title'  => 'Chương trình K‑Tech Bridge của HaUI và Đại học Daeduk',
 				'accent' => 'Đại học Daeduk',
 				'sub'    => 'Từ học tiếng Hàn đến học chuyên ngành, thực tập và phát triển nghề nghiệp tại Hàn Quốc. Chọn lộ trình trao đổi D2-6, Cao đẳng D2-1 hoặc tiếng Hàn D4-1 theo nền tảng của bạn; có thể đăng ký tư vấn ngay khi chưa có TOPIK.',
-				'link'   => array( 'Xem ba diện tham gia', '#he-dao-tao' ),
+				'link'   => array( 'Xem 03 diện tham gia', '#he-dao-tao' ),
 				'photo'  => array( 'daeduk-mou-signing.jpg', 'Đại diện Đại học Công nghiệp Hà Nội và Đại học Daeduk tại lễ ký kết thỏa thuận hợp tác' ),
 				'card'   => array( 'Lễ ký kết hợp tác HaUI – Daeduk', '30/09/2026' ),
 				// Key figures under the hero: value, label, whether the value counts up on screen, and 'text' for a worded value.
 				'stats'  => array(
-					array( 'Năm 2, 3, 4', 'sinh viên HaUI và trường đối tác, trao đổi D2-6', false ),
-					array( '6–12 tháng', 'học và thực tập tại Hàn Quốc', false ),
-					array( 'Tốt nghiệp THPT', 'học Cao đẳng D2-1 hoặc tiếng Hàn D4-1', false, 'text' ),
-					array( '03/2027', 'nhập học tại Daejeon', false ),
+					array( 'Hơn 60', 'doanh nghiệp Hàn Quốc đối tác tiếp nhận sinh viên thực tập', true ),
+					array( '20 tuần', 'thực tập có lương tại doanh nghiệp đúng ngành trong mỗi kỳ', true ),
+					array( '2,15–2,7 triệu KRW', 'trợ cấp thực tập tham khảo mỗi tháng, theo văn bản tiếp nhận', false, 'text' ),
+					array( 'Giảm 40%', 'học phí kỳ đầu cho sinh viên Cao đẳng D2-1 trúng tuyển', true ),
 				),
 			),
 			'proof' => array(

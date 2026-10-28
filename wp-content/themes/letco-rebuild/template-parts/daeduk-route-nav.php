@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 $active = isset( $args['active'] ) ? $args['active'] : '';
-$routes = array( 'd2-6' => array( 'D2-6', 'Trao đổi' ), 'd2-1' => array( 'D2-1', 'Cao đẳng' ), 'd4-1' => array( 'D4-1', 'Tiếng Hàn' ) );
+$routes = array( 'd4-1' => array( 'D4-1', 'Tiếng Hàn' ), 'd2-1' => array( 'D2-1', 'Cao đẳng' ), 'd2-6' => array( 'D2-6', 'Trao đổi' ) );
 $active_index = array_search( $active, array_keys( $routes ), true );
 ?>
 <div class="jd-program-bar" data-daeduk-switcher>
