@@ -859,6 +859,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fromHash >= 0) tablist.scrollIntoView({ block: 'start' });
   });
 
+  // Daeduk visa pages scroll to the sign-up form without adding #dang-ky to the address.
+  if (/\bdaeduk-route-/.test(document.body.className)) {
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href="#dang-ky"]');
+      const target = document.getElementById('dang-ky');
+      if (!link || !target || event.defaultPrevented) return;
+      event.preventDefault();
+      const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
+    });
+  }
+
   const headerNav = document.querySelector('.lp-header-nav');
   if (headerNav) {
     headerNav.addEventListener('click', (event) => {
