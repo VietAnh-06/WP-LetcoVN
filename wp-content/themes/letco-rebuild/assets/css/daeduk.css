@@ -3933,7 +3933,7 @@
 /* The branch grows in from the left edge of the screen at every width, never floating mid-page.
  * Lifted by a tenth of its width so the brown stem stays in the hero's top padding, above the eyebrow. */
 .study-daeduk .jd-hero::before {
-	--jd-branch-width: clamp(240px, 28vw, 500px);
+	--jd-branch-width: clamp(240px, 28vw, 440px);
 	top: calc(var(--jd-branch-width) * -0.1);
 	left: 0;
 	width: var(--jd-branch-width);
