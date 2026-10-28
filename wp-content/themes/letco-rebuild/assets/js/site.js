@@ -808,6 +808,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Study-hub hero strips take turns: each time the open strip's progress bar fills (a CSS
+  // animation that hover, focus and .is-paused hold still), the next one opens. A hovered
+  // strip becomes the active one, so the turns carry on from there. With reduced motion
+  // the bar never runs, so the first strip simply stays open.
+  document.querySelectorAll('.study-hub-routes').forEach((routes) => {
+    const strips = Array.from(routes.querySelectorAll('.study-hub-route'));
+    const activate = (strip) => strips.forEach((s) => s.classList.toggle('is-active', s === strip));
+
+    routes.addEventListener('animationend', (event) => {
+      if (event.animationName !== 'study-hub-route-progress') return;
+      const index = strips.indexOf(event.target);
+      if (index >= 0) activate(strips[(index + 1) % strips.length]);
+    });
+    strips.forEach((strip) => strip.addEventListener('mouseenter', () => activate(strip)));
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => {
+        routes.classList.toggle('is-paused', !entry.isIntersecting);
+      }).observe(routes);
+    }
+  });
+
   // Header nav: scroll to section without leaving the hash fragment in the URL bar.
   // Country tabs: one panel at a time, arrow keys move between tabs. Without this script the
   // tab row stays hidden and every panel shows in turn. A link to a panel (the hero photos,

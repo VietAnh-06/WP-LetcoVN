@@ -207,7 +207,7 @@ $faq = array(
 			<nav class="study-hub-routes" aria-label="Chọn nước">
 				<?php foreach ( $tabs as $key => $tab ) : ?>
 					<?php $route = $hero_routes[ $key ]; ?>
-					<a class="study-hub-route" href="#du-hoc-<?php echo esc_attr( $key ); ?>">
+					<a class="study-hub-route<?php echo array_key_first( $tabs ) === $key ? ' is-active' : ''; ?>" href="#du-hoc-<?php echo esc_attr( $key ); ?>">
 						<img src="<?php echo letco_asset( $route['image'] ); ?>" alt="" fetchpriority="high">
 						<span class="study-hub-route-short" aria-hidden="true">
 							<span><?php echo esc_html( $tab['flag'] ); ?></span>

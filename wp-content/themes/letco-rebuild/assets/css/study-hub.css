@@ -12,8 +12,8 @@
 	--jd-navy: #0b2545;
 	--jd-ink: #0b2545;
 	--jd-text: #4f5d73;
-	--jd-blue: #0054a6;
-	--jd-blue-deep: #003f7f;
+	--jd-blue: #1a6fc8;
+	--jd-blue-deep: #0054a6;
 	--jd-blue-soft: #e6effa;
 	--jd-red: #f37021;
 	--jd-red-deep: #d35a12;
@@ -28,7 +28,18 @@
 	--jd-card-shadow: 0 16px 42px rgba(8, 30, 66, 0.06);
 	--jd-card-radius: 28px;
 	--lp-bg: #f7f9fc;
-	background: #f7f9fc;
+	/* Light blue at the top left running into peach at the bottom right, with no white
+	 * between; pinned to the viewport so the ticket notches cut through to the same colours. */
+	--study-page-bg:
+		radial-gradient(65% 60% at 0% 0%, rgba(26, 111, 200, 0.22), transparent 70%),
+		radial-gradient(60% 55% at 100% 100%, rgba(243, 112, 33, 0.24), transparent 70%),
+		linear-gradient(160deg, #d6e7fa 0%, #e4eefb 38%, #fbe6d8 72%, #fbd9c4 100%);
+	background: var(--study-page-bg) fixed;
+}
+
+/* The page block is clear so the body's gradient shows; the shared skins paint it white. */
+.is-landing .study-landing.study-hub.jd-page {
+	background: transparent;
 }
 
 /* Older study-page tokens (question toggles, icons) follow the same palette. */
@@ -37,8 +48,19 @@
 	--study-soft: var(--jd-blue-soft);
 }
 
+/* Header and footer take the gradient's two ends: light blue on top, peach at the bottom. */
 .is-landing:has(.study-hub) .lp-header {
-	background: rgba(255, 255, 255, 0.94);
+	background: rgba(214, 231, 250, 0.82);
+}
+
+.is-landing:has(.study-hub) .lp-footer {
+	border-top-color: rgba(243, 112, 33, 0.18);
+	background: #fbd9c4;
+}
+
+/* The hero's flat blue circle becomes a soft glow on the gradient. */
+.study-hub .study-hub-hero::before {
+	background: radial-gradient(circle, color-mix(in srgb, var(--jd-blue) 18%, transparent) 0%, transparent 68%);
 }
 
 .is-landing:has(.study-hub) .lp-button {
@@ -60,9 +82,9 @@
 	box-shadow: none;
 }
 
-/* The alternate sections sit on pale blue-grey; cards stay white so they lift off it. */
+/* The alternate sections sit on a deeper peach band; cards stay white so they lift off it. */
 .is-landing:has(.study-hub) .study-faq {
-	background: var(--jd-soft);
+	background: rgba(251, 217, 196, 0.55);
 }
 
 /* ---------- Sign-up: the adviser's photo beside the invitation ---------- */
@@ -107,7 +129,9 @@
 
 /* ---------- Hero: four flight routes from Hà Nội, one tall photo strip per country ----------
  * The strip under the pointer (or keyboard focus) opens wide and shows its route; with
- * nothing hovered the first strip stays open. Each strip opens its country tab. */
+ * nothing hovered the .is-active strip stays open. site.js moves .is-active on each time
+ * its orange progress bar fills, so the strips take turns by themselves. Each strip opens
+ * its country tab. */
 @media (min-width: 1081px) {
 	.study-hub-hero .lp-hero-grid {
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -166,8 +190,8 @@
 	transform: scale(0.99);
 }
 
-/* Open strip: the hovered or focused one, else the first. */
-.study-hub-routes:not(:hover, :focus-within) > .study-hub-route:first-child,
+/* Open strip: the hovered or focused one, else the active one. */
+.study-hub-routes:not(:hover, :focus-within) > .study-hub-route.is-active,
 .study-hub-route:is(:hover, :focus-visible) {
 	flex-grow: 4.5;
 	box-shadow: var(--jd-shadow-lift);
@@ -175,6 +199,21 @@
 
 .study-hub-route:hover img {
 	transform: scale(1.04);
+}
+
+/* Progress bar along the top of the open strip; when it fills, the next strip opens. */
+.study-hub-route::before {
+	content: "";
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 4px;
+	background: var(--jd-red);
+	transform: scaleX(0);
+	transform-origin: left;
+	pointer-events: none;
 }
 
 .study-hub-route-short,
@@ -250,7 +289,10 @@
 }
 
 .study-hub-route-line svg {
-	position: relative;
+	position: absolute;
+	top: 50%;
+	left: calc(50% - 12px);
+	margin-top: -12px;
 	width: 20px;
 	height: 20px;
 	padding: 2px;
@@ -266,13 +308,13 @@
 	font-size: 0.9375rem;
 }
 
-.study-hub-routes:not(:hover, :focus-within) > .study-hub-route:first-child .study-hub-route-short,
+.study-hub-routes:not(:hover, :focus-within) > .study-hub-route.is-active .study-hub-route-short,
 .study-hub-route:is(:hover, :focus-visible) .study-hub-route-short {
 	opacity: 0;
 	transform: translateY(12px);
 }
 
-.study-hub-routes:not(:hover, :focus-within) > .study-hub-route:first-child .study-hub-route-full,
+.study-hub-routes:not(:hover, :focus-within) > .study-hub-route.is-active .study-hub-route-full,
 .study-hub-route:is(:hover, :focus-visible) .study-hub-route-full {
 	opacity: 1;
 	transform: none;
@@ -288,6 +330,48 @@
 	.study-hub-route:nth-child(3) { animation-delay: 220ms; }
 	.study-hub-route:nth-child(4) { animation-delay: 280ms; }
 	.study-hub-route:nth-child(1) { animation-delay: 100ms; }
+
+	/* The bar fills while the strip shows; hovering, focusing or scrolling away pauses it. */
+	.study-hub-route.is-active::before {
+		animation: study-hub-route-progress 5s linear both;
+	}
+
+	.study-hub-routes:is(:hover, :focus-within, .is-paused) > .study-hub-route::before {
+		animation-play-state: paused;
+	}
+
+	/* The open photo drifts slowly closer, and the plane flies the dashed path. */
+	.study-hub-routes:not(:hover, :focus-within) > .study-hub-route.is-active img {
+		transform: scale(1.08);
+		transition-duration: 5s;
+	}
+
+	.study-hub-route:is(.is-active, :hover, :focus-visible) .study-hub-route-line svg {
+		animation: study-hub-plane 2.6s ease-in-out infinite;
+	}
+}
+
+@keyframes study-hub-route-progress {
+	to {
+		transform: scaleX(1);
+	}
+}
+
+@keyframes study-hub-plane {
+	0% {
+		left: 0;
+		opacity: 0;
+	}
+
+	15%,
+	85% {
+		opacity: 1;
+	}
+
+	100% {
+		left: calc(100% - 24px);
+		opacity: 0;
+	}
 }
 
 /* ---------- Tabs ---------- */
@@ -565,7 +649,7 @@
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	background: var(--lp-bg, #f7f9fc);
+	background: var(--study-page-bg, var(--lp-bg, #f7f9fc)) fixed;
 	box-shadow: inset 0 0 0 1px var(--jd-line);
 }
 
@@ -903,7 +987,9 @@
 		aspect-ratio: 3 / 4;
 	}
 
-	.study-hub-route-short {
+	/* Every strip is already open, so nothing takes turns. */
+	.study-hub-route-short,
+	.study-hub-route::before {
 		display: none;
 	}
 
