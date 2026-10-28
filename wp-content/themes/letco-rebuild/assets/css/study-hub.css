@@ -18,8 +18,8 @@
 	--jd-red: #f37021;
 	--jd-red-deep: #d35a12;
 	--jd-red-soft: #fff0e5;
-	--jd-teal: #0054a6;
-	--jd-teal-soft: #e6effa;
+	--jd-teal: var(--jd-blue);
+	--jd-teal-soft: var(--jd-blue-soft);
 	--jd-sky: #ffb27a;
 	--jd-line: #e3e9f2;
 	--jd-soft: #eef3f9;
@@ -43,11 +43,11 @@
 
 .is-landing:has(.study-hub) .lp-button {
 	border-radius: 999px;
-	box-shadow: 0 14px 28px rgba(0, 84, 166, 0.24);
+	box-shadow: 0 14px 28px color-mix(in srgb, var(--jd-blue) 24%, transparent);
 }
 
 .is-landing:has(.study-hub) .lp-button:hover {
-	box-shadow: 0 18px 32px rgba(0, 84, 166, 0.32);
+	box-shadow: 0 18px 32px color-mix(in srgb, var(--jd-blue) 32%, transparent);
 }
 
 /* Orange accents carry an orange glow; the shared skin hard-codes a red one. */
