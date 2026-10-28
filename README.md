@@ -150,9 +150,10 @@ export folder or ZIP, never the WordPress checkout. Both outputs are ignored by 
 
 ### Export a single page as a landing page
 
-`--page` exports only that page, served at `/`, with the assets it uses. Links to
-other pages of the site become `#`; in-page anchors, phone, Zalo, and the sign-up
-forms keep working. Output goes to `dist/cloudflare-<slug>/` and
+`--page` exports only that page, served at `/`, with the assets it uses. Pages below
+it keep their path under `/` (the Daeduk visa pages become `/d2-6/`, `/d2-1/`,
+`/d4-1/`). Links to other pages of the site become `#`; in-page anchors, phone, Zalo,
+and the sign-up forms keep working. Output goes to `dist/cloudflare-<slug>/` and
 `dist/<slug>-cloudflare-pages.zip`, separate from the full-site export.
 
 ```sh

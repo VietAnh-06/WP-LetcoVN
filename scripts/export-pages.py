@@ -38,7 +38,8 @@ VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
 class Exporter:
     def __init__(self, source, output, public='', landing=None):
         self.source = source.rstrip('/')
-        # Single-page export: this page becomes / and links to other pages become #.
+        # Landing export: this page becomes /, its subpages keep their path below it,
+        # and links to any other page become #.
         self.landing = landing
         self.public = public.rstrip('/')
         self.origin = urlsplit(self.source).netloc
@@ -78,14 +79,20 @@ class Exporter:
         if local is None:
             return '#'
         fragment = ('#' + full.fragment) if full.fragment else ''
-        if self.landing and Path(urlsplit(local).path).suffix.lower() not in ASSETS:
-            return '/' + fragment if local == self.landing else '#'
+        if self.landing and Path(urlsplit(local).path).suffix.lower() not in ASSETS and not self.inside(local):
+            return '#'
         if local not in self.seen:
             self.pending.append(local)
-        return urlsplit(local).path + fragment
+        return self.published(local) + fragment
+
+    def inside(self, url):
+        return urlsplit(url).path.startswith(urlsplit(self.landing).path)
 
     def published(self, url):
-        return '/' if self.landing and url == self.landing else urlsplit(url).path or '/'
+        path = urlsplit(url).path or '/'
+        if self.landing and self.inside(url):
+            return '/' + path[len(urlsplit(self.landing).path):]
+        return path
 
     def text(self, value, base):
         # JSON used by WordPress's emoji loader also contains asset URLs.
@@ -252,7 +259,7 @@ def main():
     parser.add_argument('--public', default='https://letco-rebuild.pages.dev',
                         help='public site origin used in social-share tags')
     parser.add_argument('--page',
-                        help='export only this page path as a landing page at /, '
+                        help='export only this page and its subpages as a landing site at /, '
                              'e.g. /du-hoc/du-hoc-han-quoc/dai-hoc-daeduk/')
     args = parser.parse_args()
     source = urlsplit(args.source)
