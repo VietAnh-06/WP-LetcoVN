@@ -191,6 +191,14 @@ header row. After editing the Apps Script code, use **Deploy > Manage deployment
 Edit > New version** so the URL stays the same. Sign-ups on the static site are
 not stored in WordPress.
 
+The study-and-work overview page (Cô Thanh Mai Du Học) uses its own sheet: follow
+the same steps with
+[`scripts/cloudflare/google-sheets-lead-study-hub.gs`](scripts/cloudflare/google-sheets-lead-study-hub.gs)
+and store the URL and secret on that page's Pages project. It records only the
+fields that form sends and sends no Zalo alert. If the script was created on
+script.google.com instead of from the sheet, add the script property `SHEET_ID`
+(the ID in the sheet's URL after `/d/`).
+
 ### Zalo alert for new sign-ups
 
 The Apps Script can also post each new row to Zalo through a Zalo Bot
