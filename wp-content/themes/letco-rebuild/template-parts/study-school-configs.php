@@ -50,15 +50,15 @@ $configs = array(
 				'rows' => array(
 					array( 'Đối tượng & điều kiện', array(
 						'Tốt nghiệp THPT hoặc tương đương, GPA THPT từ 6.5 trở lên.',
-						'Đạt TOPIK 2 trở lên, hoặc chứng chỉ Sejong 2B / bài kiểm tra nội bộ của Đại học Daeduk.',
+						'Đạt TOPIK 2+, Sejong 2B hoặc bài kiểm tra nội bộ của Daeduk.',
 					) ),
 					array( 'Thời gian đào tạo chính quy', '2 – 3 năm tùy ngành' ),
 					array( 'Điểm nổi bật', array(
-						'Giảm 40% học phí kỳ 1 cho tân sinh viên có TOPIK 2 trở lên.',
-						'Mô hình Co-op: lý thuyết chuyên ngành kết hợp các kỳ thực tập tại doanh nghiệp đối tác, có công nhận tín chỉ.',
-						'Trợ cấp thực tập / học bổng sinh hoạt phí hàng tháng cùng hỗ trợ nơi ở, bữa ăn theo chính sách của doanh nghiệp tiếp nhận.',
+						'Giảm 40% học phí kỳ 1 khi có TOPIK 2+.',
+						'Mô hình Co-op: học chuyên ngành kết hợp thực tập tại doanh nghiệp đối tác, có công nhận tín chỉ.',
+						'Trợ cấp thực tập, hỗ trợ nơi ở và bữa ăn ngày làm việc theo chính sách doanh nghiệp.',
 					) ),
-					array( 'Lộ trình phát triển', 'Tốt nghiệp nhận Bằng Cao đẳng chính quy Daeduk; được tư vấn và hỗ trợ làm thủ tục chuyển đổi Visa E-7-1 khi đáp ứng đủ điều kiện, hoặc tìm hiểu học liên thông lên Đại học tại Hàn Quốc.' ),
+					array( 'Lộ trình phát triển', 'Nhận Bằng Cao đẳng chính quy Daeduk khi đủ điều kiện tốt nghiệp; được tư vấn chuyển đổi Visa E-7-1 hoặc học liên thông Đại học nếu đáp ứng điều kiện.' ),
 				),
 			),
 			array(
@@ -67,18 +67,17 @@ $configs = array(
 				'featured' => true,
 				'rows'     => array(
 					array( 'Đối tượng & điều kiện', array(
-						'Sinh viên từ năm 2 trở đi, đang theo học tại HaUI hoặc trường Đại học / Cao đẳng đối tác tại Việt Nam.',
-						'Thuộc các nhóm ngành liên kết: Cơ khí, Ô tô, Điện – Tự động hóa, Quản trị Du lịch – Khách sạn.',
-						'Căn cứ theo Giấy xác nhận sinh viên và Bảng điểm ĐH/CĐ hiện tại, kèm Bằng tốt nghiệp & Học bạ THPT để làm thủ tục đối chiếu hồ sơ.',
-						'Ưu tiên ứng viên có TOPIK 2 trở lên.',
+						'Sinh viên từ năm 2 trở đi tại HaUI hoặc trường ĐH/CĐ đối tác Việt Nam.',
+						'Thuộc nhóm ngành liên kết: Cơ khí, Ô tô, Điện – Tự động hóa, Du lịch – Khách sạn.',
+						'Ưu tiên có TOPIK 2 trở lên.',
 					) ),
 					array( 'Thời hạn chương trình trao đổi', 'Visa ngắn hạn 6 – 12 tháng' ),
 					array( 'Điểm nổi bật', array(
-						'Kết quả học tập và thực tập được quy đổi tín chỉ, công nhận về trường gốc theo thỏa thuận giữa các trường.',
-						'Giảm khoảng 60% học phí kỳ 1 tại Daeduk cho sinh viên đạt TOPIK 2 trở lên trước khi xuất cảnh.',
-						'Hỗ trợ nơi ở, bữa ăn trong ngày làm việc và trợ cấp thực tập hàng tháng theo chính sách của doanh nghiệp tiếp nhận.',
+						'Tín chỉ được công nhận về trường gốc theo thỏa thuận giữa các trường.',
+						'Giảm khoảng 60% học phí kỳ 1 khi đạt TOPIK 2+ trước xuất cảnh.',
+						'Hỗ trợ nơi ở, bữa ăn ngày làm việc và trợ cấp thực tập theo chính sách doanh nghiệp.',
 					) ),
-					array( 'Lộ trình phát triển', 'Kết thúc chương trình, sinh viên bắt buộc trở về Việt Nam tốt nghiệp trường gốc, hoặc xin gia hạn/chuyển tiếp sang hệ chuyên ngành Visa D2-1 nếu đáp ứng đủ điều kiện.' ),
+					array( 'Lộ trình phát triển', 'Bắt buộc trở về Việt Nam tốt nghiệp, hoặc xin gia hạn/chuyển tiếp sang D2-1 nếu đủ điều kiện.' ),
 				),
 			),
 		),
