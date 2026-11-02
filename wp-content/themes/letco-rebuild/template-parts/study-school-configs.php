@@ -16,7 +16,7 @@ $configs = array(
 		'name'           => 'Đại học Daeduk',
 		'description'    => 'K-Tech Bridge kết nối tuyển chọn, đào tạo tiếng Hàn, học chuyên ngành và thực tập doanh nghiệp tại Daeduk. Tìm hiểu diện trao đổi D2-6, Cao đẳng D2-1, tiếng Hàn D4-1 và dự toán chi phí từng diện.',
 		'layout'         => 'zones',
-		'primary_cta'    => 'Tư vấn lộ trình phù hợp',
+		'primary_cta'    => 'Nhận tư vấn lộ trình của mình',
 		'popup_delay'    => 35000,
 		'popup_buttons'  => true,
 		'seo'            => array(
@@ -24,12 +24,13 @@ $configs = array(
 			'image'       => 'daeduk-og.jpg',
 			'image_alt'   => 'Khuôn viên Đại học Daeduk, Daejeon',
 		),
-		'visas_title'    => '3 diện tham gia, chọn theo hồ sơ của bạn',
-		'visas_intro'    => 'Sinh viên đi trao đổi theo D2-6; học sinh tốt nghiệp THPT học Cao đẳng D2-1, hoặc bắt đầu bằng tiếng Hàn D4-1 nếu chưa có TOPIK 2.',
+		'visas_title'    => 'Có một hướng phù hợp với bạn',
+		'visas_intro'    => 'Chỉ cần chọn hướng gần với bạn nhất. Tư vấn viên LETCO sẽ cùng bạn đối chiếu hồ sơ chi tiết.',
 		'visas'          => array(
 			array(
 				'tag'  => 'Visa D4-1',
 				'title' => 'Du học dự bị tiếng Hàn',
+				'fit'  => 'Đã tốt nghiệp THPT và muốn bắt đầu từ tiếng Hàn. Học 6 – 12 tháng tại Viện Hàn ngữ Daeduk.',
 				'rows' => array(
 					array( 'Đối tượng & điều kiện tuyển chọn', 'Tốt nghiệp THPT hoặc tương đương, GPA THPT từ 6.5 trở lên; chưa bắt buộc có chứng chỉ tiếng Hàn khi nộp hồ sơ.' ),
 					array( 'Thời gian chương trình', '6 – 12 tháng' ),
@@ -40,6 +41,7 @@ $configs = array(
 			array(
 				'tag'  => 'Visa D2-1',
 				'title' => 'Du học Cao đẳng chính quy (Mô hình Co-op)',
+				'fit'  => 'Đã tốt nghiệp THPT và đạt chuẩn tiếng Hàn đầu vào. Học chuyên ngành 2 – 3 năm tùy ngành.',
 				'rows' => array(
 					array( 'Đối tượng & điều kiện tuyển chọn', 'Học sinh đã tốt nghiệp THPT, GPA từ 6.5 trở lên; đạt chuẩn trình độ tiếng Hàn đầu vào theo quy định.' ),
 					array( 'Thời gian chương trình', '2 – 3 năm tùy theo ngành học' ),
@@ -50,6 +52,7 @@ $configs = array(
 			array(
 				'tag'      => 'Visa D2-6',
 				'title'    => 'Trao đổi sinh viên quốc tế',
+				'fit'      => 'Đang là sinh viên từ năm 2 tại HaUI hoặc trường đối tác. Đi trao đổi 6 – 12 tháng.',
 				'featured' => true,
 				'rows'     => array(
 					array( 'Đối tượng & điều kiện tuyển chọn', 'Sinh viên từ năm 2 trở đi tại HaUI hoặc trường ĐH/CĐ đối tác Việt Nam, ưu tiên có TOPIK 2 trở lên.' ),
@@ -60,7 +63,7 @@ $configs = array(
 			),
 		),
 		'visas_note'     => 'TOPIK 2 là điều kiện trước khi vào học chuyên ngành, không bắt buộc khi đăng ký. Tư vấn viên xác nhận diện phù hợp theo hồ sơ và văn bản của trường.',
-		'visa_authority' => 'Việc cấp visa hoặc chuyển đổi tư cách lưu trú (D4-1 → D2-1, D2-6 → D2-1) do cơ quan có thẩm quyền của Hàn Quốc quyết định, dựa trên hồ sơ và năng lực cá nhân như TOPIK, kết quả học tập. Đơn vị tư vấn và Nhà trường không có thẩm quyền cam kết 100% đổi được visa.',
+		'visa_authority' => 'Việc cấp hoặc chuyển đổi visa do cơ quan có thẩm quyền của Hàn Quốc quyết định theo từng hồ sơ; LETCO và Nhà trường không cam kết kết quả.',
 		'zalo'           => '0989086386',
 		'companies'      => array(
 			'list' => array(
@@ -102,11 +105,11 @@ $configs = array(
 			),
 		),
 		'lead'           => array(
-			'title'   => 'Tìm chương trình Daeduk phù hợp với bạn',
-			'intro'   => 'Để lại họ tên, số điện thoại/Zalo và trường đang học hoặc năm tốt nghiệp. LETCO tư vấn diện phù hợp, kế hoạch học tiếng và dự toán chi phí; chưa có TOPIK vẫn có thể đăng ký.',
-			'bullets' => array( 'Diện phù hợp với bạn: D2-6, D2-1 hay D4-1.', 'Bảng dự toán chi phí trọn gói theo trình độ tiếng Hàn.' ),
+			'title'   => 'Bạn muốn trải nghiệm học tập tại Hàn Quốc?',
+			'intro'   => 'Để lại thông tin để LETCO hỗ trợ chọn chương trình và hướng dẫn bước chuẩn bị đầu tiên. Chưa có TOPIK vẫn có thể đăng ký tư vấn.',
+			'bullets' => array( 'Lộ trình gợi ý theo trường, năm học và trình độ tiếng Hàn của bạn.', 'Kế hoạch học tiếng và dự toán chi phí theo chương trình.' ),
 		),
-		'lead_button'    => 'Nhận tư vấn riêng',
+		'lead_button'    => 'Nhận tư vấn lộ trình của mình',
 		'contact'        => array(
 			'partners'  => 'Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
 			'phones'    => array( '0989.086.386' ),
@@ -123,35 +126,53 @@ $configs = array(
 				'button'   => 'Đăng ký ngay',
 				'closed'   => 'Đã hết hạn đăng ký kỳ tháng 3/2027. Liên hệ LETCO để biết kỳ tiếp theo.',
 			),
-			'buttons' => array( 'he-dao-tao' => 'Đăng ký tư vấn diện phù hợp', 'uu-diem' => 'Đăng ký nhận bảng dự toán chi tiết', 'cac-buoc' => 'Đăng ký giữ chỗ, học tiếng Hàn', 'thuc-tap' => 'Đăng ký tư vấn miễn phí' ),
+			'buttons' => array( 'he-dao-tao' => 'Nhận tư vấn lộ trình của mình', 'uu-diem' => 'Đăng ký nhận bảng dự toán chi tiết', 'cac-buoc' => 'Đăng ký giữ chỗ, học tiếng Hàn', 'thuc-tap' => 'Đăng ký tư vấn miễn phí' ),
 			'nav'   => array( 'chi-phi' => 'Chi phí', 'cac-buoc' => 'Lộ trình', 'khuon-vien' => 'Daeduk', 'thuc-tap' => 'Thực tập', 'hoi-dap' => 'Hỏi đáp' ),
 			'hero'  => array(
 				'badge'  => array( 'Tuyển sinh', 'Kỳ tháng 3/2027', 'Hạn đăng ký với LETCO', '20/11/2026' ),
-				'kicker' => array( 'Hợp tác HaUI – Đại học Daeduk', 'Daejeon, Hàn Quốc' ),
-				'title'  => 'Chương trình K‑Tech Bridge của HaUI và Đại học Daeduk',
-				'accent' => 'Đại học Daeduk',
-				'sub'    => 'Từ học tiếng Hàn đến học chuyên ngành, thực tập và phát triển nghề nghiệp tại Hàn Quốc. Chọn lộ trình trao đổi D2-6, Cao đẳng D2-1 hoặc tiếng Hàn D4-1 theo nền tảng của bạn; có thể đăng ký tư vấn ngay khi chưa có TOPIK.',
-				'link'   => array( 'Xem 03 diện tham gia', '#he-dao-tao' ),
-				'photo'  => array( 'daeduk-mou-signing.jpg', 'Đại diện Đại học Công nghiệp Hà Nội và Đại học Daeduk tại lễ ký kết thỏa thuận hợp tác' ),
-				'card'   => array( 'Lễ ký kết hợp tác HaUI – Daeduk', '30/09/2026' ),
-				// Key figures under the hero: value, label, whether the value counts up on screen, and 'text' for a worded value.
-				'stats'  => array(
-					array( 'Hơn 60', 'doanh nghiệp Hàn Quốc đối tác tiếp nhận sinh viên thực tập', true ),
-					array( 'Theo ngành liên kết', 'thực tập có trợ cấp tại doanh nghiệp theo lĩnh vực chuyên ngành liên kết', false, 'text' ),
-					array( 'Có trợ cấp thực tập', 'hỗ trợ sinh hoạt phí thực tập theo chính sách của từng doanh nghiệp', false, 'text' ),
-					array( 'TOPIK 2+: giảm từ 40% đến khoảng 60%', 'cơ hội học bổng ưu đãi học phí kỳ đầu, áp dụng cho ứng viên đạt TOPIK 2+, tùy diện visa', false, 'text' ),
+				'kicker' => array( 'K‑Tech Bridge', 'HaUI – Đại học Daeduk', 'Daejeon, Hàn Quốc' ),
+				'title'  => 'Học tại Hàn Quốc, trải nghiệm môi trường doanh nghiệp',
+				'accent' => 'trải nghiệm môi trường doanh nghiệp',
+				'sub'    => 'K‑Tech Bridge là cơ hội học tại Đại học Daeduk, làm quen cuộc sống mới và, tùy lộ trình, thực tập tại doanh nghiệp theo chuyên ngành. Chưa có TOPIK hoặc chưa rõ hướng đi, LETCO sẽ hướng dẫn bạn từ bước đầu.',
+				'link'   => array( 'Xem trải nghiệm', '#trai-nghiem' ),
+				'photo'  => array( 'letco-korea-departure-2026-09.jpg', 'Học viên LETCO chuẩn bị khởi hành sang Hàn Quốc tại sân bay' ),
+				'card'   => array( 'chuẩn bị khởi hành sang Hàn Quốc', 'Học viên LETCO' ),
+			),
+			// Real photos shown early so a reader can picture the experience: file, short title, what the photo actually shows.
+			'experience' => array(
+				'label' => 'Trải nghiệm',
+				'title' => 'Bạn sẽ học và sống thế nào?',
+				'intro' => 'Hình ảnh thật từ LETCO, Đại học Daeduk và doanh nghiệp đối tác, không riêng một khóa K‑Tech Bridge. Hoạt động cụ thể tùy chương trình và kỳ học.',
+				'items' => array(
+					array( 'daeduk-letco-class-visit.jpg', 'Chuẩn bị tại Việt Nam', 'Đại diện Daeduk gặp gỡ học viên tại lớp học LETCO ở Việt Nam', 1200, 898 ),
+					array( 'daeduk-life-ev-vr-class.jpg', 'Học bằng công nghệ mới', 'Lớp chẩn đoán xe điện bằng VR của Khoa Quản lý an toàn xe điện', 800, 600 ),
+					array( 'daeduk-life-lab-practice.jpg', 'Thực hành chuyên ngành', 'Sinh viên Daeduk thực hành trong phòng thí nghiệm chuyên ngành', 705, 470 ),
+					array( 'daeduk-company-ibtech.jpg', 'Môi trường doanh nghiệp', 'Hoạt động tại doanh nghiệp đối tác IB Tech', 640, 480 ),
+					array( 'daeduk-life-intl-welcome.jpg', 'Ngày đầu nhập học', 'Buổi chào mừng du học sinh quốc tế nhập học tại Đại học Daeduk', 752, 512 ),
+					array( 'daeduk-life-lunar-new-year.jpg', 'Đón Tết tại Hàn', 'Trò chơi truyền thống dịp Tết cùng học viên tiếng Hàn người Việt tại Daeduk', 760, 427 ),
+				),
+			),
+			// What a student gets, each with its condition beside it: icon, benefit, one line, condition.
+			'perks' => array(
+				'label' => 'Quyền lợi',
+				'title' => 'Bạn nhận được gì?',
+				'items' => array(
+					array( 'book', 'Học tại Đại học Daeduk', 'Học tiếng Hàn hoặc chuyên ngành ngay tại trường ở Daejeon.', 'Nội dung và thời gian học tùy chương trình.' ),
+					array( 'gear', 'Trải nghiệm doanh nghiệp', 'Thực tập có trợ cấp tại doanh nghiệp theo lĩnh vực chuyên ngành liên kết.', 'Không áp dụng khi học tiếng D4-1. Mức trợ cấp theo chính sách của từng doanh nghiệp.' ),
+					array( 'badge', 'Cơ hội học bổng', 'Giảm từ 40% đến khoảng 60% học phí kỳ đầu.', 'Áp dụng cho ứng viên đạt TOPIK 2+, tùy diện visa. D4-1 theo quy định của Viện Hàn ngữ Daeduk.' ),
+					array( 'chat', 'Hỗ trợ chuẩn bị hồ sơ', 'LETCO dạy tiếng Hàn và hướng dẫn hồ sơ trước khi đi.', 'Có phí đào tạo và dịch vụ, báo rõ theo từng chương trình. Visa do cơ quan có thẩm quyền của Hàn Quốc quyết định.' ),
 				),
 			),
 			'proof' => array(
-				'photo' => array( 'daeduk-mou-delegates.jpg', 'Đại diện Đại học Công nghiệp Hà Nội, LETCO và Đại học Daeduk tại lễ ký kết thỏa thuận hợp tác' ),
-				'title' => 'Chương trình chính thức giữa HaUI và Đại học Daeduk',
-				'text'  => 'Lễ ký kết thỏa thuận hợp tác giữa Đại học Công nghiệp Hà Nội và Đại học Daeduk, Hà Nội, 30/09/2026.',
+				'photo' => array( 'daeduk-mou-signing.jpg', 'Đại diện Đại học Công nghiệp Hà Nội và Đại học Daeduk tại lễ ký kết thỏa thuận hợp tác' ),
+				'title' => 'Ai đồng hành cùng bạn?',
+				'text'  => 'K‑Tech Bridge là chương trình hợp tác giữa Đại học Công nghiệp Hà Nội và Đại học Daeduk, ký kết tại Hà Nội ngày 30/09/2026.',
 			),
 			// Who runs the programme: icon, party, role.
 			'ecosystem' => array(
-				array( 'badge', 'LETCO – Đại học Công nghiệp Hà Nội', 'Tiếp nhận hồ sơ & dạy tiếng Hàn tại Đại học Công nghiệp Hà Nội.' ),
-				array( 'book', 'Đại học Daeduk', 'Đào tạo chuyên ngành, quản lý học thuật, công nhận tín chỉ và cấp bằng Cao đẳng chính quy.' ),
-				array( 'gear', 'Hơn 60 doanh nghiệp Hàn Quốc', 'Tiếp nhận và đánh giá thực tập; xem xét tuyển dụng, hỗ trợ hồ sơ E‑7‑1 khi ứng viên đáp ứng điều kiện.' ),
+				array( 'badge', 'LETCO – Đại học Công nghiệp Hà Nội', 'Tiếp nhận hồ sơ và dạy tiếng Hàn tại Hà Nội.' ),
+				array( 'book', 'Đại học Daeduk', 'Đào tạo và quản lý học thuật tại Hàn Quốc.' ),
+				array( 'gear', 'Hơn 60 doanh nghiệp Hàn Quốc', 'Tiếp nhận và đánh giá sinh viên thực tập.' ),
 			),
 			// Why the programme is worth it: icon name (from the template's icon set), title, one line.
 			'benefits' => array(
@@ -202,13 +223,11 @@ $configs = array(
 				'intro'  => 'Trường nằm tại Daejeon, gần khu nghiên cứu công nghệ Daedeok Innopolis, nơi tập trung nhiều viện nghiên cứu và doanh nghiệp công nghệ cao. Giảng đường, ký túc xá, nhà ăn, thư viện và khu thể thao đều ở trong khuôn viên.',
 				'points' => array( 'Ký túc xá trong khuôn viên, phòng 4 người', 'Bữa sáng, bữa tối ngày thường tại ký túc xá', 'Thư viện, nhà ăn sinh viên, sân futsal' ),
 				'items'  => array(
-					array( 'daeduk-campus-humanities.jpg', 'Tòa Nhân văn – Xã hội', 'Tòa Nhân văn – Xã hội (인문사회관) của Đại học Daeduk' ),
-					array( 'daeduk-facility-library.jpg', 'Thư viện', 'Thư viện Đại học Daeduk' ),
 					array( 'daeduk-campus-dorm-men.jpg', 'Ký túc xá', 'Ký túc xá (생활관) trong khuôn viên Đại học Daeduk' ),
+					array( 'daeduk-facility-library.jpg', 'Thư viện', 'Thư viện Đại học Daeduk' ),
 					array( 'daeduk-facility-student-cafeteria.jpg', 'Nhà ăn sinh viên', 'Nhà ăn sinh viên tại Đại học Daeduk' ),
 					array( 'daeduk-facility-futsal.jpg', 'Sân bóng futsal', 'Sân bóng futsal trong khuôn viên Đại học Daeduk' ),
 					array( 'daeduk-campus-aerial.jpg', 'Toàn cảnh khuôn viên', 'Toàn cảnh khuôn viên và sân vận động Đại học Daeduk nhìn từ trên cao' ),
-					array( 'daeduk-campus-spring.jpg', 'Khuôn viên mùa xuân', 'Hoa mộc lan nở trong khuôn viên Đại học Daeduk vào mùa xuân' ),
 				),
 				'source' => array( 'Đại học Daeduk', 'https://mipsi.ddu.ac.kr/msi/cntntsService.do?menuId=MNU_0000000000001137' ),
 			),
@@ -238,11 +257,11 @@ $configs = array(
 			),
 			// Verified facts about students already in the programme (no invented quotes).
 			'students' => array(
-				'label' => 'Sinh viên đã tham gia',
+				'label' => 'Sinh viên được tuyển chọn',
 				'title' => 'Những sinh viên đầu tiên của K-Tech Bridge',
 				'photo' => array( 'daeduk-mou-students.jpg', 'Sinh viên K-Tech Bridge tại lễ ký kết hợp tác giữa HaUI và Đại học Daeduk, Hà Nội, 30/09/2026' ),
 				'facts' => array(
-					array( '6 sinh viên', 'nhận Giấy chứng nhận học bổng liên kết việc làm (취업연계형 장학증서) của Geon Tech ngày 01/08/2026, sau phỏng vấn tuyển chọn của công ty. Công ty xác nhận tuyển dụng khi các bạn hoàn thành K-Tech Bridge và đủ điều kiện tốt nghiệp.' ),
+					array( '6 sinh viên', 'nhận Giấy chứng nhận học bổng liên kết việc làm (취업연계형 장학증서) của Geon Tech ngày 01/08/2026, sau phỏng vấn tuyển chọn của công ty. Geon Tech có thể xem xét tuyển dụng khi sinh viên hoàn thành chương trình và đủ điều kiện, theo văn bản của công ty.' ),
 					array( '30/09/2026', 'sinh viên K-Tech Bridge dự lễ ký kết hợp tác giữa HaUI và Đại học Daeduk tại Hà Nội.' ),
 				),
 			),
@@ -262,13 +281,17 @@ $configs = array(
 					array( 'Cần chuẩn bị những giấy tờ gì?', 'Bằng và học bạ THPT; bằng, bảng điểm cấp học cao nhất (nếu có); giấy xác nhận sinh viên và bảng điểm (với sinh viên trao đổi); giấy khai sinh, căn cước của bạn và bố mẹ; giấy xác nhận cư trú (CT07); chứng minh tài chính theo quy định lãnh sự.' ),
 				),
 			),
-			// Student voices before the sign-up form. Real quotes only, from students who took part:
-			// array( quote, name, major/intake, photo file or '' ). The section stays hidden while empty.
+			// Real quotes only, attributed to the stage the student was at when speaking:
+			// array( quote, name or description, major/intake, photo file or '' ). The section stays hidden while empty.
 			'voices' => array(
 				'label' => 'Cảm nhận sinh viên',
-				'title' => 'Sinh viên nói gì sau khi tham gia',
-				'intro' => 'Chia sẻ của sinh viên đã học và thực tập tại Đại học Daeduk.',
-				'items' => array(),
+				'title' => 'Các bạn nói gì khi bắt đầu tìm hiểu',
+				'intro' => 'Chia sẻ của các bạn sinh viên trong giai đoạn tìm hiểu và chuẩn bị du học.',
+				'items' => array(
+					array( 'Mình muốn đi du học Hàn Quốc nhưng chưa biết phải chuẩn bị từ đâu, tiếng Hàn cũng chưa có. Sau khi được tư vấn, mình hiểu rõ hơn chương trình phù hợp và từng bước cần làm. Có kế hoạch cụ thể rồi, mình thấy tự tin để bắt đầu hơn.', 'Sinh viên đã nhận tư vấn', '', '' ),
+					array( 'Ban đầu mình chỉ vào xem thông tin thôi, chưa dám đăng ký vì nghĩ hồ sơ của mình chưa đủ tốt. Khi trao đổi với thầy cô, mình biết mình cần bổ sung những gì và chuẩn bị tiếng Hàn ra sao. Với mình, buổi tư vấn đó là bước đầu để nghiêm túc với kế hoạch du học.', 'Sinh viên đã nhận tư vấn', '', '' ),
+					array( 'Điều khiến mình quan tâm đến chương trình là cơ hội học gắn với thực hành. Mình muốn hiểu những kiến thức đang học sẽ được sử dụng thế nào trong công việc. Được tìm hiểu môi trường doanh nghiệp tại Hàn Quốc cũng là trải nghiệm mình rất mong chờ.', 'Sinh viên quan tâm chương trình', '', '' ),
+				),
 			),
 		),
 		'lead_extra'     => true,
