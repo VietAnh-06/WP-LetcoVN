@@ -46,19 +46,13 @@ $configs = array(
 			),
 			array(
 				'tag'  => 'Visa D2-1',
-				'title' => 'Du học Chuyên ngành (Hệ Cao đẳng)',
+				'title' => 'Du Học Hệ Cao Đẳng Chính Quy (Mô Hình Co-op)',
 				'rows' => array(
-					array( 'Đối tượng & điều kiện', array(
-						'Tốt nghiệp THPT hoặc tương đương, GPA THPT từ 6.5 trở lên.',
-						'Đạt TOPIK 2+, Sejong 2B hoặc bài kiểm tra nội bộ của Daeduk.',
-					) ),
-					array( 'Thời gian đào tạo chính quy', '2 – 3 năm tùy ngành' ),
-					array( 'Điểm nổi bật', array(
-						'Giảm 40% học phí kỳ 1 khi có TOPIK 2+.',
-						'Mô hình Co-op: học chuyên ngành kết hợp thực tập tại doanh nghiệp đối tác, có công nhận tín chỉ.',
-						'Trợ cấp thực tập, hỗ trợ nơi ở và bữa ăn ngày làm việc theo chính sách doanh nghiệp.',
-					) ),
-					array( 'Lộ trình phát triển', 'Nhận Bằng Cao đẳng chính quy Daeduk khi đủ điều kiện tốt nghiệp; được tư vấn chuyển đổi Visa E-7-1 hoặc học liên thông Đại học nếu đáp ứng điều kiện.' ),
+					array( 'Đối tượng & điều kiện', 'Học sinh đã tốt nghiệp THPT, GPA từ 6.5 trở lên; đạt chuẩn trình độ tiếng Hàn đầu vào theo quy định.' ),
+					array( 'Thời gian đào tạo', '2 – 3 năm tùy theo ngành học' ),
+					array( 'Ưu đãi học bổng', 'Giảm 40% học phí kỳ 1 khi đạt chuẩn tiếng Hàn đầu vào.' ),
+					array( 'Đào tạo & thực tập', 'Lý thuyết chuyên ngành kết hợp thực tập có trợ cấp tại doanh nghiệp theo lĩnh vực chuyên ngành liên kết.' ),
+					array( 'Đầu ra', 'Tốt nghiệp nhận Bằng Cao đẳng chính quy Daeduk; được tư vấn thủ tục học liên thông Đại học hoặc chuyển đổi visa làm việc khi đáp ứng đủ điều kiện.' ),
 				),
 			),
 			array(
