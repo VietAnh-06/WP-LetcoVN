@@ -29,48 +29,35 @@ $configs = array(
 		'visas'          => array(
 			array(
 				'tag'  => 'Visa D4-1',
-				'title' => 'Chương trình Dự bị Tiếng Hàn',
+				'title' => 'Du học dự bị tiếng Hàn',
 				'rows' => array(
-					array( 'Đối tượng & điều kiện', array(
-						'Tốt nghiệp THPT hoặc tương đương.',
-						'GPA THPT từ 6.5 trở lên.',
-						'Chưa bắt buộc có chứng chỉ tiếng Hàn khi nộp hồ sơ.',
-					) ),
-					array( 'Thời gian khóa học tiếng', '6 – 12 tháng' ),
-					array( 'Điểm nổi bật', array(
-						'Đào tạo tiếng Hàn bài bản kết hợp các hoạt động trải nghiệm văn hóa Hàn Quốc.',
-						'Tạo nền tảng ngôn ngữ và kỹ năng sống trước khi làm thủ tục chuyển tiếp sang hệ chuyên ngành.',
-					) ),
+					array( 'Đối tượng & điều kiện tuyển chọn', 'Tốt nghiệp THPT hoặc tương đương, GPA THPT từ 6.5 trở lên; chưa bắt buộc có chứng chỉ tiếng Hàn khi nộp hồ sơ.' ),
+					array( 'Thời gian chương trình', '6 – 12 tháng' ),
+					array( 'Mức ưu đãi học bổng', 'Áp dụng theo quy định của Viện Hàn ngữ Đại học Daeduk theo từng kỳ tuyển sinh.' ),
+					array( 'Chế độ sinh hoạt & chỗ ở', 'Ký túc xá Đại học Daeduk (chi phí theo bảng phí riêng); tự chuẩn bị kinh phí sinh hoạt. Không áp dụng thực tập có trợ cấp.' ),
 					array( 'Lộ trình phát triển', 'Đạt yêu cầu tiếng Hàn của hệ chuyên ngành, sau đó nộp hồ sơ xin chuyển tiếp tư cách lưu trú sang Visa D2-1 nếu đủ điều kiện.' ),
 				),
 			),
 			array(
 				'tag'  => 'Visa D2-1',
-				'title' => 'Du Học Hệ Cao Đẳng Chính Quy (Mô Hình Co-op)',
+				'title' => 'Du học Cao đẳng chính quy (Mô hình Co-op)',
 				'rows' => array(
-					array( 'Đối tượng & điều kiện', 'Học sinh đã tốt nghiệp THPT, GPA từ 6.5 trở lên; đạt chuẩn trình độ tiếng Hàn đầu vào theo quy định.' ),
-					array( 'Thời gian đào tạo', '2 – 3 năm tùy theo ngành học' ),
-					array( 'Ưu đãi học bổng', 'Giảm 40% học phí kỳ 1 khi đạt chuẩn tiếng Hàn đầu vào.' ),
-					array( 'Đào tạo & thực tập', 'Lý thuyết chuyên ngành kết hợp thực tập có trợ cấp tại doanh nghiệp theo lĩnh vực chuyên ngành liên kết.' ),
-					array( 'Đầu ra', 'Tốt nghiệp nhận Bằng Cao đẳng chính quy Daeduk; được tư vấn thủ tục học liên thông Đại học hoặc chuyển đổi visa làm việc khi đáp ứng đủ điều kiện.' ),
+					array( 'Đối tượng & điều kiện tuyển chọn', 'Học sinh đã tốt nghiệp THPT, GPA từ 6.5 trở lên; đạt chuẩn trình độ tiếng Hàn đầu vào theo quy định.' ),
+					array( 'Thời gian chương trình', '2 – 3 năm tùy theo ngành học' ),
+					array( 'Mức ưu đãi học bổng', 'Giảm 40% học phí kỳ 1 khi đạt chuẩn tiếng Hàn đầu vào.' ),
+					array( 'Chế độ thực tập & hỗ trợ sinh hoạt', 'Lý thuyết chuyên ngành kết hợp thực tập theo lĩnh vực chuyên ngành liên kết; nơi ở (ký túc xá / nhà ở thực tập), bữa ăn trong ngày làm việc và khoản trợ cấp thực tập hàng tháng được thực hiện theo chính sách của từng doanh nghiệp.' ),
+					array( 'Lộ trình phát triển', 'Tốt nghiệp nhận Bằng Cao đẳng chính quy Daeduk; được tư vấn thủ tục học liên thông Đại học hoặc chuyển đổi visa làm việc khi đáp ứng đủ điều kiện.' ),
 				),
 			),
 			array(
 				'tag'      => 'Visa D2-6',
-				'title'    => 'Trao đổi Sinh viên Quốc tế',
+				'title'    => 'Trao đổi sinh viên quốc tế',
 				'featured' => true,
 				'rows'     => array(
-					array( 'Đối tượng & điều kiện', array(
-						'Sinh viên từ năm 2 trở đi tại HaUI hoặc trường ĐH/CĐ đối tác Việt Nam.',
-						'Thuộc nhóm ngành liên kết: Cơ khí, Ô tô, Điện – Tự động hóa, Du lịch – Khách sạn.',
-						'Ưu tiên có TOPIK 2 trở lên.',
-					) ),
-					array( 'Thời hạn chương trình trao đổi', 'Visa ngắn hạn 6 – 12 tháng' ),
-					array( 'Điểm nổi bật', array(
-						'Tín chỉ được công nhận về trường gốc theo thỏa thuận giữa các trường.',
-						'Giảm khoảng 60% học phí kỳ 1 khi đạt TOPIK 2+ trước xuất cảnh.',
-						'Hỗ trợ nơi ở, bữa ăn ngày làm việc và trợ cấp thực tập theo chính sách doanh nghiệp.',
-					) ),
+					array( 'Đối tượng & điều kiện tuyển chọn', 'Sinh viên từ năm 2 trở đi tại HaUI hoặc trường ĐH/CĐ đối tác Việt Nam, thuộc nhóm ngành liên kết: Cơ khí, Ô tô, Điện – Tự động hóa, Du lịch – Khách sạn; ưu tiên có TOPIK 2 trở lên.' ),
+					array( 'Thời gian chương trình', 'Visa ngắn hạn 6 – 12 tháng' ),
+					array( 'Mức ưu đãi học bổng', 'Giảm khoảng 60% học phí kỳ 1 khi đạt TOPIK 2+ trước xuất cảnh.' ),
+					array( 'Chế độ thực tập & hỗ trợ sinh hoạt', 'Tín chỉ được công nhận về trường gốc theo thỏa thuận giữa các trường; nơi ở (ký túc xá / nhà ở thực tập), bữa ăn trong ngày làm việc và khoản trợ cấp thực tập hàng tháng được thực hiện theo chính sách của từng doanh nghiệp.' ),
 					array( 'Lộ trình phát triển', 'Bắt buộc trở về Việt Nam tốt nghiệp, hoặc xin gia hạn/chuyển tiếp sang D2-1 nếu đủ điều kiện.' ),
 				),
 			),
@@ -154,7 +141,7 @@ $configs = array(
 				'stats'  => array(
 					array( 'Hơn 60', 'doanh nghiệp Hàn Quốc đối tác tiếp nhận sinh viên thực tập', true ),
 					array( 'Theo ngành liên kết', 'thực tập có trợ cấp tại doanh nghiệp theo lĩnh vực chuyên ngành liên kết', false, 'text' ),
-					array( 'Có trợ cấp thực tập', 'hỗ trợ sinh hoạt phí thực tập theo chính sách doanh nghiệp', false, 'text' ),
+					array( 'Có trợ cấp thực tập', 'hỗ trợ sinh hoạt phí thực tập theo chính sách của từng doanh nghiệp', false, 'text' ),
 					array( 'TOPIK 2+: giảm từ 40% đến khoảng 60%', 'cơ hội học bổng ưu đãi học phí kỳ đầu, áp dụng cho ứng viên đạt TOPIK 2+, tùy diện visa', false, 'text' ),
 				),
 			),
