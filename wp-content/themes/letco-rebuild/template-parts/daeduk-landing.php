@@ -222,6 +222,7 @@ $faq = array(
 				<?php endforeach; ?>
 			</div>
 			<p class="jd-note"><?php echo esc_html( $data['visas_note'] ); ?></p>
+			<p class="jd-note"><?php echo esc_html( $data['visa_authority'] ); ?></p>
 			<?php $signup( $dk['buttons']['he-dao-tao'] ); ?>
 		</div>
 	</section>
@@ -321,6 +322,7 @@ $faq = array(
 			'compact'           => true,
 			'button'            => $data['lead_button'],
 			'lead_extra'        => true,
+			'gpa_label'         => 'Điểm GPA THPT / ĐH-CĐ (nếu có, không bắt buộc)',
 			'school_summary'    => true,
 			'program'           => 'Du học ' . $data['name'],
 			'form_note'         => 'Chưa có TOPIK vẫn có thể đăng ký để lên kế hoạch học tiếng.',

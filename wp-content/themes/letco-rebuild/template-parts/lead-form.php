@@ -26,6 +26,7 @@ $program         = isset( $args['program'] ) ? $args['program'] : '';
 $program_choices = isset( $args['program_choices'] ) ? $args['program_choices'] : array();
 $major_choices   = isset( $args['major_choices'] ) ? $args['major_choices'] : array();
 $study_status    = ! empty( $args['study_status'] );
+$gpa_label       = isset( $args['gpa_label'] ) ? $args['gpa_label'] : 'Điểm GPA THPT';
 $thanks          = isset( $args['thanks'] ) ? $args['thanks'] : 'Cảm ơn bạn! LETCO đã nhận được thông tin và sẽ sớm liên hệ.';
 $consent         = isset( $args['consent'] ) ? $args['consent'] : 'Bằng việc gửi thông tin, bạn đồng ý để LETCO liên hệ phục vụ nhu cầu tư vấn.';
 $phone_example   = isset( $args['phone_example'] ) ? $args['phone_example'] : '0989 086 386';
@@ -130,10 +131,10 @@ $lead_status     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lea
 					<?php if ( empty( $major_choices ) ) : ?>
 						<div class="form-row">
 							<label>Năm sinh<input type="text" name="birth_year" inputmode="numeric" maxlength="4" placeholder="2007"></label>
-							<label>Điểm GPA THPT<input type="text" name="gpa" inputmode="decimal" maxlength="4" placeholder="7.5"></label>
+							<label><?php echo esc_html( $gpa_label ); ?><input type="text" name="gpa" inputmode="decimal" maxlength="4" placeholder="7.5"></label>
 						</div>
 					<?php elseif ( ! $study_status ) : ?>
-						<label>Điểm GPA THPT<input type="text" name="gpa" inputmode="decimal" maxlength="4" placeholder="7.5"></label>
+						<label><?php echo esc_html( $gpa_label ); ?><input type="text" name="gpa" inputmode="decimal" maxlength="4" placeholder="7.5"></label>
 					<?php endif; ?>
 					<fieldset class="study-choice-group">
 						<legend>Trình độ tiếng Hàn hiện tại</legend>

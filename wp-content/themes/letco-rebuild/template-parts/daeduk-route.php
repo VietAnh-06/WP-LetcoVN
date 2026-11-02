@@ -29,7 +29,7 @@ get_template_part( 'template-parts/landing', 'header', array( 'links' => array( 
 		</div>
 	</section>
 	<section class="section jd-section jd-steps-zone" id="chuong-trinh">
-		<div class="container"><header class="jd-head jd-head--left"><p class="jd-eyebrow">Nội dung chương trình</p><h2>Học gì và nhận được gì?</h2></header><ul class="jd-route-list"><?php foreach ( $route['outcomes'] as $item ) : ?><li><?php echo esc_html( $item ); ?></li><?php endforeach; ?></ul></div>
+		<div class="container"><header class="jd-head jd-head--left"><p class="jd-eyebrow">Nội dung chương trình</p><h2>Học gì và nhận được gì?</h2></header><ul class="jd-route-list"><?php foreach ( $route['outcomes'] as $item ) : ?><li><?php echo esc_html( $item ); ?></li><?php endforeach; ?></ul><p class="jd-note"><?php echo esc_html( $data['visa_authority'] ); ?></p></div>
 	</section>
 	<section class="section jd-section jd-experience" id="hinh-anh">
 		<div class="container">
