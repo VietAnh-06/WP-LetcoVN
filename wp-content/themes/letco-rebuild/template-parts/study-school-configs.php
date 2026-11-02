@@ -55,7 +55,7 @@ $configs = array(
 					array( 'Đối tượng & điều kiện tuyển chọn', 'Sinh viên từ năm 2 trở đi tại HaUI hoặc trường ĐH/CĐ đối tác Việt Nam, thuộc nhóm ngành liên kết: Cơ khí, Ô tô, Điện – Tự động hóa, Du lịch – Khách sạn; ưu tiên có TOPIK 2 trở lên.' ),
 					array( 'Thời gian chương trình', 'Visa ngắn hạn 6 – 12 tháng' ),
 					array( 'Mức ưu đãi học bổng', 'Giảm khoảng 60% học phí kỳ 1 khi đạt TOPIK 2+ trước xuất cảnh.' ),
-					array( 'Lộ trình phát triển', 'Trở về Việt Nam tốt nghiệp trường gốc, hoặc xin tiếp tục học tại Hàn Quốc nếu đáp ứng đủ điều kiện.' ),
+					array( 'Lộ trình phát triển', 'Có thể tiếp tục học tại Hàn Quốc hoặc trở về Việt Nam sau khi hoàn thành chương trình.' ),
 				),
 			),
 		),
