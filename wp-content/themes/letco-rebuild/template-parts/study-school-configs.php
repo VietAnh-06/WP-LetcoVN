@@ -133,7 +133,7 @@ $configs = array(
 				'kicker' => array( 'K‑Tech Bridge', 'HaUI – Đại học Daeduk', 'Daejeon, Hàn Quốc' ),
 				'title'  => 'Học tại Hàn Quốc, trải nghiệm môi trường doanh nghiệp',
 				'accent' => 'trải nghiệm môi trường doanh nghiệp',
-				'sub'    => 'K‑Tech Bridge là cơ hội học tại Đại học Daeduk, làm quen cuộc sống mới và, tùy lộ trình, thực tập tại doanh nghiệp theo chuyên ngành. Chưa có TOPIK hoặc chưa rõ hướng đi, LETCO sẽ hướng dẫn bạn từ bước đầu.',
+				'sub'    => 'Học tại Đại học Daeduk, khám phá cuộc sống ở Hàn Quốc và trải nghiệm doanh nghiệp theo lộ trình phù hợp. Chưa có TOPIK? LETCO sẽ cùng bạn chuẩn bị từ bước đầu.',
 				'link'   => array( 'Xem trải nghiệm', '#trai-nghiem' ),
 				'photo'  => array( 'letco-korea-departure-2026-09.jpg', 'Học viên LETCO chuẩn bị khởi hành sang Hàn Quốc tại sân bay' ),
 				'card'   => array( 'chuẩn bị khởi hành sang Hàn Quốc', 'Học viên LETCO' ),
@@ -142,12 +142,12 @@ $configs = array(
 			'experience' => array(
 				'label' => 'Trải nghiệm',
 				'title' => 'Bạn sẽ học và sống thế nào?',
-				'intro' => 'Hình ảnh thật từ LETCO, Đại học Daeduk và doanh nghiệp đối tác, không riêng một khóa K‑Tech Bridge. Hoạt động cụ thể tùy chương trình và kỳ học.',
+				'intro' => 'Hình ảnh từ LETCO và Đại học Daeduk, không riêng một khóa K‑Tech Bridge; ảnh doanh nghiệp mang tính minh họa. Hoạt động cụ thể tùy chương trình và kỳ học.',
 				'items' => array(
 					array( 'daeduk-letco-class-visit.jpg', 'Chuẩn bị tại Việt Nam', 'Đại diện Daeduk gặp gỡ học viên tại lớp học LETCO ở Việt Nam', 1200, 898 ),
 					array( 'daeduk-life-ev-vr-class.jpg', 'Học bằng công nghệ mới', 'Lớp chẩn đoán xe điện bằng VR của Khoa Quản lý an toàn xe điện', 800, 600 ),
 					array( 'daeduk-life-lab-practice.jpg', 'Thực hành chuyên ngành', 'Sinh viên Daeduk thực hành trong phòng thí nghiệm chuyên ngành', 705, 470 ),
-					array( 'daeduk-company-ibtech.jpg', 'Môi trường doanh nghiệp', 'Hoạt động tại doanh nghiệp đối tác IB Tech', 640, 480 ),
+					array( 'daeduk-company-ibtech.jpg', 'Môi trường doanh nghiệp', 'Hình ảnh minh họa môi trường làm việc', 640, 480 ),
 					array( 'daeduk-life-intl-welcome.jpg', 'Ngày đầu nhập học', 'Buổi chào mừng du học sinh quốc tế nhập học tại Đại học Daeduk', 752, 512 ),
 					array( 'daeduk-life-lunar-new-year.jpg', 'Đón Tết tại Hàn', 'Trò chơi truyền thống dịp Tết cùng học viên tiếng Hàn người Việt tại Daeduk', 760, 427 ),
 				),
@@ -281,16 +281,14 @@ $configs = array(
 					array( 'Cần chuẩn bị những giấy tờ gì?', 'Bằng và học bạ THPT; bằng, bảng điểm cấp học cao nhất (nếu có); giấy xác nhận sinh viên và bảng điểm (với sinh viên trao đổi); giấy khai sinh, căn cước của bạn và bố mẹ; giấy xác nhận cư trú (CT07); chứng minh tài chính theo quy định lãnh sự.' ),
 				),
 			),
-			// Real quotes only, attributed to the stage the student was at when speaking:
-			// array( quote, name or description, major/intake, photo file or '' ). The section stays hidden while empty.
-			'voices' => array(
-				'label' => 'Chia sẻ',
-				'title' => 'Các bạn nói gì khi bắt đầu tìm hiểu',
-				'intro' => 'Chia sẻ của các bạn trong giai đoạn tìm hiểu và chuẩn bị du học.',
+			// Situations a reader can recognise, each with what LETCO helps with: question, one line.
+			'stages' => array(
+				'label' => 'Tìm hướng đi',
+				'title' => 'Bạn đang ở bước nào?',
 				'items' => array(
-					array( 'Mình tìm hiểu du học từ năm lớp 12 nhưng cứ phân vân vì chưa biết tiếng Hàn. Sau khi được tư vấn, mình hiểu những việc cần chuẩn bị và bắt đầu lên kế hoạch học tiếng. Có từng bước cụ thể, mình thấy việc du học gần với mình hơn.', 'Minh Anh', 'Đang chuẩn bị học tiếng Hàn', '' ),
-					array( 'Mình đang học cơ khí nên khá tò mò sinh viên ở Hàn Quốc học thực hành như thế nào. Khi tìm hiểu chương trình, mình chú ý nhất đến phần học tại trường và trải nghiệm doanh nghiệp. Mình muốn thử một môi trường mới để hiểu thêm ngành mình đang theo học.', 'Đức Huy', 'Quan tâm chương trình trao đổi', '' ),
-					array( 'Điều mình băn khoăn nhất là học xong sẽ theo hướng nào. Khi trao đổi về ngành học và lộ trình, mình có thêm thông tin để cùng bố mẹ cân nhắc. Mình vẫn còn nhiều thứ phải chuẩn bị, nhưng đã biết nên bắt đầu từ đâu.', 'Thu Hà', 'Đang tìm lộ trình học chuyên ngành', '' ),
+					array( 'Bạn muốn đi nhưng chưa biết bắt đầu từ đâu?', 'LETCO hỗ trợ bạn tìm hiểu lộ trình và những bước chuẩn bị đầu tiên.' ),
+					array( 'Bạn chưa có TOPIK hoặc lo hồ sơ chưa đủ tốt?', 'Tư vấn viên cùng bạn xem cần bổ sung những gì và lên kế hoạch học tiếng Hàn.' ),
+					array( 'Bạn đang cân nhắc ngành học và hướng đi cùng gia đình?', 'LETCO cung cấp thông tin về ngành học, lộ trình và chi phí để cả nhà cùng cân nhắc.' ),
 				),
 			),
 		),

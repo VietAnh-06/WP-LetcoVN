@@ -101,7 +101,6 @@ $icon = static function ( $name, $size = 24 ) use ( $icons ) {
 	);
 };
 
-$voices = isset( $dk['voices'] ) ? $dk['voices'] : array();
 $nav    = array( 'trai-nghiem' => 'Trải nghiệm', 'quyen-loi' => 'Quyền lợi', 'he-dao-tao' => 'Lộ trình', 'hoi-dap' => 'Hỏi đáp' );
 
 get_template_part(
@@ -122,11 +121,10 @@ $work       = $dk['work'];
 $benefits   = $dk['benefits'];
 $students   = isset( $dk['students'] ) ? $dk['students'] : array();
 $faq = array(
-	'label' => 'Chọn chương trình', 'title' => 'Bạn nên bắt đầu từ đâu?', 'intro' => 'Mỗi diện có điều kiện và lịch tuyển sinh riêng. Xem trang chương trình hoặc đăng ký tư vấn để chọn lộ trình phù hợp.',
+	'label' => 'Chọn chương trình', 'title' => 'Bạn nên bắt đầu từ đâu?', 'intro' => 'Mỗi chương trình có điều kiện, chi phí và lịch tuyển sinh riêng. Xem trang chương trình hoặc đăng ký tư vấn để chọn lộ trình phù hợp.',
 	'items' => array(
 		array( '3 chương trình khác nhau thế nào?', 'D2-6 dành cho sinh viên trường đối tác đi trao đổi 6 – 12 tháng. D2-1 là hệ Cao đẳng chuyên ngành 2 – 3 năm. D4-1 là giai đoạn học tiếng Hàn để chuẩn bị học tiếp.' ),
-		array( 'Chưa xác định được diện phù hợp thì làm gì?', 'Bạn có thể gửi form bên dưới với trường đang học hoặc năm tốt nghiệp. LETCO đối chiếu học lực, tiếng Hàn và mục tiêu để tư vấn chương trình phù hợp.' ),
-		array( 'Có thể dùng chung chi phí và lịch tuyển sinh không?', 'Không. Mỗi chương trình có lộ trình riêng; LETCO tư vấn ngân sách theo hồ sơ. D4-1 không áp dụng trợ cấp thực tập của D2-6.' ),
+		array( 'Mình chưa biết chọn chương trình nào thì sao?', 'Bạn có thể gửi form bên dưới với trường đang học hoặc năm tốt nghiệp. LETCO đối chiếu học lực, tiếng Hàn và mục tiêu để tư vấn chương trình phù hợp.' ),
 	),
 );
 ?>
@@ -200,32 +198,24 @@ $faq = array(
 		</div>
 	</section>
 
-	<?php if ( ! empty( $voices['items'] ) ) : ?>
-	<?php // Real student quotes only; each attribution states the stage the student was at. ?>
-	<section class="section jd-section jd-voices-zone" id="cam-nhan">
+	<?php // Recognisable situations that lead to the form while interest is highest. ?>
+	<section class="section jd-section jd-stage-zone" id="buoc-cua-ban">
 		<div class="container">
-			<?php $head( $voices['label'], $voices['title'], $voices['intro'], '', 'left' ); ?>
-			<ul class="jd-voice-grid">
-				<?php foreach ( $voices['items'] as $voice ) : ?>
+			<?php $head( $dk['stages']['label'], $dk['stages']['title'], '', '', 'left' ); ?>
+			<ul class="jd-stages">
+				<?php foreach ( $dk['stages']['items'] as $stage ) : ?>
 					<li>
-						<figure class="jd-voice">
-							<blockquote><p><?php echo esc_html( $voice[0] ); ?></p></blockquote>
-							<figcaption>
-								<?php if ( ! empty( $voice[3] ) ) : ?>
-									<?php $image( $voice[3], $voice[1], 'loading="lazy" class="jd-voice-photo"' ); ?>
-								<?php endif; ?>
-								<span><strong><?php echo esc_html( $voice[1] ); ?></strong><?php echo empty( $voice[2] ) ? '' : esc_html( $voice[2] ); ?></span>
-							</figcaption>
-						</figure>
+						<h3><?php echo esc_html( $stage[0] ); ?></h3>
+						<p><?php echo esc_html( $stage[1] ); ?></p>
 					</li>
 				<?php endforeach; ?>
 			</ul>
+			<?php $signup( $dk['buttons']['he-dao-tao'] ); ?>
 		</div>
 	</section>
-	<?php endif; ?>
 
 	<?php if ( ! empty( $students['facts'] ) ) : ?>
-	<?php // Checked facts about students already selected; quotes are added to 'voices' only when real. ?>
+	<?php // Checked facts about students already selected. ?>
 	<section class="section jd-section jd-students-zone" id="sinh-vien">
 		<div class="container jd-students">
 			<figure class="jd-students-photo">
