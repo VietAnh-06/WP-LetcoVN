@@ -41,6 +41,18 @@ function letco_daeduk_url( $route = '' ) {
 	return $route ? trailingslashit( $base ) . $route . '/' : $base;
 }
 
+/** Escaped value of a visa fact: plain text, or a list when given an array of strings. */
+function letco_daeduk_fact_value( $value ) {
+	if ( ! is_array( $value ) ) {
+		return esc_html( $value );
+	}
+	$parts = '';
+	foreach ( $value as $part ) {
+		$parts .= '<li>' . esc_html( $part ) . '</li>';
+	}
+	return '<ul class="jd-pathway-parts">' . $parts . '</ul>';
+}
+
 function letco_is_landing() {
 	return is_front_page() || is_page( array( 'du-hoc-han-quoc', 'du-hoc-nhat-ban' ) ) || is_page_template( array( 'template-study-school.php', 'template-study-hub.php' ) );
 }

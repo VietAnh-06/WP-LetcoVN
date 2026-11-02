@@ -24,37 +24,47 @@ $configs = array(
 			'image'       => 'daeduk-og.jpg',
 			'image_alt'   => 'Khuôn viên Đại học Daeduk, Daejeon',
 		),
-		'visas_title'    => 'Ba diện tham gia, chọn theo hồ sơ của bạn',
+		'visas_title'    => '3 diện tham gia, chọn theo hồ sơ của bạn',
 		'visas_intro'    => 'Sinh viên đi trao đổi theo D2-6; học sinh tốt nghiệp THPT học Cao đẳng D2-1, hoặc bắt đầu bằng tiếng Hàn D4-1 nếu chưa có TOPIK 2.',
 		'visas'          => array(
 			array(
-				'tag'      => 'Visa D2-6',
-				'title'    => 'Trao đổi sinh viên',
-				'featured' => true,
-				'rows'     => array(
-					array( 'Đối tượng', 'Sinh viên năm 2, 3, 4 của HaUI và trường đối tác (như ĐH Công nghệ Đông Á)' ),
-					array( 'Thời gian', '6 tháng (1 học kỳ) hoặc 12 tháng (2 học kỳ)' ),
-					array( 'Cấu trúc 6 tháng', '4 tuần học tại Daeduk, 20 tuần thực tập có lương tại doanh nghiệp đúng ngành' ),
-					array( 'Kết quả', 'Công nhận tín chỉ theo thỏa thuận với trường Việt Nam; không mặc nhiên cấp bằng Cao đẳng sau kỳ trao đổi' ),
+				'tag'  => 'Visa D4-1',
+				'title' => 'Chương trình Dự bị Tiếng Hàn',
+				'rows' => array(
+					array( 'Đối tượng', 'Tốt nghiệp THPT hoặc sinh viên chưa có TOPIK 2' ),
+					array( 'Thời gian khóa học tiếng', '6 – 24 tháng' ),
+					array( 'Nội dung trọng tâm', array(
+						'Đào tạo tiếng Hàn tập trung, giúp sinh viên đạt trình độ đầu vào theo yêu cầu của hệ chuyên ngành.',
+						'Trải nghiệm văn hóa và rèn luyện kỹ năng sống tại môi trường Hàn Quốc.',
+						'Được nhà trường hướng dẫn thủ tục chuyển tiếp tư cách lưu trú sang hệ chuyên ngành sau khi hoàn thành khóa học.',
+					) ),
 				),
 			),
 			array(
 				'tag'  => 'Visa D2-1',
-				'title' => 'Cao đẳng chính quy',
+				'title' => 'Du học Chuyên ngành (Hệ Cao đẳng)',
 				'rows' => array(
-					array( 'Đối tượng', 'Tốt nghiệp THPT (GPA từ 6.5), có TOPIK 2' ),
-					array( 'Thời gian', '2 – 3 năm tùy ngành' ),
-					array( 'Hình thức', 'Học lý thuyết tại Daeduk xen kỳ thực tập có lương, 15 tín chỉ mỗi kỳ thực tập' ),
-					array( 'Kết quả', 'Bằng Cao đẳng Daeduk; cơ hội visa kỹ sư E‑7‑1' ),
+					array( 'Đối tượng', 'Tốt nghiệp THPT, có TOPIK 2' ),
+					array( 'Thời gian đào tạo chính quy', '2 – 3 năm' ),
+					array( 'Nội dung trọng tâm', array(
+						'Tiếp thu kiến thức chuyên ngành kết hợp các kỳ thực tập thực tế tại các doanh nghiệp đối tác.',
+						'Sinh viên hưởng chế độ hỗ trợ sinh hoạt phí / học bổng thực tập theo chính sách của doanh nghiệp tiếp nhận.',
+						'Tốt nghiệp nhận Bằng Cao đẳng chính quy; được tư vấn lộ trình phát triển nghề nghiệp hoặc tiếp tục học liên thông đại học theo quy định hiện hành của Hàn Quốc.',
+					) ),
 				),
 			),
 			array(
-				'tag'  => 'Visa D4-1',
-				'title' => 'Học tiếng Hàn dự bị',
-				'rows' => array(
-					array( 'Đối tượng', 'Tốt nghiệp THPT hoặc sinh viên chưa có TOPIK 2' ),
-					array( 'Thời gian', '6 – 12 tháng tại Viện Hàn ngữ Daeduk (10 tuần mỗi kỳ)' ),
-					array( 'Sau đó', 'Đạt yêu cầu tiếng Hàn, được trường tiếp nhận và được xét chuyển sang D2-1' ),
+				'tag'      => 'Visa D2-6',
+				'title'    => 'Trao đổi Sinh viên Quốc tế',
+				'featured' => true,
+				'rows'     => array(
+					array( 'Đối tượng', 'Sinh viên của HaUI và trường đối tác' ),
+					array( 'Thời hạn chương trình trao đổi', '6 – 12 tháng' ),
+					array( 'Nội dung trọng tâm', array(
+						'Tích lũy tín chỉ học tập và thực tập được công nhận chuyển đổi về trường gốc tại Việt Nam.',
+						'Thực tập trải nghiệm môi trường làm việc thực tế tại Hàn Quốc, được hỗ trợ nơi ở, bữa ăn và trợ cấp thực tập theo thỏa thuận hợp tác.',
+						'Nâng cao năng lực ngoại ngữ và tác phong làm việc chuẩn doanh nghiệp quốc tế.',
+					) ),
 				),
 			),
 		),
@@ -136,7 +146,7 @@ $configs = array(
 				'stats'  => array(
 					array( 'Hơn 60', 'doanh nghiệp Hàn Quốc đối tác tiếp nhận sinh viên thực tập', true ),
 					array( '20 tuần', 'thực tập có lương tại doanh nghiệp đúng ngành trong mỗi kỳ', true ),
-					array( '2,15–2,7 triệu KRW', 'trợ cấp thực tập tham khảo mỗi tháng, theo văn bản tiếp nhận', false, 'text' ),
+					array( '2,7–3,0 triệu KRW', 'trợ cấp thực tập tham khảo mỗi tháng, theo văn bản tiếp nhận', false, 'text' ),
 					array( 'Giảm 40%', 'học phí kỳ đầu cho sinh viên Cao đẳng D2-1 trúng tuyển', true ),
 				),
 			),
@@ -147,10 +157,9 @@ $configs = array(
 			),
 			// Who runs the programme: icon, party, role.
 			'ecosystem' => array(
-				array( 'badge', 'LETCO – Đại học Công nghiệp Hà Nội', 'Tiếp nhận hồ sơ, dạy tiếng Hàn tập trung tại Tòa A5 – HaUI và quản lý sinh viên trước khi xuất cảnh.' ),
-				array( 'exchange', 'Trường Việt Nam & đơn vị điều phối', 'HaUI và ĐH Công nghệ Đông Á phối hợp tuyển chọn, đào tạo và công nhận kết quả học tập theo thỏa thuận. Hoàng Phát ICI kết nối, điều phối dự án và hỗ trợ hồ sơ.' ),
+				array( 'badge', 'LETCO – Đại học Công nghiệp Hà Nội', 'Tiếp nhận hồ sơ & dạy tiếng Hàn tại Đại học Công nghiệp Hà Nội.' ),
 				array( 'book', 'Đại học Daeduk', 'Đào tạo chuyên ngành, quản lý học thuật, công nhận tín chỉ và cấp bằng Cao đẳng chính quy.' ),
-				array( 'gear', 'Hơn 60 doanh nghiệp Hàn Quốc', 'Tham gia thiết kế đào tạo, tiếp nhận và đánh giá thực tập; xem xét tuyển dụng, hỗ trợ hồ sơ E‑7‑1 khi ứng viên đáp ứng điều kiện.' ),
+				array( 'gear', 'Hơn 60 doanh nghiệp Hàn Quốc', 'Tiếp nhận và đánh giá thực tập; xem xét tuyển dụng, hỗ trợ hồ sơ E‑7‑1 khi ứng viên đáp ứng điều kiện.' ),
 			),
 			// Why the programme is worth it: icon name (from the template's icon set), title, one line.
 			'benefits' => array(
@@ -158,7 +167,7 @@ $configs = array(
 				'title' => 'Sinh viên nhận được gì?',
 				'intro' => 'Tích lũy tiếng Hàn, kiến thức chuyên ngành và kinh nghiệm doanh nghiệp trong một lộ trình có tuyển chọn, đào tạo và đánh giá.',
 				'items' => array(
-					array( 'gear', 'Thực tập gắn với chuyên ngành', 'Theo hồ sơ K-Tech Bridge, thực tập Co-op được tổ chức thành học phần. Trợ cấp tham khảo 2,15 – 2,7 triệu KRW/tháng; mức nhận và lịch thực tập theo văn bản tiếp nhận.' ),
+					array( 'gear', 'Thực tập gắn với chuyên ngành', 'Theo hồ sơ K-Tech Bridge, thực tập Co-op được tổ chức thành học phần. Trợ cấp tham khảo 2,7 – 3,0 triệu KRW/tháng; mức nhận và lịch thực tập theo văn bản tiếp nhận.' ),
 					array( 'book', 'Tín chỉ được công nhận', '15 tín chỉ mỗi kỳ thực tập; sinh viên trao đổi được trường đang học công nhận kết quả.' ),
 					array( 'exchange', 'Lộ trình đến visa E‑7‑1', 'Sau tốt nghiệp, xem xét D-10 tìm việc hoặc E‑7‑1 khi đáp ứng yêu cầu bằng cấp, công việc và hồ sơ doanh nghiệp; việc chuyển visa cần được xét duyệt.' ),
 					array( 'pin', 'Chỗ ở có sẵn', 'Ký túc xá tại trường và hỗ trợ chỗ ở, bữa ăn tại doanh nghiệp theo gói tiếp nhận. Phí quản lý, điện nước và phần tự chi được xác nhận trước khi tham gia.' ),
@@ -181,7 +190,7 @@ $configs = array(
 						array( 'Vé máy bay & thủ tục xuất cảnh', '15.280.000', '15.280.000' ),
 					),
 					'total' => array( '102.830.000', '119.405.000' ),
-					'note' => 'Tỷ giá dự toán: 19,5 VNĐ/KRW. Khoản nộp trường gồm xét tuyển 100.000 KRW, học phí 600.000 hoặc 1.450.000 KRW và KTX có ăn 3 tháng 1.200.000 KRW. Phí LETCO gồm học tiếng 9 triệu và dịch vụ 41,5 triệu; bảng nguồn vẫn tính học tiếng ở cả hai mức. Thủ tục gồm vé máy bay 10 triệu, visa 1,75 triệu, tem lãnh sự 1,2 triệu, khám sức khỏe 340.000, thi chứng chỉ 550.000, quân tư trang 1,2 triệu và xác thực 240.000 VNĐ. Cột chưa có TOPIK là kịch bản chi phí, không thay thế điều kiện nhập học.',
+					'note' => 'Tỷ giá dự toán: 19,5 VNĐ/KRW. Khoản nộp trường gồm xét tuyển 100.000 KRW, học phí 600.000 hoặc 1.450.000 KRW và KTX có ăn 3 tháng 1.200.000 KRW. Phí LETCO gồm học tiếng 9 triệu và dịch vụ 41,5 triệu; bảng nguồn vẫn tính học tiếng ở cả 2 mức. Thủ tục gồm vé máy bay 10 triệu, visa 1,75 triệu, tem lãnh sự 1,2 triệu, khám sức khỏe 340.000, thi chứng chỉ 550.000, quân tư trang 1,2 triệu và xác thực 240.000 VNĐ. Cột chưa có TOPIK là kịch bản chi phí, không thay thế điều kiện nhập học.',
 				),
 				array(
 					'title' => 'D2-1 · Dự toán xuất cảnh và kỳ đầu (VNĐ)',
@@ -227,7 +236,7 @@ $configs = array(
 					array( 'Nộp hồ sơ, phỏng vấn', 'Đợt sớm: nộp đến 25/11/2026, phỏng vấn 04/12/2026. Đợt chính thức: nộp 04/01 – 20/01/2027.', 'Kết quả 11/12/2026 hoặc 29/01/2027', 'daeduk-students-meeting.jpg', 'Sinh viên tham gia buổi phỏng vấn tuyển chọn tại LETCO' ),
 					array( 'Đóng học phí, nhận visa', 'Nộp tiền cho trường, nhận thư mời và mã code visa.', '10/02 – 12/02/2027', 'daeduk-mou-presentation.jpg', 'Đại học Daeduk giới thiệu chương trình tại lễ ký kết ở Hà Nội' ),
 					array( 'Bay sang Hàn, học 4 tuần', 'Học kiến thức ngành và văn hóa doanh nghiệp tại Đại học Daeduk.', 'Trước 02/03/2027', 'letco-korea-departure-2026-09.jpg', 'Học viên LETCO chuẩn bị khởi hành sang Hàn Quốc' ),
-					array( 'Thực tập có lương', 'Theo mô hình 6 tháng: 20 tuần tại doanh nghiệp đúng ngành, trợ cấp tham khảo 2,15 – 2,7 triệu KRW/tháng. Kết thúc trao đổi, về nước hoàn thành chương trình hoặc xin chuyển tiếp nếu đủ điều kiện.', 'Sau 4 tuần học tại trường', 'daeduk-company-ibtech.jpg', 'Thực tập sinh vận hành máy kiểm tra bảng mạch tại doanh nghiệp đối tác' ),
+					array( 'Thực tập có lương', 'Theo mô hình 6 tháng: 20 tuần tại doanh nghiệp đúng ngành, trợ cấp tham khảo 2,7 – 3,0 triệu KRW/tháng. Kết thúc trao đổi, về nước hoàn thành chương trình hoặc xin chuyển tiếp nếu đủ điều kiện.', 'Sau 4 tuần học tại trường', 'daeduk-company-ibtech.jpg', 'Thực tập sinh vận hành máy kiểm tra bảng mạch tại doanh nghiệp đối tác' ),
 				),
 			),
 			'work'  => array(
@@ -253,7 +262,7 @@ $configs = array(
 					array( 'Thực tập nhận lương có hợp pháp không?', 'Hồ sơ K-Tech Bridge mô tả thực tập Co-op gắn với chuyên ngành, dự kiến công nhận 15 tín chỉ/kỳ. Trước khi tham gia, cần có xác nhận của trường về học phần, doanh nghiệp, thời lượng, trợ cấp và thủ tục cư trú áp dụng. Không suy ra quyền làm toàn thời gian hay miễn giấy phép chỉ từ việc có visa D2-6; LETCO và Daeduk xác nhận căn cứ cho từng đợt.' ),
 					array( 'Chưa biết tiếng Hàn có đăng ký được không?', 'Được. TOPIK 2 là điều kiện trước khi vào học chuyên ngành, không phải khi đăng ký. Bạn học tiếng Hàn tập trung tại LETCO từ đầu; nếu chưa kịp đạt TOPIK 2, có thể sang Hàn theo visa D4-1 để học tiếng tại Daeduk trước.' ),
 					array( 'Không phải sinh viên HaUI có tham gia được không?', 'Được. Sinh viên năm 2, 3, 4 của các trường đối tác (như ĐH Công nghệ Đông Á) đi theo diện trao đổi D2-6. Học sinh tốt nghiệp THPT đi theo diện Cao đẳng D2-1 hoặc học tiếng D4-1. Tư vấn viên kiểm tra trường của bạn khi nhận hồ sơ.' ),
-					array( 'Hết visa D2-6 thì làm thế nào để ở lại Hàn Quốc?', 'Kết thúc trao đổi, bạn về Việt Nam hoàn thành chương trình hoặc xin học tiếp nếu được cơ sở đào tạo tiếp nhận và đáp ứng điều kiện chuyển diện. D-10 tìm việc và E‑7‑1 có yêu cầu riêng về bằng cấp, công việc, doanh nghiệp và hồ sơ cư trú. Không tự động chuyển visa hoặc nhận hai bằng khi hoàn thành D2-6.' ),
+					array( 'Hết visa D2-6 thì làm thế nào để ở lại Hàn Quốc?', 'Kết thúc trao đổi, bạn về Việt Nam hoàn thành chương trình hoặc xin học tiếp nếu được cơ sở đào tạo tiếp nhận và đáp ứng điều kiện chuyển diện. D-10 tìm việc và E‑7‑1 có yêu cầu riêng về bằng cấp, công việc, doanh nghiệp và hồ sơ cư trú. Không tự động chuyển visa hoặc nhận 2 bằng khi hoàn thành D2-6.' ),
 					array( 'Giờ thực tập thế nào, có làm ca đêm không?', 'Thực tập theo giờ hành chính, thứ 2 đến thứ 6. Tăng ca hoặc ca đêm là tự nguyện và có phụ cấp theo luật lao động Hàn Quốc.' ),
 					array( 'Khi thực tập thì ở đâu?', 'Doanh nghiệp cấp ký túc xá; sinh viên chỉ trả phí quản lý, điện nước nếu có, được báo trước khi bố trí. Có bữa ăn trong ngày làm việc.' ),
 					array( 'Khoản dự toán đã gồm những gì, còn khoản nào cần chuẩn bị?', 'Bảng phí gồm khoản nộp trường kỳ đầu, LETCO và thủ tục xuất cảnh theo từng diện. Cần dự trù sinh hoạt ngoài phần hỗ trợ, bảo hiểm, điện nước và các kỳ học tiếp theo. D2-1 chưa gồm sổ đóng băng/chứng minh tài chính cá nhân. D4-1 cần dự toán riêng; mọi khoản bổ sung cần được xác nhận bằng văn bản.' ),

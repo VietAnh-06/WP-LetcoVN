@@ -126,7 +126,7 @@ $students   = isset( $dk['students'] ) ? $dk['students'] : array();
 $faq = array(
 	'label' => 'Chọn chương trình', 'title' => 'Bạn nên bắt đầu từ đâu?', 'intro' => 'Mỗi diện có điều kiện và lịch tuyển sinh riêng. Xem trang chương trình hoặc đăng ký tư vấn để chọn lộ trình phù hợp.',
 	'items' => array(
-		array( 'Ba chương trình khác nhau thế nào?', 'D2-6 dành cho sinh viên trường đối tác đi trao đổi 6 – 12 tháng. D2-1 là hệ Cao đẳng chuyên ngành 2 – 3 năm. D4-1 là giai đoạn học tiếng Hàn để chuẩn bị học tiếp.' ),
+		array( '3 chương trình khác nhau thế nào?', 'D2-6 dành cho sinh viên trường đối tác đi trao đổi 6 – 12 tháng. D2-1 là hệ Cao đẳng chuyên ngành 2 – 3 năm. D4-1 là giai đoạn học tiếng Hàn để chuẩn bị học tiếp.' ),
 		array( 'Chưa xác định được diện phù hợp thì làm gì?', 'Bạn có thể gửi form bên dưới với trường đang học hoặc năm tốt nghiệp. LETCO đối chiếu học lực, tiếng Hàn và mục tiêu để tư vấn chương trình phù hợp.' ),
 		array( 'Có thể dùng chung chi phí và lịch tuyển sinh không?', 'Không. Mỗi chương trình có lộ trình riêng; LETCO tư vấn ngân sách theo hồ sơ. D4-1 không áp dụng trợ cấp thực tập của D2-6.' ),
 	),
@@ -187,7 +187,7 @@ $faq = array(
 	<?php // The parties behind the programme, so visitors see it is not a visa sale. ?>
 	<section class="section jd-section jd-ecosystem-zone" id="doi-tac">
 		<div class="container">
-			<?php $head( 'Hợp tác HaUI – Daeduk', 'Hệ sinh thái đào tạo và tuyển dụng', 'Đơn vị điều phối, trường Việt Nam, Đại học Daeduk và doanh nghiệp phối hợp từ tuyển chọn, đào tạo đến đánh giá và tuyển dụng.', '', 'left' ); ?>
+			<?php $head( 'Hợp tác HaUI – Daeduk', 'Hệ sinh thái đào tạo và tuyển dụng', 'LETCO, Đại học Daeduk và doanh nghiệp phối hợp từ tuyển chọn, đào tạo đến đánh giá và tuyển dụng.', '', 'left' ); ?>
 			<ol class="jd-ecosystem">
 				<?php foreach ( $dk['ecosystem'] as $party ) : ?>
 					<li>
@@ -201,23 +201,23 @@ $faq = array(
 	</section>
 	<?php endif; ?>
 
-	<?php // The three ways in: D2-6 exchange, D2-1 college degree, D4-1 Korean first. ?>
+	<?php // The three ways in: D4-1 Korean first, D2-1 college degree, D2-6 exchange. ?>
 	<section class="section jd-section jd-steps-zone" id="he-dao-tao">
 		<div class="container">
 			<?php $head( 'Diện tham gia', $data['visas_title'], $data['visas_intro'], '', 'left' ); ?>
 			<div class="jd-pathway-grid jd-pathway-grid--<?php echo (int) count( $data['visas'] ); ?>">
 				<?php foreach ( $data['visas'] as $visa_index => $visa ) : ?>
 					<article class="jd-pathway-card<?php echo empty( $visa['featured'] ) ? '' : ' is-featured'; ?>">
-                        <?php $route_photo = array( array( 'daeduk-mou-speech.jpg', 'Phát biểu tại lễ ký kết thỏa thuận hợp tác HaUI – Daeduk ở Hà Nội' ), array( 'daeduk-campus-techno.jpg', 'Một tòa nhà trong khuôn viên Đại học Daeduk' ), array( 'daeduk-life-intl-welcome.jpg', 'Buổi chào mừng du học sinh quốc tế nhập học tại Đại học Daeduk' ) )[ $visa_index ]; ?>
+                        <?php $route_photo = array( array( 'daeduk-life-intl-welcome.jpg', 'Buổi chào mừng du học sinh quốc tế nhập học tại Đại học Daeduk' ), array( 'daeduk-campus-techno.jpg', 'Một tòa nhà trong khuôn viên Đại học Daeduk' ), array( 'daeduk-mou-speech.jpg', 'Phát biểu tại lễ ký kết thỏa thuận hợp tác HaUI – Daeduk ở Hà Nội' ) )[ $visa_index ]; ?>
 						<figure class="jd-pathway-photo"><?php $image( $route_photo[0], $route_photo[1] ); ?></figure>
 						<span class="jd-pathway-tag"><?php echo esc_html( $visa['tag'] ); ?></span>
 						<h3><?php echo esc_html( $visa['title'] ); ?></h3>
 						<dl class="jd-pathway-facts">
 							<?php foreach ( $visa['rows'] as $row ) : ?>
-								<div><dt><?php echo esc_html( $row[0] ); ?></dt><dd><?php echo esc_html( $row[1] ); ?></dd></div>
+								<div><dt><?php echo esc_html( $row[0] ); ?></dt><dd><?php echo letco_daeduk_fact_value( $row[1] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped by the helper. ?></dd></div>
 							<?php endforeach; ?>
 						</dl>
-						<a class="jd-button" href="<?php echo esc_url( letco_daeduk_url( array( 'd2-6', 'd2-1', 'd4-1' )[ $visa_index ] ) ); ?>">Xem chương trình <?php echo esc_html( $visa['tag'] ); ?></a>
+						<a class="jd-button" href="<?php echo esc_url( letco_daeduk_url( array( 'd4-1', 'd2-1', 'd2-6' )[ $visa_index ] ) ); ?>">Xem chương trình <?php echo esc_html( $visa['tag'] ); ?></a>
 					</article>
 				<?php endforeach; ?>
 			</div>

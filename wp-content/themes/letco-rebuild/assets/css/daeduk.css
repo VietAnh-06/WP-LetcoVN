@@ -412,6 +412,14 @@
 	line-height: 1.6;
 }
 
+.jd-pathway-parts {
+	display: grid;
+	gap: 6px;
+	margin: 0;
+	padding: 0 0 0 18px;
+	list-style: disc;
+}
+
 @media (min-width: 640px) {
 	.jd-pathway-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4669,7 +4677,6 @@
 .jd-budget thead, .jd-budget tfoot { background: #eef4fc; color: #17345b; }
 .jd-budget td { font-variant-numeric: tabular-nums; }
 .jd-budget tfoot td { font-weight: 700; }
-@media (min-width: 1000px) { .jd-ecosystem { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
 /* School overview and its three visa routes share explicit page navigation. */
 .jd-route-nav { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 22px; padding-bottom: 22px; }
