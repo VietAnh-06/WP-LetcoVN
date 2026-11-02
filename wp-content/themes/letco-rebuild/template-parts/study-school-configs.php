@@ -284,13 +284,13 @@ $configs = array(
 			// Real quotes only, attributed to the stage the student was at when speaking:
 			// array( quote, name or description, major/intake, photo file or '' ). The section stays hidden while empty.
 			'voices' => array(
-				'label' => 'Cảm nhận sinh viên',
+				'label' => 'Chia sẻ',
 				'title' => 'Các bạn nói gì khi bắt đầu tìm hiểu',
-				'intro' => 'Chia sẻ của các bạn sinh viên trong giai đoạn tìm hiểu và chuẩn bị du học.',
+				'intro' => 'Chia sẻ của các bạn trong giai đoạn tìm hiểu và chuẩn bị du học.',
 				'items' => array(
-					array( 'Mình muốn đi du học Hàn Quốc nhưng chưa biết phải chuẩn bị từ đâu, tiếng Hàn cũng chưa có. Sau khi được tư vấn, mình hiểu rõ hơn chương trình phù hợp và từng bước cần làm. Có kế hoạch cụ thể rồi, mình thấy tự tin để bắt đầu hơn.', 'Sinh viên đã nhận tư vấn', '', '' ),
-					array( 'Ban đầu mình chỉ vào xem thông tin thôi, chưa dám đăng ký vì nghĩ hồ sơ của mình chưa đủ tốt. Khi trao đổi với thầy cô, mình biết mình cần bổ sung những gì và chuẩn bị tiếng Hàn ra sao. Với mình, buổi tư vấn đó là bước đầu để nghiêm túc với kế hoạch du học.', 'Sinh viên đã nhận tư vấn', '', '' ),
-					array( 'Điều khiến mình quan tâm đến chương trình là cơ hội học gắn với thực hành. Mình muốn hiểu những kiến thức đang học sẽ được sử dụng thế nào trong công việc. Được tìm hiểu môi trường doanh nghiệp tại Hàn Quốc cũng là trải nghiệm mình rất mong chờ.', 'Sinh viên quan tâm chương trình', '', '' ),
+					array( 'Mình tìm hiểu du học từ năm lớp 12 nhưng cứ phân vân vì chưa biết tiếng Hàn. Sau khi được tư vấn, mình hiểu những việc cần chuẩn bị và bắt đầu lên kế hoạch học tiếng. Có từng bước cụ thể, mình thấy việc du học gần với mình hơn.', 'Minh Anh', 'Đang chuẩn bị học tiếng Hàn', '' ),
+					array( 'Mình đang học cơ khí nên khá tò mò sinh viên ở Hàn Quốc học thực hành như thế nào. Khi tìm hiểu chương trình, mình chú ý nhất đến phần học tại trường và trải nghiệm doanh nghiệp. Mình muốn thử một môi trường mới để hiểu thêm ngành mình đang theo học.', 'Đức Huy', 'Quan tâm chương trình trao đổi', '' ),
+					array( 'Điều mình băn khoăn nhất là học xong sẽ theo hướng nào. Khi trao đổi về ngành học và lộ trình, mình có thêm thông tin để cùng bố mẹ cân nhắc. Mình vẫn còn nhiều thứ phải chuẩn bị, nhưng đã biết nên bắt đầu từ đâu.', 'Thu Hà', 'Đang tìm lộ trình học chuyên ngành', '' ),
 				),
 			),
 		),
