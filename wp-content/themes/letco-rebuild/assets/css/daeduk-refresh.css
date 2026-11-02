@@ -58,6 +58,8 @@ body.daeduk-site.is-landing.daeduk-route-d4-1 { --jd-blue: #0b7f98; --jd-blue-de
 body.daeduk-site.is-landing .lp-header { view-transition-name: dd-header; }
 body.daeduk-site.is-landing .jd-program-bar { view-transition-name: dd-switcher; }
 body.daeduk-site.is-landing .jd-page { view-transition-name: dd-route-content; }
+/* The transition name makes .jd-page a stacking context, so the popup inside it can only rise above the sticky header and switcher if the page itself does. */
+body.daeduk-site.is-landing .jd-page:has(> .lp-consult-modal:not([hidden])) { position: relative; z-index: 200; }
 /* Labels get their own layers so they stay above the sliding pill. */
 body.daeduk-site.is-landing .jd-route-nav a:nth-of-type(1) { view-transition-name: dd-route-link-1; }
 body.daeduk-site.is-landing .jd-route-nav a:nth-of-type(2) { view-transition-name: dd-route-link-2; }
