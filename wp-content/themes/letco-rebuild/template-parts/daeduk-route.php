@@ -38,10 +38,10 @@ $sections = array(
 		?>
 		<section class="section jd-section jd-experience" id="trai-nghiem">
 			<div class="container">
-				<header class="jd-head jd-head--left"><p class="jd-eyebrow">Trải nghiệm</p><h2><?php echo esc_html( $route['gallery_title'] ); ?></h2><p class="jd-intro">Hình ảnh từ LETCO và Đại học Daeduk; ảnh doanh nghiệp mang tính minh họa. Hoạt động cụ thể tùy chương trình và kỳ học.</p></header>
+				<header class="jd-head jd-head--left"><p class="jd-eyebrow">Trải nghiệm</p><h2><?php echo esc_html( $route['gallery_title'] ); ?></h2><p class="jd-intro"><?php echo esc_html( $route['gallery_intro'] ); ?></p></header>
 				<div class="jd-experience-grid">
 					<?php foreach ( $visuals['gallery'] as $photo ) : ?>
-						<figure><?php $photo_tag( $photo[0], $photo[2], $photo[3], $photo[4] ); ?><figcaption><strong><?php echo esc_html( $photo[1] ); ?></strong><span><?php echo esc_html( $photo[2] ); ?></span></figcaption></figure>
+						<figure><?php $photo_tag( $photo[0], $photo[2], $photo[3], $photo[4] ); ?><figcaption><strong><?php echo esc_html( $photo[1] ); ?></strong><span<?php echo empty( $photo[5] ) ? '' : ' class="is-illustrative"'; ?>><?php echo esc_html( $photo[2] ); ?></span></figcaption></figure>
 					<?php endforeach; ?>
 				</div>
 			</div>

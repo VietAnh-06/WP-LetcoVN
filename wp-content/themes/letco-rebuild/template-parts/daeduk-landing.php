@@ -174,7 +174,7 @@ $faq = array(
 				<?php foreach ( $dk['experience']['items'] as $photo ) : ?>
 					<figure>
 						<img src="<?php echo letco_asset( $photo[0] ); ?>" alt="<?php echo esc_attr( $photo[2] ); ?>" width="<?php echo (int) $photo[3]; ?>" height="<?php echo (int) $photo[4]; ?>" loading="lazy" decoding="async">
-						<figcaption><strong><?php echo esc_html( $photo[1] ); ?></strong><span><?php echo esc_html( $photo[2] ); ?></span></figcaption>
+						<figcaption><strong><?php echo esc_html( $photo[1] ); ?></strong><span<?php echo empty( $photo[5] ) ? '' : ' class="is-illustrative"'; ?>><?php echo esc_html( $photo[2] ); ?></span></figcaption>
 					</figure>
 				<?php endforeach; ?>
 			</div>
