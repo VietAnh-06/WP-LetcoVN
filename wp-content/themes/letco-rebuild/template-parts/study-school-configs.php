@@ -16,7 +16,7 @@ $configs = array(
 		'name'           => 'Đại học Daeduk',
 		'description'    => 'K-Tech Bridge kết nối tuyển chọn, đào tạo tiếng Hàn, học chuyên ngành và thực tập doanh nghiệp tại Daeduk. Tìm hiểu diện trao đổi D2-6, Cao đẳng D2-1, tiếng Hàn D4-1 và dự toán chi phí từng diện.',
 		'layout'         => 'zones',
-		'primary_cta'    => 'Nhận tư vấn lộ trình của mình',
+		'primary_cta'    => 'Nhận tư vấn lộ trình',
 		'popup_delay'    => 35000,
 		'popup_buttons'  => true,
 		'seo'            => array(
@@ -109,7 +109,7 @@ $configs = array(
 			'intro'   => 'Để lại thông tin để LETCO hỗ trợ chọn chương trình và hướng dẫn bước chuẩn bị đầu tiên. Chưa có TOPIK vẫn có thể đăng ký tư vấn.',
 			'bullets' => array( 'Lộ trình gợi ý theo trường, năm học và trình độ tiếng Hàn của bạn.', 'Kế hoạch học tiếng và dự toán chi phí theo chương trình.' ),
 		),
-		'lead_button'    => 'Nhận tư vấn lộ trình của mình',
+		'lead_button'    => 'Nhận tư vấn lộ trình',
 		'contact'        => array(
 			'partners'  => 'Du học LETCO – Đại học Công nghiệp Hà Nội (HaUI)',
 			'phones'    => array( '0989.086.386' ),
@@ -126,7 +126,7 @@ $configs = array(
 				'button'   => 'Đăng ký ngay',
 				'closed'   => 'Đã hết hạn đăng ký kỳ tháng 3/2027. Liên hệ LETCO để biết kỳ tiếp theo.',
 			),
-			'buttons' => array( 'he-dao-tao' => 'Nhận tư vấn lộ trình của mình', 'uu-diem' => 'Đăng ký nhận bảng dự toán chi tiết', 'cac-buoc' => 'Đăng ký giữ chỗ, học tiếng Hàn', 'thuc-tap' => 'Đăng ký tư vấn miễn phí' ),
+			'buttons' => array( 'he-dao-tao' => 'Nhận tư vấn lộ trình', 'uu-diem' => 'Đăng ký nhận bảng dự toán chi tiết', 'cac-buoc' => 'Đăng ký giữ chỗ, học tiếng Hàn', 'thuc-tap' => 'Đăng ký tư vấn miễn phí' ),
 			'nav'   => array( 'chi-phi' => 'Chi phí', 'cac-buoc' => 'Lộ trình', 'khuon-vien' => 'Daeduk', 'thuc-tap' => 'Thực tập', 'hoi-dap' => 'Hỏi đáp' ),
 			'hero'  => array(
 				'badge'  => array( 'Tuyển sinh', 'Kỳ tháng 3/2027', 'Hạn đăng ký với LETCO', '20/11/2026' ),
@@ -142,12 +142,12 @@ $configs = array(
 			'experience' => array(
 				'label' => 'Trải nghiệm',
 				'title' => 'Bạn sẽ học và sống thế nào?',
-				'intro' => 'Hình ảnh từ LETCO và Đại học Daeduk, không riêng một khóa K‑Tech Bridge; ảnh doanh nghiệp mang tính minh họa. Hoạt động cụ thể tùy chương trình và kỳ học.',
+				'intro' => 'Hình ảnh từ LETCO và Đại học Daeduk, không riêng một khóa K‑Tech Bridge. Hoạt động cụ thể tùy chương trình và kỳ học.',
 				'items' => array(
 					array( 'daeduk-letco-class-visit.jpg', 'Chuẩn bị tại Việt Nam', 'Đại diện Daeduk gặp gỡ học viên tại lớp học LETCO ở Việt Nam', 1200, 898 ),
 					array( 'daeduk-life-ev-vr-class.jpg', 'Học bằng công nghệ mới', 'Lớp chẩn đoán xe điện bằng VR của Khoa Quản lý an toàn xe điện', 800, 600 ),
 					array( 'daeduk-life-lab-practice.jpg', 'Thực hành chuyên ngành', 'Sinh viên Daeduk thực hành trong phòng thí nghiệm chuyên ngành', 705, 470 ),
-					array( 'daeduk-company-ibtech.jpg', 'Môi trường doanh nghiệp', 'Hình ảnh minh họa môi trường làm việc', 640, 480 ),
+					array( 'daeduk-company-ibtech.jpg', 'Môi trường doanh nghiệp', 'Hình ảnh minh họa môi trường làm việc', 640, 480, true ),
 					array( 'daeduk-life-intl-welcome.jpg', 'Ngày đầu nhập học', 'Buổi chào mừng du học sinh quốc tế nhập học tại Đại học Daeduk', 752, 512 ),
 					array( 'daeduk-life-lunar-new-year.jpg', 'Đón Tết tại Hàn', 'Trò chơi truyền thống dịp Tết cùng học viên tiếng Hàn người Việt tại Daeduk', 760, 427 ),
 				),
